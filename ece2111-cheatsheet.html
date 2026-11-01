@@ -56,6 +56,12 @@ svg .sp{stroke:var(--accent);stroke-width:1.4;fill:var(--accent);fill-opacity:.2
 svg .dash{stroke:var(--muted);stroke-dasharray:3 2;stroke-width:1;fill:none}
 sub,sup{line-height:0}
 .hide{display:none!important}
+.r.tb{padding:3px 4px;overflow-x:auto}
+.r.tb table{border-collapse:collapse;width:100%;font-size:12px;line-height:1.3}
+.r.tb th,.r.tb td{border:1px solid var(--line);padding:2px 4px;text-align:left;vertical-align:top}
+.r.tb thead th{background:var(--accent-soft);font-weight:600}
+.r.tb tbody th{font-weight:600;white-space:nowrap}
+.r.tb td{font-family:var(--math);font-size:12.5px}
 .foot{color:var(--muted);font-size:11px;margin-top:6px}
 @page{size:A4 landscape;margin:6mm}
 @media print{
@@ -71,12 +77,16 @@ sub,sup{line-height:0}
   .sec>h2{font-size:8.2pt;padding:1.5pt 4pt;border-radius:2px 2px 0 0}
   .sec>h2 small{font-size:6.4pt}
   .use{font-size:6.8pt;padding:1pt 4pt 0}
-  .r{padding:1.4pt 4pt}
-  .f{font-size:8.2pt;line-height:1.3}
+  .r{padding:1.2pt 4pt}
+  .f{font-size:8pt;line-height:1.27}
   .n,.t{font-size:6.9pt;line-height:1.25}
   .r.ex .f{font-size:7pt}
   figure{margin:1pt 4pt 2pt} figure svg{max-width:52%} figure figcaption{font-size:6.4pt}
   .foot{font-size:6pt}
+  .r.tb{padding:1pt 2pt}
+  .r.tb table{font-size:6.6pt;line-height:1.2}
+  .r.tb td{font-size:6.9pt}
+  .r.tb th,.r.tb td{padding:0.6pt 2pt}
 }
 </style>
 <div class="wrap">
@@ -86,22 +96,20 @@ sub,sup{line-height:0}
 <div class="cols">
 <section class="sec" id="s1"><h2><span class="no">1</span>How to score, and what is handed to you</h2>
 <div class="use">Read once before you start.</div>
-<div class="r"><div class="f">Every Section B mark needs: formula → substitution → answer → one-line reason</div><div class="t"><b>Trap:</b> "No marks if no reasoning." A bare number gets about 1 of 4.</div></div>
-<div class="r"><div class="f">Given in the exam: sifting, convolution, Σαᵏ = 1/(1−α), ∫eˣ, ∫xᵏ, X<sub>s</sub>(ω) = (1/T)Σ X((ω−2πk)/T), and all FS, CTFT, DTFT, Laplace, Z tables</div><div class="t"><b>Trap:</b> Do not copy tables. Use this sheet for methods, conditions and traps.</div></div>
+<div class="r"><div class="f">Section B: formula → substitution → answer → one-line reason</div><div class="t"><b>Trap:</b> A bare number gets about 1 of 4.</div></div>
+<div class="r"><div class="f">Given: sifting, convolution, Σαᵏ, ∫eˣ, ∫xᵏ, X<sub>s</sub>(ω) formula, and all FS / FT / Laplace / Z tables</div><div class="t"><b>Trap:</b> Use this sheet for methods, conditions and traps.</div></div>
 <div class="r"><div class="f">NOT in the tables: −e<sup>−at</sup>u(−t) ⇔ 1/(s+a), Re(s) &lt; −Re(a).   −αⁿu[−n−1] ⇔ 1/(1−αz⁻¹), |z| &lt; |α|</div><div class="n"><b>Needs:</b> Left-sided signals.</div></div>
 <div class="r"><div class="f">Table typo: DT FS square wave (|n| ≤ N, period N₀) is Xₖ = sin(kω₀(N+½)) / (N₀ sin(kω₀/2))</div><div class="n"><b>Needs:</b> Checked numerically.</div><div class="t"><b>Trap:</b> Printed sheet drops 1/N₀ and the sin in the denominator.</div></div>
 <div class="r"><div class="f">CT FS square wave from table: Xₖ = sin(kω₀T)/(kπ),  X₀ = 2T/T₀</div><div class="n"><b>Needs:</b> Pulse |t| &lt; T in period T₀.</div><div class="t"><b>Trap:</b> X₀ is the k→0 limit, not on the sheet.</div></div>
-<div class="r"><div class="f">Units: ω (rad/s) = 2πf (Hz).  DT frequency (rad/sample) = ω·T<sub>s</sub> = 2πf/f<sub>s</sub></div><div class="t"><b>Trap:</b> Mixing Hz and rad/s is the most common lost mark in sampling questions.</div></div>
+<div class="r tb"><table><thead><tr><th>Quantity</th><th>Hz</th><th>rad/s</th><th>rad/sample</th></tr></thead><tbody><tr><th>Signal frequency</th><td>f</td><td>ω = 2πf</td><td>ωT<sub>s</sub> = 2πf/f<sub>s</sub></td></tr><tr><th>Sampling rate</th><td>f<sub>s</sub> = 1/T<sub>s</sub></td><td>ω_s = 2π/T<sub>s</sub></td><td>2π</td></tr><tr><th>Nyquist frequency</th><td>f<sub>s</sub>/2</td><td>π/T<sub>s</sub></td><td>π</td></tr><tr><th>Nyquist rate (bandwidth W)</th><td>2f_max</td><td>2W</td><td>—</td></tr></tbody></table></div>
 </section>
 <section class="sec" id="s2"><h2><span class="no">2</span>Which tool? Read the question, pick the section</h2>
 <div class="r"><div class="f">"Linear / TI / causal / memoryless / stable / real?" → 3.   "Find T₀ or N₀" → 2</div></div>
 <div class="r"><div class="f">"Find y given x and h", "step response", deltas in h → 4</div></div>
 <div class="r"><div class="f">Periodic input, Xₖ, duty cycle, harmonics through a filter → 5</div></div>
-<div class="r"><div class="f">Sinusoid in or out, H(ω) from an equation, DC input → 6</div></div>
-<div class="r"><div class="f">X(ω) or Y(ω) given as a fraction, DTFT of nαⁿ or αⁿcos n → 7</div></div>
+<div class="r"><div class="f">Sinusoid in/out, H(ω) from an equation, DC input → 6.   X(ω) as a fraction, DTFT of nαⁿ → 7</div></div>
 <div class="r"><div class="f">Sampling rate, Nyquist, anti-aliasing, sketch X<sub>s</sub>, ZOH → 8</div></div>
-<div class="r"><div class="f">Block diagram, H(s), RoC, BIBO, output for a given input (CT) → 9</div></div>
-<div class="r"><div class="f">Difference equation, H(z), poles in polar form, IIR/FIR (DT) → 10</div></div>
+<div class="r"><div class="f">Block diagram, H(s), RoC, BIBO, output (CT) → 9.   Difference eq., H(z), polar poles, IIR/FIR (DT) → 10</div></div>
 </section>
 <section class="sec" id="s3"><h2><span class="no">3</span>Signals: transformations, periodicity, symmetry<small>2022 Q1, 2024 Q2, mock Q6</small></h2>
 <div class="r"><div class="f">x(t−τ): τ&gt;0 shifts RIGHT.   x(αt): |α|&gt;1 compresses</div><div class="t"><b>Trap:</b> "+" inside the bracket moves left. Check one point.</div></div>
@@ -115,14 +123,8 @@ sub,sup{line-height:0}
 <div class="r ex"><div class="f"><b>Past paper:</b> 2022 Q1 at 10 samples/s, n=0..5: cos 2πt → 1, 0.81, 0.31, −0.31, −0.81, −1.  sin 10πt → all 0.  u(t−0.25) → 0,0,0,1,1,1.  sin(2πt)u(t) → 0, 0.59, 0.95, 0.95, 0.59, 0.</div></div>
 </section>
 <section class="sec" id="s4"><h2><span class="no">4</span>System properties (test each separately)<small>every paper</small></h2>
-<div class="r"><div class="f">Linear: zero in → zero out, S(αx)=αSx and S(x₁+x₂)=Sx₁+Sx₂</div><div class="n"><b>Needs:</b> Multiplying x by a fixed function of t (e<sup>−t</sup>, sin t, n²) is still linear.</div><div class="t"><b>Trap:</b> x², |x|, x+1, e<sup>x</sup> are not linear.</div></div>
-<div class="r"><div class="f">Time-invariant: delay-then-S equals S-then-delay</div><div class="n"><b>Needs:</b> Any explicit t or n multiplying x ⇒ TV.</div><div class="t"><b>Trap:</b> x(2t) is TV. A condition at a fixed time (y[0]=0) is TV.</div></div>
-<div class="r"><div class="f">Causal: no input from a later time than the output</div><div class="n"><b>Needs:</b> Memoryless ⇒ causal.</div><div class="t"><b>Trap:</b> x(t+2), x[n+1], Σ from k=−1 make it non-causal.</div></div>
-<div class="r"><div class="f">Memoryless: only x at the same instant</div><div class="t"><b>Trap:</b> Any delay, advance, sum or integral has memory.</div></div>
-<div class="r"><div class="f">BIBO stable: |x| ≤ M ⇒ |y| bounded</div><div class="n"><b>Needs:</b> Disprove with ONE bounded input.</div><div class="t"><b>Trap:</b> Integrator (step → ramp) and differentiator (sin t²) are unstable.</div></div>
-<div class="r"><div class="f">Real: real input always gives real output</div><div class="t"><b>Trap:</b> Complex multipliers e<sup>jωt</sup> or complex gains ⇒ not real.</div></div>
-<div class="r"><div class="f">LTI never creates new frequencies</div><div class="t"><b>Trap:</b> Output has a frequency the input did not ⇒ not LTI (mock Q6d).</div></div>
-<div class="r"><div class="f">Given h: memoryless ⇔ h = αδ.  Causal ⇔ h=0 for t&lt;0.  Stable ⇔ ∫|h| &lt; ∞ (Σ|h| &lt; ∞)</div><div class="n"><b>Needs:</b> LTI.</div><div class="t"><b>Trap:</b> 1/t decay is NOT integrable. Stable does not imply causal.</div></div>
+<div class="r tb"><table><thead><tr><th>Property</th><th>From the equation</th><th>From h (LTI)</th><th>From H(s) / H(z)</th></tr></thead><tbody><tr><th>Linear</th><td>zero in → zero out; no x², |x|, +const, eˣ</td><td>—</td><td>—</td></tr><tr><th>Time-inv.</th><td>no t or n multiplying x; no x(2t); no fixed-time condition</td><td>—</td><td>—</td></tr><tr><th>Causal</th><td>no x(t+·), x[n+·] (future)</td><td>h = 0 for t &lt; 0</td><td>RoC right of rightmost pole / |z| &gt; outermost pole</td></tr><tr><th>Stable</th><td>bounded in ⇒ bounded out; one counterexample disproves</td><td>∫|h| &lt; ∞, Σ|h| &lt; ∞</td><td>RoC contains jω axis / unit circle</td></tr><tr><th>Memoryless</th><td>only x at the same instant</td><td>h = αδ</td><td>H constant</td></tr><tr><th>Real</th><td>real coefficients, no e<sup>jωt</sup> multipliers</td><td>h real</td><td>poles and zeros in conjugate pairs</td></tr><tr><th>Causal+stable</th><td>—</td><td>both above</td><td>all poles Re(s) &lt; 0 / |z| &lt; 1</td></tr></tbody></table></div>
+<div class="r"><div class="f">x times a fixed function of t (e<sup>−t</sup>, sin t, n²): linear but TV.  LTI never creates new frequencies</div><div class="t"><b>Trap:</b> Integrator and differentiator are unstable. 1/t is not integrable. Stable ≠ causal.</div></div>
 <div class="r"><div class="f">Series h₁∗h₂ (H₁H₂).  Parallel h₁+h₂.  Feedback H₁/(1−H₁H₂)</div><div class="t"><b>Trap:</b> Negative feedback: H₂ includes the minus sign ⇒ H₁/(1+H₁G).</div></div>
 <div class="r"><div class="f">Difference/differential eq. + "initial rest" ⇒ causal LTI</div><div class="t"><b>Trap:</b> Without it the system is not fixed.</div></div>
 <div class="r ex"><div class="f"><b>Past paper:</b> 2024 Q1 y=2e<sup>jω₁t</sup>x(t−1)+e<sup>jω₂t</sup>x(t−2): linear Y, TI N, causal Y, memoryless N, stable Y, real N.</div></div>
@@ -162,6 +164,7 @@ sub,sup{line-height:0}
 <div class="r ex"><div class="f"><b>Past paper:</b> Sample Q6: H = Y/X = e<sup>jω</sup>(jω+1)/(jω+a); input a ⇒ y = a·H(0) = 1.</div></div>
 </section>
 <section class="sec" id="s8"><h2><span class="no">8</span>Fourier transform algebra (tables are given)<small>2022 Q5, 2024 Q7, mock Q3, sample Q4</small></h2>
+<div class="r tb"><table><thead><tr><th>Signal</th><th>Tool</th><th>Spectrum</th></tr></thead><tbody><tr><th>CT periodic</th><td>CT Fourier series Xₖ</td><td>discrete, not periodic</td></tr><tr><th>DT periodic</th><td>DT Fourier series Xₖ</td><td>discrete, periodic in k (N₀)</td></tr><tr><th>CT aperiodic</th><td>CTFT X(ω)</td><td>continuous, not periodic</td></tr><tr><th>DT aperiodic</th><td>DTFT X(ω)</td><td>continuous, 2π-periodic</td></tr><tr><th>Not abs. integrable / summable</th><td>Laplace / Z (with RoC)</td><td>—</td></tr></tbody></table></div>
 <div class="r"><div class="f">Equal-degree fraction: divide first. (4+jω)/(5+jω) = 1 − 1/(5+jω) ⇒ δ(t) − e<sup>−5t</sup>u(t)</div><div class="t"><b>Trap:</b> The constant term is an impulse.</div></div>
 <div class="r"><div class="f">nαⁿu[n] = (n+1)αⁿu[n] − αⁿu[n] ⇒ 1/(1−αe<sup>−jω</sup>)² − 1/(1−αe<sup>−jω</sup>)</div><div class="n"><b>Needs:</b> |α|&lt;1. Checked numerically.</div></div>
 <div class="r"><div class="f">αⁿcos(n)u[n] ⇒ ½/(1−αe<sup>−j(ω−1)</sup>) + ½/(1−αe<sup>−j(ω+1)</sup>)</div><div class="n"><b>Needs:</b> Euler, then modulation.</div></div>
@@ -205,7 +208,7 @@ sub,sup{line-height:0}
 <div class="r"><div class="f">Block diagram: name every wire in s, write one equation per adder, solve for Ŷ/X̂</div><div class="n"><b>Needs:</b> 1/s is an integrator.</div></div>
 <div class="r"><div class="f">Causal ⇒ RoC: Re(s) &gt; (rightmost pole)</div><div class="n"><b>Needs:</b> All subsystems causal.</div><div class="t"><b>Trap:</b> RoC never contains a pole.</div></div>
 <div class="r"><div class="f">BIBO stable ⇔ RoC contains the jω axis.  Causal + stable ⇔ all poles Re &lt; 0</div><div class="t"><b>Trap:</b> Poles on the jω axis (±2j) are NOT stable.</div></div>
-<div class="r"><div class="f">Left-sided: RoC left of leftmost pole. Two-sided: strip</div><div class="t"><b>Trap:</b> Same 1/(s+a) for e<sup>−at</sup>u(t) and −e<sup>−at</sup>u(−t). Only the RoC differs.</div></div>
+<div class="r tb"><table><thead><tr><th>Signal</th><th>Laplace RoC</th><th>Z RoC</th><th>Example</th></tr></thead><tbody><tr><th>Right-sided</th><td>Re(s) &gt; rightmost pole</td><td>|z| &gt; outermost pole</td><td>e<sup>−at</sup>u(t) ⇔ 1/(s+a)</td></tr><tr><th>Left-sided</th><td>Re(s) &lt; leftmost pole</td><td>|z| &lt; innermost pole</td><td>−e<sup>−at</sup>u(−t) ⇔ 1/(s+a)</td></tr><tr><th>Two-sided</th><td>vertical strip</td><td>annulus</td><td>empty if poles cross</td></tr><tr><th>Finite length</th><td>all s</td><td>all z (except 0 / ∞)</td><td>FIR</td></tr></tbody></table></div>
 <div class="r"><div class="f">Ŷ = Ĥ X̂, then partial fractions, then table (right-sided for causal)</div><div class="n"><b>Needs:</b> Rational.</div><div class="t"><b>Trap:</b> Divide first if degree num ≥ degree den.</div></div>
 <div class="r"><div class="f">Simple pole A/(s−p): A = [(s−p)Ŷ] at s=p.  Repeated: A/(s+1)² + B/(s+1); get B by plugging s=0</div><div class="t"><b>Trap:</b> 1/(s+a)² ⇔ te<sup>−at</sup>u(t).</div></div>
 <div class="r"><div class="f">Step response = inverse of Ĥ(s)/s.  Final value (stable) = Ĥ(0)</div><div class="t"><b>Trap:</b> Bounded step response does NOT prove BIBO stability.</div></div>

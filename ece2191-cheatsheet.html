@@ -56,6 +56,12 @@ svg .sp{stroke:var(--accent);stroke-width:1.4;fill:var(--accent);fill-opacity:.2
 svg .dash{stroke:var(--muted);stroke-dasharray:3 2;stroke-width:1;fill:none}
 sub,sup{line-height:0}
 .hide{display:none!important}
+.r.tb{padding:3px 4px;overflow-x:auto}
+.r.tb table{border-collapse:collapse;width:100%;font-size:12px;line-height:1.3}
+.r.tb th,.r.tb td{border:1px solid var(--line);padding:2px 4px;text-align:left;vertical-align:top}
+.r.tb thead th{background:var(--accent-soft);font-weight:600}
+.r.tb tbody th{font-weight:600;white-space:nowrap}
+.r.tb td{font-family:var(--math);font-size:12.5px}
 .foot{color:var(--muted);font-size:11px;margin-top:6px}
 @page{size:A4 landscape;margin:6mm}
 @media print{
@@ -71,12 +77,16 @@ sub,sup{line-height:0}
   .sec>h2{font-size:8.2pt;padding:1.5pt 4pt;border-radius:2px 2px 0 0}
   .sec>h2 small{font-size:6.4pt}
   .use{font-size:6.8pt;padding:1pt 4pt 0}
-  .r{padding:1.4pt 4pt}
-  .f{font-size:8.2pt;line-height:1.3}
+  .r{padding:1.2pt 4pt}
+  .f{font-size:8pt;line-height:1.27}
   .n,.t{font-size:6.9pt;line-height:1.25}
   .r.ex .f{font-size:7pt}
   figure{margin:1pt 4pt 2pt} figure svg{max-width:52%} figure figcaption{font-size:6.4pt}
   .foot{font-size:6pt}
+  .r.tb{padding:1pt 2pt}
+  .r.tb table{font-size:6.6pt;line-height:1.2}
+  .r.tb td{font-size:6.9pt}
+  .r.tb th,.r.tb td{padding:0.6pt 2pt}
 }
 </style>
 <div class="wrap">
@@ -112,7 +122,8 @@ sub,sup{line-height:0}
 <div class="r ex"><div class="f"><b>Past paper:</b> P(not faulty) = 0.8(5/30)+0.6(25/30) = 0.6333; P(new | not faulty) = 0.1333/0.6333 = 0.2105.</div></div>
 </section>
 <section class="sec" id="s4"><h2><span class="no">4</span>Discrete distributions<small>practice 2 Q1, 3 Q2, 4 Q4, mid-sem Q1–2</small></h2>
-<div class="r"><div class="f">Bernoulli(p): E = p, Var = p(1−p)</div></div>
+<div class="r tb"><table><thead><tr><th>Model</th><th>Use when</th><th>P(X=k) or f(x)</th><th>E</th><th>Var</th></tr></thead><tbody><tr><th>Bernoulli(p)</th><td>one yes/no trial</td><td>p, 1−p</td><td>p</td><td>p(1−p)</td></tr><tr><th>Binomial(n,p)</th><td>fixed n, independent, same p</td><td>C(n,k)pᵏ(1−p)ⁿ⁻ᵏ</td><td>np</td><td>np(1−p)</td></tr><tr><th>Geometric(p)</th><td>trials until 1st success</td><td>(1−p)ᵏ⁻¹p, k≥1</td><td>1/p</td><td>(1−p)/p²</td></tr><tr><th>Poisson(λ)</th><td>count per interval, rate given</td><td>e<sup>−λ</sup>λᵏ/k!</td><td>λ</td><td>λ</td></tr><tr><th>Hypergeom.</th><td>draw k without replacement</td><td>C(M,j)C(N−M,k−j)/C(N,k)</td><td>kM/N</td><td>—</td></tr><tr><th>Uniform(a,b)</th><td>equally likely in a range</td><td>1/(b−a)</td><td>(a+b)/2</td><td>(b−a)²/12</td></tr><tr><th>Exponential(λ)</th><td>waiting time, constant rate</td><td>λe<sup>−λx</sup></td><td>1/λ</td><td>1/λ²</td></tr><tr><th>Gaussian(μ,σ²)</th><td>noise, many small effects</td><td>e<sup>−(x−μ)²/2σ²</sup>/(σ√2π)</td><td>μ</td><td>σ²</td></tr></tbody></table></div>
+<div class="r"><div class="f">Memoryless: only Geometric (discrete) and Exponential (continuous)</div></div>
 <div class="r"><div class="f">Binomial(n,p): P(k) = C(n,k)pᵏ(1−p)ⁿ⁻ᵏ, E = np, Var = np(1−p)</div><div class="n"><b>Needs:</b> Fixed n, independent, same p.</div><div class="t"><b>Trap:</b> P(at least one) = 1−(1−p)ⁿ. Bursty errors ⇒ not binomial, but E[S] = np still holds.</div></div>
 <div class="r"><div class="f">Geometric(p): P(k) = (1−p)ᵏ⁻¹p, k ≥ 1.  P(X&gt;k) = (1−p)ᵏ.  E = 1/p, Var = (1−p)/p²</div><div class="n"><b>Needs:</b> Trials up to and including first success.</div><div class="t"><b>Trap:</b> Memoryless: 5 failures done, P(more than 3 more) = 0.8³.</div></div>
 <div class="r"><div class="f">Poisson(λ): P(k) = e<sup>−λ</sup>λᵏ/k!,  E = Var = λ</div><div class="n"><b>Needs:</b> λ = rate × interval (same units).</div><div class="t"><b>Trap:</b> Scale λ first: 600/min over 200 ms ⇒ λ = 2.  1460/yr over a day ⇒ λ = 4.</div></div>
@@ -126,7 +137,6 @@ sub,sup{line-height:0}
 <div class="r"><div class="f">F(x) = ∫ from the lower end to x of f.  Write 0 below and 1 above</div><div class="n"><b>Needs:</b> Piecewise answer.</div><div class="t"><b>Trap:</b> P(X = x) = 0 for continuous X.</div></div>
 <div class="r"><div class="f">P(a&lt;X&lt;b) = F(b)−F(a).  E[X] = ∫xf.  E[X²] = ∫x²f</div><div class="t"><b>Trap:</b> Symmetric f ⇒ E = centre, P(X ≥ centre) = ½.</div></div>
 <div class="r"><div class="f">Y = aX+b: E = aE[X]+b, Var = a²Var(X)</div><div class="t"><b>Trap:</b> °F = 1.8°C+32 ⇒ Var<sub>F</sub> = 3.24 Var<sub>C</sub>. Y = 2X+1 ⇒ Var ×4.</div></div>
-<div class="r"><div class="f">Uniform(a,b): f = 1/(b−a), E = (a+b)/2, Var = (b−a)²/12</div></div>
 <div class="r"><div class="f">Exponential(λ): f = λe<sup>−λx</sup>, F = 1−e<sup>−λx</sup>, P(X&gt;x) = e<sup>−λx</sup>, E = 1/λ, Var = 1/λ²</div><div class="n"><b>Needs:</b> Constant failure rate.</div><div class="t"><b>Trap:</b> Mean 200 h ⇒ λ = 0.005, Var = 40,000, SD = 200. "Most fail near 200 h" is FALSE: density is largest at 0.</div></div>
 <div class="r"><div class="f">Gaussian N(μ,σ²): f = e<sup>−(x−μ)²/2σ²</sup>/(σ√2π), peak 1/(σ√2π)</div><div class="t"><b>Trap:</b> Higher peak ⇒ smaller σ. f(0) is not a probability.</div></div>
 <div class="r"><div class="f">Flat CDF on an interval ⇒ zero probability there</div><div class="t"><b>Trap:</b> Not uniform.</div></div>
@@ -135,7 +145,7 @@ sub,sup{line-height:0}
 <section class="sec" id="s6"><h2><span class="no">6</span>Joint distributions, covariance, vectors<small>practice 3 Q5, 4 Q5–6, mid-sem Q3, Q15</small></h2>
 <div class="r"><div class="f">Marginal: p<sub>X</sub>(x) = Σ_y p(x,y),  f<sub>X</sub>(x) = ∫f(x,y)dy</div><div class="t"><b>Trap:</b> Limits for y may depend on x.</div></div>
 <div class="r"><div class="f">Conditional: f(y|x) = f(x,y)/f<sub>X</sub>(x)</div><div class="t"><b>Trap:</b> f=2 on 0&lt;y&lt;x&lt;1 ⇒ f<sub>X</sub>=2x, f(y|x)=1/x, P(Y&lt;x/2 | X=x) = ½.</div></div>
-<div class="r"><div class="f">Independent ⇔ p(x,y) = p<sub>X</sub>(x)p<sub>Y</sub>(y) for EVERY cell (support must be a rectangle)</div><div class="t"><b>Trap:</b> One failing cell proves dependence.</div></div>
+<div class="r tb"><table><thead><tr><th>Claim</th><th>Test</th><th>Implies</th></tr></thead><tbody><tr><th>Independent</th><td>p(x,y) = p<sub>X</sub> p<sub>Y</sub> for EVERY cell (support a rectangle)</td><td>uncorrelated</td></tr><tr><th>Uncorrelated</th><td>Cov = E[XY] − E[X]E[Y] = 0</td><td>NOT independence (unless jointly Gaussian)</td></tr><tr><th>Orthogonal</th><td>E[XY] = 0</td><td>uncorrelated only if a mean is 0</td></tr></tbody></table></div>
 <div class="r"><div class="f">Cov = E[XY] − E[X]E[Y].  ρ = Cov/(σ_Xσ_Y) ∈ [−1,1]</div><div class="t"><b>Trap:</b> Cov = 0 ⇒ uncorrelated, NOT independent (X on {−1,0,1}, Y = X²).</div></div>
 <div class="r"><div class="f">E[aX+bY] = aE[X]+bE[Y] (always).  Var(X+Y) = VarX + VarY + 2Cov</div><div class="t"><b>Trap:</b> Cov(F, aF+b) = a Var(F).</div></div>
 <div class="r"><div class="f">Vector: C = E[(X−μ)(X−μ)ᵀ] = R − μμᵀ, symmetric PSD</div><div class="n"><b>Needs:</b> Diagonal = variances.</div></div>
@@ -155,7 +165,7 @@ sub,sup{line-height:0}
 <section class="sec" id="s8"><h2><span class="no">8</span>Estimation, confidence intervals, sample size<small>practice 2 Q4–5, mid-sem Q9–12</small></h2>
 <div class="r"><div class="f">x̄ estimates μ.  s² = Σ(xᵢ−x̄)²/(n−1)</div><div class="t"><b>Trap:</b> Divide by n−1.</div></div>
 <div class="r"><div class="f">Unbiased: E[θ̂] = θ.  Consistent: θ̂ → θ as n grows</div><div class="t"><b>Trap:</b> X₁ and X̄ are both unbiased; X̄ has the smaller SE.</div></div>
-<div class="r"><div class="f">CI: x̄ ± z<sub>α/2</sub>·σ/√n</div><div class="n"><b>Needs:</b> IID, σ known, Gaussian or large n.</div><div class="t"><b>Trap:</b> σ unknown and replaced by s ⇒ Student t, not exact with z.</div></div>
+<div class="r tb"><table><thead><tr><th>Situation</th><th>Use</th><th>Conditions</th></tr></thead><tbody><tr><th>P(one reading &gt; t)</th><td>1 − Φ((t−μ)/σ)</td><td>X Gaussian</td></tr><tr><th>P(sample mean &gt; t)</th><td>1 − Φ((t−μ)/(σ/√n))</td><td>Gaussian data or large n (CLT)</td></tr><tr><th>P(total &gt; t)</th><td>1 − Φ((t−nμ)/(σ√n))</td><td>same</td></tr><tr><th>CI for μ</th><td>x̄ ± z·σ/√n</td><td>IID, σ known</td></tr><tr><th>σ unknown</th><td>x̄ ± t·s/√n (Student t)</td><td>z is not exact</td></tr><tr><th>Sample size</th><td>n = (zσ/E)², round up</td><td>σ known</td></tr></tbody></table></div>
 <div class="r"><div class="f">Meaning: 95% of intervals built this way contain μ</div><div class="t"><b>Trap:</b> Not "95% of items" and not "μ has 95% probability".</div></div>
 <div class="r"><div class="f">CI fully inside a tolerance ⇒ supports "mean is within tolerance"</div></div>
 <div class="r"><div class="f">Higher confidence ⇒ wider.  Larger n ⇒ narrower</div></div>
@@ -197,7 +207,7 @@ sub,sup{line-height:0}
 <div class="r"><div class="f">Softmax pᵣ = e<sup>zᵣ</sup>/Σe<sup>zᵢ</sup>; CCE = −ln p_true</div><div class="n"><b>Needs:</b> One-hot labels.</div><div class="t"><b>Trap:</b> zᵢ/Σz fails with negatives. Integer labels imply false order.</div></div>
 <div class="r"><div class="f">Only logistic allowed, K classes ⇒ K one-vs-rest models</div><div class="t"><b>Trap:</b> 3 classes ⇒ 3 models.</div></div>
 <div class="r"><div class="f">Boundary w₁x₁+w₂x₂+b = 0; w points to class +1</div><div class="t"><b>Trap:</b> Plug a point (origin) to find the side.</div></div>
-<div class="r"><div class="f">Accuracy (TP+TN)/N.  Precision TP/(TP+FP).  Recall TP/(TP+FN).  F₁ = 2PR/(P+R)</div><div class="t"><b>Trap:</b> Imbalance: accuracy misleads. Missed faults dangerous ⇒ favour recall (lower threshold).</div></div>
+<div class="r tb"><table><thead><tr><th>Metric</th><th>Formula</th><th>Choose it when</th></tr></thead><tbody><tr><th>Accuracy</th><td>(TP+TN)/N</td><td>classes balanced</td></tr><tr><th>Precision</th><td>TP/(TP+FP)</td><td>false alarms are costly</td></tr><tr><th>Recall</th><td>TP/(TP+FN)</td><td>misses are dangerous (lower the threshold)</td></tr><tr><th>F₁</th><td>2PR/(P+R)</td><td>imbalanced classes</td></tr></tbody></table></div>
 <div class="r"><div class="f">Hinge max(0,1−yf): y=−1 minimised for f ≤ −1.  Log loss ln(1+e<sup>−yf</sup>): no finite minimiser</div></div>
 <div class="r ex"><div class="f"><b>Past paper:</b> Softmax (5.2, 3.6, −2.7) ⇒ (0.832, 0.168, 0.0003).  TP=6, FP=2, FN=3 ⇒ P=0.75, R=0.667, F₁=0.706.</div></div>
 </section>
