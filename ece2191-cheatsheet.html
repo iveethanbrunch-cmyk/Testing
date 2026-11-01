@@ -141,6 +141,20 @@ h2.sec{font-size:13px;text-transform:uppercase;letter-spacing:.09em;color:var(--
 <div class="row"><div class="f">Text box notation: a/b, a^(b-c), C(n,r), sqrt(a), Phi(x), sum<sub>i=1</sub><sup>n</sup></div><div class="c"></div><div class="t"></div></div>
 <div class="row"><div class="f">Question mix: counting, Poisson or geometric, PDF with unknown constant, Gaussian tables, CI and sample size, joint PMF, regression and BIC, gradient descent, logistic and softmax, small NN</div><div class="c"></div><div class="t"><span class="lab">Trap</span>The AI practice exam has 30 short questions. Time per question is short.</div></div>
 </section>
+<section class="card" id="x-given" data-w="exam">
+<header><span class="tag">Exam</span><h3>What the 2026 formula sheet and Z-table give you</h3></header>
+<div class="when"><b>Use when:</b> Checked against the ECE2191 formula sheet and the Z-table.</div>
+<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
+<div class="row"><div class="f">Given: vector norm, inner product, cosine similarity</div><div class="c"></div><div class="t"></div></div>
+<div class="row"><div class="f">Given: W = (XᵀX)⁻¹XᵀY for multivariate regression, MSE, R², BIC, gradient descent update</div><div class="c"><span class="lab">Needs</span>Tall X (more samples than features).</div><div class="t"><span class="lab">Trap</span>The fat-matrix form Xᵀ(XXᵀ)⁻¹ is NOT on the sheet.</div></div>
+<div class="row"><div class="f">Given: sigmoid, cross-entropy, softmax, sign, tanh, ReLU, MSE, BCE, NLL</div><div class="c"></div><div class="t"><span class="lab">Trap</span>Hinge loss and the log loss in practice 6 are not listed.</div></div>
+<div class="row"><div class="f">Given: quadratic formula, product/quotient/chain rule, derivatives of xⁿ, eˣ, ln, sin, cos, tan, hyperbolics</div><div class="c"></div><div class="t"><span class="lab">Trap</span>σ′ = σ(1−σ) is not listed. Derive it or keep it from this sheet.</div></div>
+<div class="row"><div class="f">NOT given: any probability formula</div><div class="c"><span class="lab">Needs</span>No Binomial, Geometric, Poisson, Exponential, Gaussian PDF, CLT, CI, sample size, Bayes, covariance.</div><div class="t"><span class="lab">Trap</span>Put these first in your notes.</div></div>
+<div class="row"><div class="f">NOT given: ridge, precision, recall, F1, C(n+k,k) feature count, one-vs-rest, X⁺ for fat matrices</div><div class="c"></div><div class="t"><span class="lab">Trap</span>All on this sheet.</div></div>
+<div class="row"><div class="f">Z-table gives Φ(z) = P(Z ≤ z) to 4 decimals, for negative and positive z</div><div class="c"><span class="lab">Needs</span>Φ(−z) = 1 − Φ(z). Q(z) = 1 − Φ(z).</div><div class="t"><span class="lab">Trap</span>Earlier practice papers gave a Q-table. The 2026 table is Φ, so subtract from 1 for tails.</div></div>
+<div class="row"><div class="f">Table values to expect: Φ(1)=0.8413, Φ(1.5)=0.9332, Φ(1.6)=0.9452, Φ(1.96)=0.9750, Φ(2)=0.9772, Φ(2.8)=0.9974</div><div class="c"></div><div class="t"><span class="lab">Trap</span>Q(2)=0.0228, Q(1.5)=0.0668, Q(1.6)=0.0548, Q(2.8)=0.0026 with the 4-decimal table.</div></div>
+<div class="row"><div class="f">Row is z to one decimal, column is the second decimal</div><div class="c"><span class="lab">Needs</span>Φ(1.96): row 1.9, column 0.06.</div><div class="t"><span class="lab">Trap</span>Values can differ in the 4th decimal from software.</div></div>
+</section>
 <section class="card" id="x-count" data-w="exam">
 <header><span class="tag">Exam</span><h3>Counting and hypergeometric</h3></header>
 <div class="when"><b>Use when:</b> Seen: practice 4 Q1, practice 2 Q6, practice 3 Q3.</div>
@@ -169,7 +183,7 @@ h2.sec{font-size:13px;text-transform:uppercase;letter-spacing:.09em;color:var(--
 <div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
 <div class="row"><div class="f">P(X &gt; t) = Q((t−μ)/σ)</div><div class="c"><span class="lab">Needs</span>X Gaussian.</div><div class="t"><span class="lab">Trap</span>Source A (230, 5) vs B (225, 10) above 240: Q(2)=0.0228 vs Q(1.5)=0.0668. B more likely.</div></div>
 <div class="row"><div class="f">Lifetime ≥ 30,000: Sensor 1 (28000, 1000): Q(2)=0.0228. Sensor 2 (24000, 4000): Q(1.5)=0.0668</div><div class="c"><span class="lab">Needs</span>Choose the larger probability.</div><div class="t"><span class="lab">Trap</span>Choose Sensor 2.</div></div>
-<div class="row"><div class="f">Sample mean of n Gaussian readings: X̄ ~ N(μ, σ²/n)</div><div class="c"><span class="lab">Needs</span>Use σ/√n as the SD.</div><div class="t"><span class="lab">Trap</span>Mid-sem Q8: (13.2−12)/(6/√64) = 1.6 ⇒ 1−Φ(1.6) = 0.0548.</div></div>
+<div class="row"><div class="f">Sample mean of n Gaussian readings: X̄ ~ N(μ, σ²/n)</div><div class="c"><span class="lab">Needs</span>Use σ/√n as the SD.</div><div class="t"><span class="lab">Trap</span>Mid-sem Q8: (13.2−12)/(6/√64) = 1.6 ⇒ 1−Φ(1.6) = 0.0548 (Z-table Φ(1.6)=0.9452).</div></div>
 <div class="row"><div class="f">P(45 &lt; X̄ &lt; 52), σ=10, n=16: SD = 2.5, z from 0 to 2.8</div><div class="c"><span class="lab">Needs</span>Q(0) − Q(2.8)</div><div class="t"><span class="lab">Trap</span>= 0.5 − 0.002555 = 0.4974.</div></div>
 <div class="row"><div class="f">Symmetric interval with probability p: μ ± z·σ/√n with Q(z) = (1−p)/2</div><div class="c"><span class="lab">Needs</span>95% ⇒ z=1.96. 60% ⇒ Q(z)=0.2 ⇒ z≈0.84.</div><div class="t"><span class="lab">Trap</span>95% of sample means: 45 ± 1.96(2.5) = (40.1, 49.9).</div></div>
 <div class="row"><div class="f">Required n so that |X̄ − μ| &lt; σ/10 with probability 0.95: n = (1.96 × 10)²</div><div class="c"></div><div class="t"><span class="lab">Trap</span>= 384.16 ⇒ n = 385. Round up.</div></div>

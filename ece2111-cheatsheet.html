@@ -135,6 +135,18 @@ h2.sec{font-size:13px;text-transform:uppercase;letter-spacing:.09em;color:var(--
 <div class="row"><div class="f">Marks tell you how much to write: 2 marks = answer + one line of reason; 3 marks = answer + reason + one equation</div><div class="c"><span class="lab">Needs</span>Sample paper marking: 0.5–1 mark for the answer, the rest for the explanation.</div><div class="t"><span class="lab">Trap</span>A correct number with no explanation scores about 1 of 4.</div></div>
 <div class="row"><div class="f">Every paper has: system properties, a sampling question, a transfer function with RoC and stability, a Fourier series question, and a DT difference equation question</div><div class="c"></div><div class="t"></div></div>
 </section>
+<section class="card" id="x-given" data-w="exam">
+<header><span class="tag">Exam</span><h3>What the formula sheet gives you and what it does not</h3></header>
+<div class="when"><b>Use when:</b> Checked against Formula_Sheet.pdf (7 pages).</div>
+<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
+<div class="row"><div class="f">Given: sifting, convolution (DT and CT), geometric sum 1/(1−α), integrals of eˣ and xᵏ, X<sub>s</sub>(ω) = (1/T)ΣX((ω−2πk)/T)</div><div class="c"></div><div class="t"></div></div>
+<div class="row"><div class="f">Given: CT and DT Fourier series tables, CTFT and DTFT tables, Laplace and Z tables with properties</div><div class="c"><span class="lab">Needs</span>Pairs and properties only.</div><div class="t"><span class="lab">Trap</span>No RoC rules, no partial-fraction recipe, no stability tests.</div></div>
+<div class="row"><div class="f">Not given: system property tests, periodicity rules, aliasing condition T<sub>s</sub>&lt;π/W, ideal filter responses, Parseval tricks</div><div class="c"></div><div class="t"><span class="lab">Trap</span>These are what this sheet is for.</div></div>
+<div class="row"><div class="f">Laplace table has NO left-sided pair</div><div class="c"><span class="lab">Needs</span>Only right-sided signals: δ, u, tu, e<sup>−at</sup>u, te<sup>−at</sup>u, e<sup>−bt</sup>cos/sin(ω₀t)u.</div><div class="t"><span class="lab">Trap</span>You must supply −e<sup>−at</sup>u(−t) ⇔ 1/(s+a), Re(s)&lt;−Re(a) yourself. Also cos(ω₀t)u and sin(ω₀t)u are the b=0 cases.</div></div>
+<div class="row"><div class="f">Z table includes αⁿu[−n] (|z|&lt;|α|) but the left-sided u[−n−1] form is not listed</div><div class="c"></div><div class="t"><span class="lab">Trap</span>Left-sided: −αⁿu[−n−1] ⇔ 1/(1−αz⁻¹), |z|&lt;|α|. Write it from your notes.</div></div>
+<div class="row"><div class="f">DT Fourier series table has a typo in the square-wave row (see Fourier series card)</div><div class="c"></div><div class="t"><span class="lab">Trap</span>Also the DT Parseval line prints "dt". Read it as a sum.</div></div>
+<div class="row"><div class="f">CT Fourier series square wave: sin(kω₀T)/(kπ) for u(t+T)−u(t−T)</div><div class="c"><span class="lab">Needs</span>Given.</div><div class="t"><span class="lab">Trap</span>X₀ = 2T/T₀ is not listed. Take the limit k→0 of the formula.</div></div>
+</section>
 <section class="card" id="x-class" data-w="exam">
 <header><span class="tag">Exam</span><h3>System classification</h3></header>
 <div class="when"><b>Use when:</b> Seen: 2022 Q2, 2024 Q1, mid-sem Q1, sample and mock.</div>
@@ -212,7 +224,7 @@ h2.sec{font-size:13px;text-transform:uppercase;letter-spacing:.09em;color:var(--
 <div class="row"><div class="f">nαⁿu[n] = (n+1)αⁿu[n] − αⁿu[n] ⇒ 1/(1−αe<sup>−jω</sup>)² − 1/(1−αe<sup>−jω</sup>)</div><div class="c"><span class="lab">Needs</span>Table has (n+1)αⁿu[n] and αⁿu[n].</div><div class="t"><span class="lab">Trap</span>2022 Q5a with α=0.2.</div></div>
 <div class="row"><div class="f">0.2ⁿ cos(n) u[n]: write cos n = ½e<sup>jn</sup>+½e<sup>−jn</sup>, then modulation</div><div class="c"><span class="lab">Needs</span>Frequency shift by ±1.</div><div class="t"><span class="lab">Trap</span>½/(1−0.2e<sup>−j(ω−1)</sup>) + ½/(1−0.2e<sup>−j(ω+1)</sup>).</div></div>
 <div class="row"><div class="f">cos(ω₀t)x(t) ⇒ ½X(ω−ω₀) + ½X(ω+ω₀)</div><div class="c"></div><div class="t"><span class="lab">Trap</span>Mock Q3: cos(aπt)x with 10 periods in length 2 ⇒ a = 10, X(ω)=2 sin ω/ω.</div></div>
-<div class="row"><div class="f">Use the table you are given</div><div class="c"><span class="lab">Needs</span>Check exam table: DT window u[n+N]−u[n−N] is printed as sin(ω(N+½))/sin(ω/2).</div><div class="t"><span class="lab">Trap</span>Do not substitute a formula from another source.</div></div>
+<div class="row"><div class="f">Use the table you are given</div><div class="c"><span class="lab">Needs</span>Current formula sheet: u[n+N]−u[n−N] ⇔ [sin(Nω)/sin(ω/2)]e<sup>jω/2</sup> (2N samples, n=−N..N−1).</div><div class="t"><span class="lab">Trap</span>The 2024 paper printed sin(ω(N+½))/sin(ω/2), which is the (2N+1)-sample window u[n+N]−u[n−N−1]. Count the samples before choosing.</div></div>
 </section>
 <section class="card" id="x-samp" data-w="exam">
 <header><span class="tag">Exam</span><h3>Sampling, aliasing, reconstruction questions</h3></header>
@@ -398,6 +410,7 @@ h2.sec{font-size:13px;text-transform:uppercase;letter-spacing:.09em;color:var(--
 <div class="row"><div class="f">DT analysis:  Xₖ = (1/N₀) Σ for n=0..N₀−1 of x[n] e<sup>−jkω₀n</sup></div><div class="c"></div><div class="t"><span class="lab">Trap</span>DT Xₖ is periodic in k with period N₀. CT Xₖ is not.</div></div>
 <div class="row"><div class="f">Read Xₖ straight from Euler: cos(ω₀t)=½e<sup>jω₀t</sup>+½e<sup>−jω₀t</sup></div><div class="c"><span class="lab">Needs</span>Coefficients are unique.</div><div class="t"><span class="lab">Trap</span>No integral needed if x is already a sum of harmonics.</div></div>
 <div class="row"><div class="f">X₀ = average value of x</div><div class="c"></div><div class="t"></div></div>
+<div class="row"><div class="f">DT square wave x=1 for |n| ≤ N (2N+1 samples): Xₖ = sin(kω₀(N+½)) / (N₀ sin(kω₀/2))</div><div class="c"><span class="lab">Needs</span>Check by summing the geometric series.</div><div class="t"><span class="lab">Trap</span>The formula sheet prints sin(kω₀(2N+1)/2)/(kω₀/2), which drops the 1/N₀ and has no sin in the denominator. Use the corrected form.</div></div>
 <div class="row"><div class="f">Square pulse |t|&lt;T₁ in period T₀:  Xₖ = sin(kω₀T₁)/(kπ),  X₀ = 2T₁/T₀</div><div class="c"><span class="lab">Needs</span>Standard pair. Re-derive if the pulse is shifted.</div><div class="t"><span class="lab">Trap</span>Shifting by t₀ multiplies Xₖ by e<sup>−jkω₀t₀</sup>.</div></div>
 <div class="row"><div class="f">Convergence at a jump → average of the left and right limits</div><div class="c"><span class="lab">Needs</span>Dirichlet conditions.</div><div class="t"><span class="lab">Trap</span>Truncated sums overshoot near a jump.</div></div>
 <p class="try"><b>Stuck? Try:</b> Check geometric series first: if x = Σ aᵏ-type terms, the coefficients are just those terms. In MATLAB: X = fft(x)/N, x = N*ifft(X).</p>
@@ -503,7 +516,7 @@ h2.sec{font-size:13px;text-transform:uppercase;letter-spacing:.09em;color:var(--
 <div class="row"><div class="f">e<sup>jω₀t</sup> ⇔ 2πδ(ω−ω₀)</div><div class="c"></div><div class="t"></div></div>
 <div class="row"><div class="f">DT: αⁿu[n] ⇔ 1/(1−αe<sup>−jω</sup>)</div><div class="c"><span class="lab">Needs</span>|α|&lt;1.</div><div class="t"></div></div>
 <div class="row"><div class="f">DT: (n+1)αⁿu[n] ⇔ 1/(1−αe<sup>−jω</sup>)²</div><div class="c"><span class="lab">Needs</span>|α|&lt;1.</div><div class="t"></div></div>
-<div class="row"><div class="f">DT window: use the exam table (printed as u[n+N]−u[n−N] ⇔ sin(ω(N+½))/sin(ω/2))</div><div class="c"><span class="lab">Needs</span>Tables are given in the exam.</div><div class="t"><span class="lab">Trap</span>Our notes give [sin(Nω)/sin(ω/2)]e<sup>jω/2</sup> for 2N samples. Count samples before trusting either.</div></div>
+<div class="row"><div class="f">DT window u[n+N]−u[n−N] ⇔ [sin(Nω)/sin(ω/2)]e<sup>jω/2</sup></div><div class="c"><span class="lab">Needs</span>Matches the current formula sheet and your notes (2N samples).</div><div class="t"><span class="lab">Trap</span>The (2N+1)-sample window u[n+N]−u[n−N−1] gives sin(ω(N+½))/sin(ω/2), as printed in the 2024 paper.</div></div>
 <div class="row"><div class="f">DT: sin(Wn)/(πn) ⇔ 2π-periodic extension of u(ω+W) − u(ω−W)</div><div class="c"><span class="lab">Needs</span>0&lt;W&lt;π.</div><div class="t"></div></div>
 <div class="row"><div class="f">DT: δ[n−n₀] ⇔ e<sup>−jωn₀</sup></div><div class="c"></div><div class="t"></div></div>
 </section>
