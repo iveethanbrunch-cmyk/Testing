@@ -98,6 +98,25 @@ h2.sec{font-size:13px;text-transform:uppercase;letter-spacing:.09em;color:var(--
   .lab{display:none!important}
   .c,.t{background:none!important;padding:0!important}
   .row.head{display:grid!important}
+  .compact{font-size:7.6pt;line-height:1.3}
+  .compact h2.sec{font-size:8pt;margin:4pt 0 3pt}
+  .compact .guide .g{padding:1.5pt 6pt;grid-template-columns:1fr 1fr;gap:0 8pt;font-size:7.4pt}
+  .compact .guide{columns:2;column-gap:0}
+  .compact .guide .g{break-inside:avoid}
+  .compact .cards{columns:2;column-gap:7mm}
+  .compact .card{break-inside:avoid-column;margin:0 0 4pt;border-radius:3px}
+  .compact .card>header{padding:3pt 5pt 1pt}
+  .compact .card h3{font-size:8.6pt}
+  .compact .tag{font-size:6.5pt;padding:0 4pt}
+  .compact .when{padding:0 5pt 2pt;font-size:7pt}
+  .compact .row{display:block;padding:2pt 5pt}
+  .compact .row.head{display:none!important}
+  .compact .f{font-size:8.4pt;line-height:1.35;padding:0}
+  .compact .c,.compact .t{display:inline;font-size:7.3pt}
+  .compact .c::before{content:"Needs: ";font-weight:600}
+  .compact .t::before{content:" Trap: ";font-weight:600}
+  .compact .try{padding:2pt 5pt;font-size:7.2pt}
+  .compact .foot{font-size:6.5pt}
 }
 </style>
 <div class="wrap">
@@ -130,7 +149,7 @@ h2.sec{font-size:13px;text-transform:uppercase;letter-spacing:.09em;color:var(--
 <div class="g"><div>Predict a class label (2 classes / K classes)</div><span>Sigmoid + BCE / softmax + cross-entropy</span></div>
 <div class="g"><div>Overfitting, weights too large</div><span>Ridge: w = (XᵀX + αI)⁻¹Xᵀy</span></div>
 </div></div>
-<h2 class="sec">Topics</h2>
+<h2 class="sec">Topics</h2><div class="cards">
 <section class="card" id="x-facts" data-w="exam">
 <header><span class="tag">Exam</span><h3>Exam format and marking (practice papers, mid-sem)</h3></header>
 <div class="when"><b>Use when:</b> Read once before you start.</div>
@@ -540,7 +559,7 @@ h2.sec{font-size:13px;text-transform:uppercase;letter-spacing:.09em;color:var(--
 <div class="row"><div class="f">Training: backpropagation = chain rule + gradient descent</div><div class="c"></div><div class="t"></div></div>
 <p class="try"><b>Stuck? Try:</b> Forward pass: multiply, apply ReLU (negative → 0), multiply again. Example gave y = 3.</p>
 </section>
-<div class="empty" id="empty">No topic matches. Try a shorter word.</div>
+</div><div class="empty" id="empty">No topic matches. Try a shorter word.</div>
 <p class="foot">Built from your ECE2191 weekly notes (W1 to W5, W7 to W12; no W6 supplied) and the practice papers 1 to 6 and mid-semester test. Poisson and counting come from the practice papers, not the notes. Closed-form variances for the uniform and exponential, and the Gaussian affine rules, are standard results added to complete the sheet; check them against your lecture notes.</p>
 </div>
 <script>
