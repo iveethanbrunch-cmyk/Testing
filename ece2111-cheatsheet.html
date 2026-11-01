@@ -1,716 +1,251 @@
-<title>ECE2111 Exam Sheet</title>
+<title>ECE2111 Cheat Sheet</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&family=IBM+Plex+Sans:wght@400;500;600&family=STIX+Two+Text:ital,wght@0,400;0,600;1,400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600;700&family=STIX+Two+Text:wght@400;600&display=swap">
 <style>
-/* Layout: sticky search bar, a "which tool?" guide, then topic cards. Each formula row = formula | conditions | trap. */
+/* Print-first: A4 landscape, 3 newspaper columns, sections flow; each row = formula, then Needs / Trap lines. */
 :root{
-  --bg:#f2f4f6; --surface:#ffffff; --ink:#15212b; --muted:#56646f; --line:#d5dce2;
-  --accent:#0a6b87; --accent-soft:#dff0f5; --cond:#7a5200; --cond-bg:#fff3d6;
-  --trap:#9b1c2c; --trap-bg:#fde6e8; --try:#1d6b3a; --try-bg:#e1f3e7; --code:#eef1f4;
-  --font-ui:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
-  --font-math:"STIX Two Text","Cambria Math","Times New Roman",serif;
-  --font-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  --bg:#f3f5f7; --paper:#ffffff; --ink:#111b24; --muted:#5a6873; --line:#d3dae0;
+  --accent:#0a5f7a; --accent-soft:#e1f0f5; --cond:#6e4a00; --trap:#a01829; --ex:#1c5e34; --ex-bg:#eaf5ee;
+  --ui:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --math:"STIX Two Text","Cambria Math","Times New Roman",serif;
 }
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --bg:#0f161c; --surface:#17212a; --ink:#e6edf2; --muted:#9aa9b5; --line:#2b3945;
-    --accent:#5cc3de; --accent-soft:#12303b; --cond:#f0c76b; --cond-bg:#33280f;
-    --trap:#ff9aa6; --trap-bg:#3a1a20; --try:#7fd89b; --try-bg:#14301f; --code:#1d2933;
-    color-scheme:dark;
-  }
-}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f161c; --paper:#17212a; --ink:#e6edf2; --muted:#9aa9b5; --line:#2c3a46;
+  --accent:#62c4de; --accent-soft:#12303b; --cond:#f0c76b; --trap:#ff9aa6; --ex:#86dca2; --ex-bg:#15301f; color-scheme:dark}}
 :root[data-theme="dark"]{
-  --bg:#0f161c; --surface:#17212a; --ink:#e6edf2; --muted:#9aa9b5; --line:#2b3945;
-  --accent:#5cc3de; --accent-soft:#12303b; --cond:#f0c76b; --cond-bg:#33280f;
-  --trap:#ff9aa6; --trap-bg:#3a1a20; --try:#7fd89b; --try-bg:#14301f; --code:#1d2933;
-  color-scheme:dark;
-}
+  --bg:#0f161c; --paper:#17212a; --ink:#e6edf2; --muted:#9aa9b5; --line:#2c3a46;
+  --accent:#62c4de; --accent-soft:#12303b; --cond:#f0c76b; --trap:#ff9aa6; --ex:#86dca2; --ex-bg:#15301f; color-scheme:dark}
 *{box-sizing:border-box}
-body{background:var(--bg);color:var(--ink);font-family:var(--font-ui);font-size:15px;line-height:1.5}
-.wrap{max-width:1040px;margin:0 auto;padding-block:0 64px;
+body{background:var(--bg);color:var(--ink);font-family:var(--ui);font-size:14px;line-height:1.42}
+.wrap{max-width:1500px;margin:0 auto;padding-block:12px 48px;
   padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--surface)}
-.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--surface);border-bottom:1px solid var(--line);
-  margin-inline:calc(-1*max(16px,env(safe-area-inset-left,0px)));padding:10px max(16px,env(safe-area-inset-right,0px)) 10px max(16px,env(safe-area-inset-left,0px))}
-.bar-in{max-width:1040px;margin:0 auto;display:flex;flex-direction:column;gap:8px}
-.top{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
-.top h1{font-size:18px;margin:0;font-weight:600;letter-spacing:.01em}
-.top .sub{color:var(--muted);font-size:13px}
-.top a.other{margin-left:auto;font-size:13px;color:var(--accent);text-decoration:none;border:1px solid var(--line);padding:3px 10px;border-radius:4px}
-.search{display:flex;gap:8px;align-items:center}
-.search input{flex:1;min-width:0;font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:4px;background:var(--bg);color:var(--ink)}
-.search input:focus-visible,.chip:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
-.count{font-size:12px;color:var(--muted);white-space:nowrap}
-.chips{display:flex;gap:6px;flex-wrap:wrap}
-.chip{font:inherit;font-size:12px;padding:3px 9px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;cursor:pointer}
-.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--surface)}
-:root[data-theme="dark"] .chip[aria-pressed="true"]{color:#06222b}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .chip[aria-pressed="true"]{color:#06222b}}
-h2.sec{font-size:13px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin:26px 0 10px;font-weight:600}
-.guide{background:var(--surface);border:1px solid var(--line);border-radius:6px;overflow:hidden}
-.guide .g{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0 16px;padding:8px 14px;border-top:1px solid var(--line)}
-.guide .g:first-child{border-top:0}
-.guide .g b{font-weight:500}
-.guide .g span{color:var(--accent);font-weight:500}
-@media (max-width:620px){.guide .g{grid-template-columns:1fr;gap:0}}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:6px;margin:14px 0;scroll-margin-top:130px}
-.card>header{display:flex;gap:10px;align-items:baseline;padding:12px 14px 6px;flex-wrap:wrap}
-.card h3{margin:0;font-size:16px;font-weight:600}
-.tag{font-size:11px;font-family:var(--font-mono);background:var(--accent-soft);color:var(--accent);padding:2px 7px;border-radius:3px;white-space:nowrap}
-.when{padding:0 14px 8px;color:var(--muted);font-size:13px}
-.when b{color:var(--ink);font-weight:500}
-.row{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr) minmax(0,1fr);gap:6px 14px;padding:9px 14px;border-top:1px solid var(--line);align-items:start}
-.row.head{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);padding-block:5px;background:var(--code)}
-.f{font-family:var(--font-math);font-size:17px;line-height:1.55;overflow-x:auto;min-width:0;padding-bottom:2px}
-.f small{font-family:var(--font-ui);font-size:12px;color:var(--muted);display:block;line-height:1.35}
-.c,.t{font-size:13px;min-width:0}
-.c{color:var(--cond)}
-.c:empty,.t:empty{display:none}
-.lab{display:none;font-size:10px;text-transform:uppercase;letter-spacing:.08em;font-weight:600;margin-right:6px}
-.c .lab{color:var(--cond)}
-.t{color:var(--trap)}
-.t .lab{color:var(--trap)}
-@media (max-width:760px){
-  .row{grid-template-columns:1fr}
-  .row.head{display:none}
-  .lab{display:inline}
-  .c{background:var(--cond-bg);padding:4px 8px;border-radius:3px;color:var(--ink)}
-  .t{background:var(--trap-bg);padding:4px 8px;border-radius:3px;color:var(--ink)}
-}
-.try{margin:0;padding:9px 14px 11px;border-top:1px solid var(--line);font-size:13px;background:var(--try-bg);color:var(--ink);border-radius:0 0 6px 6px}
-.try b{color:var(--try);font-weight:600}
-.empty{display:none;padding:24px;text-align:center;color:var(--muted)}
-.foot{margin-top:30px;color:var(--muted);font-size:12px}
+header.top{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px;margin-bottom:8px}
+header.top h1{font-size:20px;margin:0;font-weight:600}
+header.top p{margin:0;color:var(--muted);font-size:13px}
+.tools{display:flex;gap:8px;align-items:center;margin:6px 0 10px}
+.tools input{flex:1;min-width:0;font:inherit;padding:7px 10px;border:1px solid var(--line);border-radius:4px;background:var(--paper);color:var(--ink)}
+.tools input:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.tools span{font-size:12px;color:var(--muted);white-space:nowrap}
+.index{display:flex;flex-wrap:wrap;gap:4px 6px;margin:0 0 10px;padding:0;list-style:none;font-size:12px}
+.index a{color:var(--accent);text-decoration:none;border:1px solid var(--line);border-radius:3px;padding:1px 6px;background:var(--paper)}
+.cols{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,400px),1fr));gap:10px;align-items:start}
+.cols>.sec{margin:0}
+.sec{background:var(--paper);border:1px solid var(--line);border-radius:5px;margin:0 0 10px;break-inside:auto}
+.sec>h2{margin:0;padding:5px 8px;font-size:13.5px;font-weight:600;background:var(--accent-soft);color:var(--ink);border-radius:5px 5px 0 0;break-after:avoid;display:flex;gap:6px;align-items:baseline}
+.sec>h2 .no{font-family:var(--ui);color:var(--accent);font-weight:700}
+.sec>h2 small{font-weight:400;color:var(--muted);font-size:11px;margin-left:auto}
+.use{padding:3px 8px 0;font-size:12px;color:var(--muted);break-after:avoid}
+.r{padding:4px 8px;border-top:1px solid var(--line);break-inside:avoid}
+.sec>h2+.r,.use+.r{border-top:0}
+.f{font-family:var(--math);font-size:15px;line-height:1.38}
+.n,.t{font-size:12px;line-height:1.35}
+.n{color:var(--cond)} .t{color:var(--trap)}
+.n b,.t b{font-weight:600}
+.r.ex{background:var(--ex-bg)}
+.r.ex .f{font-family:var(--ui);font-size:12.5px}
+.r.ex .f b{color:var(--ex)}
+figure{margin:4px 8px 6px;break-inside:avoid}
+figure svg{width:100%;height:auto;display:block;max-width:300px}
+figure figcaption{font-size:11px;color:var(--muted)}
+svg text{font-family:var(--ui);font-size:7.5px;fill:var(--ink)}
+svg .ax{stroke:var(--muted);stroke-width:1;fill:none}
+svg .roc{fill:var(--accent);fill-opacity:.18;stroke:none}
+svg .pole{stroke:var(--trap);stroke-width:1.6}
+svg .zero{stroke:var(--ex);stroke-width:1.4;fill:none}
+svg .sp{stroke:var(--accent);stroke-width:1.4;fill:var(--accent);fill-opacity:.25}
+svg .dash{stroke:var(--muted);stroke-dasharray:3 2;stroke-width:1;fill:none}
+sub,sup{line-height:0}
 .hide{display:none!important}
+.foot{color:var(--muted);font-size:11px;margin-top:6px}
+@page{size:A4 landscape;margin:6mm}
 @media print{
-  :root{color-scheme:light}
-  body{background:#fff;color:#000;font-size:9.5pt}
-  body::before,.bar,.search,.chips{display:none!important}
-  .top{display:flex}
-  .wrap{max-width:none;padding-inline:0}
-  .card{break-inside:avoid;border-color:#999;margin:6pt 0}
-  .row{padding:3pt 8pt;grid-template-columns:1.3fr 1fr 1fr}
-  .f{font-size:10.5pt;overflow:visible}
-  .try{background:#eef}
-  .guide{break-inside:avoid}
-  #guidewrap{display:block!important}
-  .c{color:#6a4500}.t{color:#8a1020}
-  .lab{display:none!important}
-  .c,.t{background:none!important;padding:0!important}
-  .row.head{display:grid!important}
-  .compact{font-size:7.6pt;line-height:1.3}
-  .compact h2.sec{font-size:8pt;margin:4pt 0 3pt}
-  .compact .guide .g{padding:1.5pt 6pt;grid-template-columns:1fr 1fr;gap:0 8pt;font-size:7.4pt}
-  .compact .guide{columns:2;column-gap:0}
-  .compact .guide .g{break-inside:avoid}
-  .compact .cards{columns:2;column-gap:7mm}
-  .compact .card{break-inside:avoid-column;margin:0 0 4pt;border-radius:3px}
-  .compact .card>header{padding:3pt 5pt 1pt}
-  .compact .card h3{font-size:8.6pt}
-  .compact .tag{font-size:6.5pt;padding:0 4pt}
-  .compact .when{padding:0 5pt 2pt;font-size:7pt}
-  .compact .row{display:block;padding:2pt 5pt}
-  .compact .row.head{display:none!important}
-  .compact .f{font-size:8.4pt;line-height:1.35;padding:0}
-  .compact .c,.compact .t{display:inline;font-size:7.3pt}
-  .compact .c::before{content:"Needs: ";font-weight:600}
-  .compact .t::before{content:" Trap: ";font-weight:600}
-  .compact .try{padding:2pt 5pt;font-size:7.2pt}
-  .compact .foot{font-size:6.5pt}
+  :root{color-scheme:light;--bg:#fff;--paper:#fff;--ink:#000;--muted:#444;--line:#b8c0c6;--accent:#0a5f7a;--accent-soft:#e3eef2;--cond:#5c3d00;--trap:#8f1020;--ex:#174d2b;--ex-bg:#eef6f0}
+  body{font-size:7.4pt;line-height:1.28;background:#fff}
+  .wrap{max-width:none;padding:0}
+  .tools,.index{display:none}
+  header.top{margin:0 0 3pt}
+  header.top h1{font-size:10pt} header.top p{font-size:7pt}
+  .cols{display:block;columns:3;column-gap:4mm;column-fill:auto}
+  .cols>.sec{margin:0 0 3pt}
+  .sec{margin:0 0 3pt;border-radius:2px}
+  .sec>h2{font-size:8.2pt;padding:1.5pt 4pt;border-radius:2px 2px 0 0}
+  .sec>h2 small{font-size:6.4pt}
+  .use{font-size:6.8pt;padding:1pt 4pt 0}
+  .r{padding:1.4pt 4pt}
+  .f{font-size:8.2pt;line-height:1.3}
+  .n,.t{font-size:6.9pt;line-height:1.25}
+  .r.ex .f{font-size:7pt}
+  figure{margin:1pt 4pt 2pt} figure svg{max-width:52%} figure figcaption{font-size:6.4pt}
+  .foot{font-size:6pt}
 }
 </style>
 <div class="wrap">
-<div class="bar"><div class="bar-in">
-<div class="top"><h1>ECE2111 Exam Sheet</h1><span class="sub">Signals and Systems. Formula, conditions, trap.</span></div>
-<div class="search"><input id="q" type="search" placeholder="Search, e.g. RoC or Parseval" autocomplete="off" aria-label="Search topics"><span class="count" id="cnt"></span></div>
-<div class="chips"><button class="chip" type="button" data-w="all" aria-pressed="true">All</button><button class="chip" type="button" data-w="exam" aria-pressed="false">Past-paper question types</button><button class="chip" type="button" data-w="w1" aria-pressed="false">W1 Signals</button><button class="chip" type="button" data-w="w2" aria-pressed="false">W2 Systems</button><button class="chip" type="button" data-w="w3" aria-pressed="false">W3 Convolution</button><button class="chip" type="button" data-w="w4" aria-pressed="false">W4 Fourier series</button><button class="chip" type="button" data-w="w5" aria-pressed="false">W5 Freq. response</button><button class="chip" type="button" data-w="w6" aria-pressed="false">W6 Filtering</button><button class="chip" type="button" data-w="w8" aria-pressed="false">W8 Fourier transform</button><button class="chip" type="button" data-w="w9" aria-pressed="false">W9 Sampling</button><button class="chip" type="button" data-w="w10" aria-pressed="false">W10 Laplace</button><button class="chip" type="button" data-w="w11" aria-pressed="false">W11 Transfer fn</button><button class="chip" type="button" data-w="w12" aria-pressed="false">W12 Z-transform</button></div>
-</div></div>
-<div id="guidewrap"><h2 class="sec">Which tool? Match what the question says</h2><div class="guide">
-<div class="g"><div>Classify a system (linear, TI, causal, memoryless, stable, real)</div><span>Past paper: System classification</span></div>
-<div class="g"><div>Block diagram with delays and gains</div><span>Past paper: Block diagram to equation</span></div>
-<div class="g"><div>Anti-aliasing / reconstruction / sketch spectrum</div><span>Past paper: Sampling questions</span></div>
-<div class="g"><div>Two-stage output with H(s) or H(z) and a given input</div><span>Past paper: Transfer function questions</span></div>
-<div class="g"><div>Draw or simplify x(−t+2), x(2t), x[n−3]</div><span>W1 Transformations: reflect first, then shift</span></div>
-<div class="g"><div>Is this signal periodic? Find T₀ or N₀</div><span>W1 Periodicity (DT needs 2π/ω₀ rational)</span></div>
-<div class="g"><div>Linear? Time-invariant? Causal? Stable? Memory?</div><span>W2 Property tests, then W3 table if you have h</span></div>
-<div class="g"><div>Find y given x and h (or h given the equation)</div><span>W3 Convolution (flip h, then shift)</span></div>
-<div class="g"><div>Periodic input, find output</div><span>W6: Yₖ = H(kω₀)Xₖ</span></div>
-<div class="g"><div>Input is a sinusoid or e<sup>jωt</sup></div><span>W5: output = |H(ω)|cos(ωt+φ+∠H(ω))</span></div>
-<div class="g"><div>Aperiodic input, signal spectrum, Parseval</div><span>W8 CTFT / DTFT</span></div>
-<div class="g"><div>Sampling rate, aliasing, reconstruction</div><span>W9: T<sub>s</sub> &lt; π/W</span></div>
-<div class="g"><div>Differential equation, RoC, poles, stability (CT)</div><span>W10–W11 Laplace, H(s)</span></div>
-<div class="g"><div>Difference equation, RoC, poles, stability (DT)</div><span>W12 Z-transform, H(z)</span></div>
-<div class="g"><div>Give the transform of a signal</div><span>Always state the RoC with it (Laplace, Z)</span></div>
-<div class="g"><div>Output with initial rest or step input</div><span>Y = HX, then partial fractions, RoC outside poles if causal</span></div>
-</div></div>
-<h2 class="sec">Topics</h2><div class="cards">
-<section class="card" id="x-facts" data-w="exam">
-<header><span class="tag">Exam</span><h3>Exam format and marking (2022, 2024, sample paper)</h3></header>
-<div class="when"><b>Use when:</b> Read once before you start.</div>
-<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
-<div class="row"><div class="f">2024 exam: unlimited physical notes, a physical formula sheet and a physical calculator are allowed</div><div class="c"><span class="lab">Needs</span>No second device. Paper copies only.</div><div class="t"><span class="lab">Trap</span>Print this sheet. The pages are set up for print.</div></div>
-<div class="row"><div class="f">The exam gives you tables: CT and DT Fourier series, CTFT, DTFT, Laplace, Z (pairs and properties)</div><div class="c"><span class="lab">Needs</span>Look the pairs up. Do not memorise them.</div><div class="t"><span class="lab">Trap</span>Spend notes space on methods and conditions, which are not in the tables.</div></div>
-<div class="row"><div class="f">Section A: select or type answers (1 mark each).  Section B: handwritten, reasoning required</div><div class="c"></div><div class="t"><span class="lab">Trap</span>"No marks will be given if no reasoning, formulae or calculations are provided."</div></div>
-<div class="row"><div class="f">Marks tell you how much to write: 2 marks = answer + one line of reason; 3 marks = answer + reason + one equation</div><div class="c"><span class="lab">Needs</span>Sample paper marking: 0.5–1 mark for the answer, the rest for the explanation.</div><div class="t"><span class="lab">Trap</span>A correct number with no explanation scores about 1 of 4.</div></div>
-<div class="row"><div class="f">Every paper has: system properties, a sampling question, a transfer function with RoC and stability, a Fourier series question, and a DT difference equation question</div><div class="c"></div><div class="t"></div></div>
+<header class="top"><h1>ECE2111 Cheat Sheet</h1><p>Signals and Systems. Methods, conditions, traps and past-paper answers. Tables are in the exam. From your weekly notes, the 2022 and 2024 papers and solutions, the sample and mock papers, the mid-sem and the formula sheet. Worked numbers rechecked in Python.</p></header>
+<div class="tools"><input id="q" type="search" placeholder="Search, e.g. RoC, Poisson, BIC" aria-label="Search the sheet" autocomplete="off"><span id="cnt"></span></div>
+<ul class="index"><li><a href="#s1">1 How to score, and what is handed to you</a></li><li><a href="#s2">2 Which tool? Read the question, pick the section</a></li><li><a href="#s3">3 Signals: transformations, periodicity, symmetry</a></li><li><a href="#s4">4 System properties (test each separately)</a></li><li><a href="#s5">5 Convolution and impulse response</a></li><li><a href="#s6">6 Fourier series questions</a></li><li><a href="#s7">7 Frequency response</a></li><li><a href="#s8">8 Fourier transform algebra (tables are given)</a></li><li><a href="#s9">9 Sampling, aliasing, reconstruction</a></li><li><a href="#s10">10 Laplace: H(s), RoC, stability, output</a></li><li><a href="#s11">11 Z-transform: H(z), poles, stability</a></li></ul>
+<div class="cols">
+<section class="sec" id="s1"><h2><span class="no">1</span>How to score, and what is handed to you</h2>
+<div class="use">Read once before you start.</div>
+<div class="r"><div class="f">Every Section B mark needs: formula → substitution → answer → one-line reason</div><div class="t"><b>Trap:</b> "No marks if no reasoning." A bare number gets about 1 of 4.</div></div>
+<div class="r"><div class="f">Given in the exam: sifting, convolution, Σαᵏ = 1/(1−α), ∫eˣ, ∫xᵏ, X<sub>s</sub>(ω) = (1/T)Σ X((ω−2πk)/T), and all FS, CTFT, DTFT, Laplace, Z tables</div><div class="t"><b>Trap:</b> Do not copy tables. Use this sheet for methods, conditions and traps.</div></div>
+<div class="r"><div class="f">NOT in the tables: −e<sup>−at</sup>u(−t) ⇔ 1/(s+a), Re(s) &lt; −Re(a).   −αⁿu[−n−1] ⇔ 1/(1−αz⁻¹), |z| &lt; |α|</div><div class="n"><b>Needs:</b> Left-sided signals.</div></div>
+<div class="r"><div class="f">Table typo: DT FS square wave (|n| ≤ N, period N₀) is Xₖ = sin(kω₀(N+½)) / (N₀ sin(kω₀/2))</div><div class="n"><b>Needs:</b> Checked numerically.</div><div class="t"><b>Trap:</b> Printed sheet drops 1/N₀ and the sin in the denominator.</div></div>
+<div class="r"><div class="f">CT FS square wave from table: Xₖ = sin(kω₀T)/(kπ),  X₀ = 2T/T₀</div><div class="n"><b>Needs:</b> Pulse |t| &lt; T in period T₀.</div><div class="t"><b>Trap:</b> X₀ is the k→0 limit, not on the sheet.</div></div>
+<div class="r"><div class="f">Units: ω (rad/s) = 2πf (Hz).  DT frequency (rad/sample) = ω·T<sub>s</sub> = 2πf/f<sub>s</sub></div><div class="t"><b>Trap:</b> Mixing Hz and rad/s is the most common lost mark in sampling questions.</div></div>
 </section>
-<section class="card" id="x-given" data-w="exam">
-<header><span class="tag">Exam</span><h3>What the formula sheet gives you and what it does not</h3></header>
-<div class="when"><b>Use when:</b> Checked against Formula_Sheet.pdf (7 pages).</div>
-<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
-<div class="row"><div class="f">Given: sifting, convolution (DT and CT), geometric sum 1/(1−α), integrals of eˣ and xᵏ, X<sub>s</sub>(ω) = (1/T)ΣX((ω−2πk)/T)</div><div class="c"></div><div class="t"></div></div>
-<div class="row"><div class="f">Given: CT and DT Fourier series tables, CTFT and DTFT tables, Laplace and Z tables with properties</div><div class="c"><span class="lab">Needs</span>Pairs and properties only.</div><div class="t"><span class="lab">Trap</span>No RoC rules, no partial-fraction recipe, no stability tests.</div></div>
-<div class="row"><div class="f">Not given: system property tests, periodicity rules, aliasing condition T<sub>s</sub>&lt;π/W, ideal filter responses, Parseval tricks</div><div class="c"></div><div class="t"><span class="lab">Trap</span>These are what this sheet is for.</div></div>
-<div class="row"><div class="f">Laplace table has NO left-sided pair</div><div class="c"><span class="lab">Needs</span>Only right-sided signals: δ, u, tu, e<sup>−at</sup>u, te<sup>−at</sup>u, e<sup>−bt</sup>cos/sin(ω₀t)u.</div><div class="t"><span class="lab">Trap</span>You must supply −e<sup>−at</sup>u(−t) ⇔ 1/(s+a), Re(s)&lt;−Re(a) yourself. Also cos(ω₀t)u and sin(ω₀t)u are the b=0 cases.</div></div>
-<div class="row"><div class="f">Z table includes αⁿu[−n] (|z|&lt;|α|) but the left-sided u[−n−1] form is not listed</div><div class="c"></div><div class="t"><span class="lab">Trap</span>Left-sided: −αⁿu[−n−1] ⇔ 1/(1−αz⁻¹), |z|&lt;|α|. Write it from your notes.</div></div>
-<div class="row"><div class="f">DT Fourier series table has a typo in the square-wave row (see Fourier series card)</div><div class="c"></div><div class="t"><span class="lab">Trap</span>Also the DT Parseval line prints "dt". Read it as a sum.</div></div>
-<div class="row"><div class="f">CT Fourier series square wave: sin(kω₀T)/(kπ) for u(t+T)−u(t−T)</div><div class="c"><span class="lab">Needs</span>Given.</div><div class="t"><span class="lab">Trap</span>X₀ = 2T/T₀ is not listed. Take the limit k→0 of the formula.</div></div>
+<section class="sec" id="s2"><h2><span class="no">2</span>Which tool? Read the question, pick the section</h2>
+<div class="r"><div class="f">"Linear / TI / causal / memoryless / stable / real?" → 3.   "Find T₀ or N₀" → 2</div></div>
+<div class="r"><div class="f">"Find y given x and h", "step response", deltas in h → 4</div></div>
+<div class="r"><div class="f">Periodic input, Xₖ, duty cycle, harmonics through a filter → 5</div></div>
+<div class="r"><div class="f">Sinusoid in or out, H(ω) from an equation, DC input → 6</div></div>
+<div class="r"><div class="f">X(ω) or Y(ω) given as a fraction, DTFT of nαⁿ or αⁿcos n → 7</div></div>
+<div class="r"><div class="f">Sampling rate, Nyquist, anti-aliasing, sketch X<sub>s</sub>, ZOH → 8</div></div>
+<div class="r"><div class="f">Block diagram, H(s), RoC, BIBO, output for a given input (CT) → 9</div></div>
+<div class="r"><div class="f">Difference equation, H(z), poles in polar form, IIR/FIR (DT) → 10</div></div>
 </section>
-<section class="card" id="x-class" data-w="exam">
-<header><span class="tag">Exam</span><h3>System classification</h3></header>
-<div class="when"><b>Use when:</b> Seen: 2022 Q2, 2024 Q1, mid-sem Q1, sample and mock.</div>
-<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
-<div class="row"><div class="f">Memoryless? Only the current input appears, with the same time index</div><div class="c"></div><div class="t"><span class="lab">Trap</span>x(t+2), x[n−1], sums over k all have memory.</div></div>
-<div class="row"><div class="f">Causal? Any input at a later time than the output?</div><div class="c"><span class="lab">Needs</span>Memoryless ⇒ causal.</div><div class="t"><span class="lab">Trap</span>Σ over k=−1..1 of x[n−k] uses x[n+1], so non-causal. e<sup>−t</sup>x(t+2) is non-causal.</div></div>
-<div class="row"><div class="f">Linear? Check x→0 gives 0, then scaling and addition</div><div class="c"><span class="lab">Needs</span>A fixed multiplier of the signal is fine (e<sup>−t</sup>, sin t, n²).</div><div class="t"><span class="lab">Trap</span>Squaring x, adding a constant, or |x| all break linearity. Initial rest keeps y=x+0.5x(t−1) linear.</div></div>
-<div class="row"><div class="f">Time-invariant? Does any coefficient depend on t or n?</div><div class="c"><span class="lab">Needs</span>Time-varying multiplier ⇒ TV.</div><div class="t"><span class="lab">Trap</span>e<sup>−t</sup>x(t+2) is TV. 2e<sup>jω₁t</sup>x(t−1) is TV. x[n−1]²+x[n] is TI but non-linear.</div></div>
-<div class="row"><div class="f">BIBO stable? Bound |y| using |x| ≤ M</div><div class="c"><span class="lab">Needs</span>Finite sum of delayed copies ⇒ stable.</div><div class="t"><span class="lab">Trap</span>Complex exponential multipliers have magnitude 1, so they stay stable.</div></div>
-<div class="row"><div class="f">Real system? Real input must always give real output</div><div class="c"><span class="lab">Needs</span>Complex coefficients or e<sup>jωt</sup> multipliers ⇒ not real.</div><div class="t"><span class="lab">Trap</span>2024 Q1: y = 2e<sup>jω₁t</sup>x(t−1)+e<sup>jω₂t</sup>x(t−2) is linear, TV, causal, has memory, stable, NOT real.</div></div>
-<div class="row"><div class="f">"Is it LTI?" for a system that creates new frequencies</div><div class="c"><span class="lab">Needs</span>An LTI system only scales and phase-shifts each input frequency.</div><div class="t"><span class="lab">Trap</span>Mock Q6d: 440 Hz tone in, 330 and 550 Hz out ⇒ not LTI.</div></div>
-<p class="try"><b>Stuck? Try:</b> Write y for x=0, for 2x, and for x₁+x₂, then for a delayed x. Four lines, four answers.</p>
+<section class="sec" id="s3"><h2><span class="no">3</span>Signals: transformations, periodicity, symmetry<small>2022 Q1, 2024 Q2, mock Q6</small></h2>
+<div class="r"><div class="f">x(t−τ): τ&gt;0 shifts RIGHT.   x(αt): |α|&gt;1 compresses</div><div class="t"><b>Trap:</b> "+" inside the bracket moves left. Check one point.</div></div>
+<div class="r"><div class="f">x(−t+2) = x(−(t−2)): reflect first, then shift right 2</div><div class="t"><b>Trap:</b> Check y(0) = x(2).</div></div>
+<div class="r"><div class="f">CT e<sup>jω₀t</sup>: T₀ = 2π/|ω₀|, always periodic</div></div>
+<div class="r"><div class="f">DT e<sup>jω₀n</sup>: periodic iff ω₀/2π = a/b (rational, lowest terms) ⇒ N₀ = b</div><div class="n"><b>Needs:</b> N must be an integer.</div><div class="t"><b>Trap:</b> sin(4πn/5): ω₀/2π = 2/5 ⇒ N₀ = 5, fundamental frequency 2π/5 (not 4π/5). cos(√2 n/2) is aperiodic.</div></div>
+<div class="r"><div class="f">Sum of sinusoids: f₀ = gcd of the frequencies; T₀ = lcm of the periods</div><div class="n"><b>Needs:</b> CT ratio must be rational.</div><div class="t"><b>Trap:</b> DT sums are always periodic.</div></div>
+<div class="r"><div class="f">Even x(−t)=x(t), odd x(−t)=−x(t).  x<sub>e</sub> = [x(t)+x(−t)]/2, x<sub>o</sub> = [x(t)−x(−t)]/2</div><div class="t"><b>Trap:</b> odd·odd = even, even·odd = odd.</div></div>
+<div class="r"><div class="f">Bounded: |x| ≤ M for all t (use |x| for complex)</div><div class="t"><b>Trap:</b> |e<sup>j(π/2)n + cos n</sup>| = e<sup>cos n</sup> ≤ e: bounded.</div></div>
+<div class="r"><div class="f">Periodic extension of a finite x: T₀ can be SHORTER than the window</div><div class="n"><b>Needs:</b> Look for repetition inside x.</div><div class="t"><b>Trap:</b> DT window length is B−A+1; CT is b−a.</div></div>
+<div class="r ex"><div class="f"><b>Past paper:</b> 2022 Q1 at 10 samples/s, n=0..5: cos 2πt → 1, 0.81, 0.31, −0.31, −0.81, −1.  sin 10πt → all 0.  u(t−0.25) → 0,0,0,1,1,1.  sin(2πt)u(t) → 0, 0.59, 0.95, 0.95, 0.59, 0.</div></div>
 </section>
-<section class="card" id="x-sample" data-w="exam">
-<header><span class="tag">Exam</span><h3>Sampled values and DT sequences</h3></header>
-<div class="when"><b>Use when:</b> Seen: 2022 Q1, 2024 Q2.</div>
-<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
-<div class="row"><div class="f">x<sub>s</sub>[n] = x(nT<sub>s</sub>).  Build a table of t = nT<sub>s</sub> first</div><div class="c"><span class="lab">Needs</span>Fill n=0..5 in order.</div><div class="t"><span class="lab">Trap</span>cos(2πt) at 10/s: 1, 0.81, 0.31, −0.31, −0.81, −1.</div></div>
-<div class="row"><div class="f">sin(10πt) at 10 samples/s</div><div class="c"><span class="lab">Needs</span>ω₀T<sub>s</sub> = π.</div><div class="t"><span class="lab">Trap</span>All samples are 0 (critical sampling).</div></div>
-<div class="row"><div class="f">u(t−0.25) at t=0,0.1,...,0.5</div><div class="c"></div><div class="t"><span class="lab">Trap</span>0, 0, 0, 1, 1, 1.</div></div>
-<div class="row"><div class="f">sin(2πt)u(t) at 10/s</div><div class="c"></div><div class="t"><span class="lab">Trap</span>0, 0.59, 0.95, 0.95, 0.59, 0.</div></div>
-<div class="row"><div class="f">z(t)=u(t+1)−u(t−1), T<sub>s</sub>=2/3: x[n]=1 for |nT<sub>s</sub>| &lt; 1, i.e. n = −1, 0, 1</div><div class="c"><span class="lab">Needs</span>Evaluate at nT<sub>s</sub>, n = −2, −1, 0, 1 gives 0, 1, 1, 1.</div><div class="t"><span class="lab">Trap</span>Then y[n] = Σ<sub>k=−1</sub><sup>1</sup> h[n−k]: A=−1, B=1.</div></div>
-<p class="try"><b>Stuck? Try:</b> Draw the CT signal and mark the sample instants nT<sub>s</sub> on the axis.</p>
+<section class="sec" id="s4"><h2><span class="no">4</span>System properties (test each separately)<small>every paper</small></h2>
+<div class="r"><div class="f">Linear: zero in → zero out, S(αx)=αSx and S(x₁+x₂)=Sx₁+Sx₂</div><div class="n"><b>Needs:</b> Multiplying x by a fixed function of t (e<sup>−t</sup>, sin t, n²) is still linear.</div><div class="t"><b>Trap:</b> x², |x|, x+1, e<sup>x</sup> are not linear.</div></div>
+<div class="r"><div class="f">Time-invariant: delay-then-S equals S-then-delay</div><div class="n"><b>Needs:</b> Any explicit t or n multiplying x ⇒ TV.</div><div class="t"><b>Trap:</b> x(2t) is TV. A condition at a fixed time (y[0]=0) is TV.</div></div>
+<div class="r"><div class="f">Causal: no input from a later time than the output</div><div class="n"><b>Needs:</b> Memoryless ⇒ causal.</div><div class="t"><b>Trap:</b> x(t+2), x[n+1], Σ from k=−1 make it non-causal.</div></div>
+<div class="r"><div class="f">Memoryless: only x at the same instant</div><div class="t"><b>Trap:</b> Any delay, advance, sum or integral has memory.</div></div>
+<div class="r"><div class="f">BIBO stable: |x| ≤ M ⇒ |y| bounded</div><div class="n"><b>Needs:</b> Disprove with ONE bounded input.</div><div class="t"><b>Trap:</b> Integrator (step → ramp) and differentiator (sin t²) are unstable.</div></div>
+<div class="r"><div class="f">Real: real input always gives real output</div><div class="t"><b>Trap:</b> Complex multipliers e<sup>jωt</sup> or complex gains ⇒ not real.</div></div>
+<div class="r"><div class="f">LTI never creates new frequencies</div><div class="t"><b>Trap:</b> Output has a frequency the input did not ⇒ not LTI (mock Q6d).</div></div>
+<div class="r"><div class="f">Given h: memoryless ⇔ h = αδ.  Causal ⇔ h=0 for t&lt;0.  Stable ⇔ ∫|h| &lt; ∞ (Σ|h| &lt; ∞)</div><div class="n"><b>Needs:</b> LTI.</div><div class="t"><b>Trap:</b> 1/t decay is NOT integrable. Stable does not imply causal.</div></div>
+<div class="r"><div class="f">Series h₁∗h₂ (H₁H₂).  Parallel h₁+h₂.  Feedback H₁/(1−H₁H₂)</div><div class="t"><b>Trap:</b> Negative feedback: H₂ includes the minus sign ⇒ H₁/(1+H₁G).</div></div>
+<div class="r"><div class="f">Difference/differential eq. + "initial rest" ⇒ causal LTI</div><div class="t"><b>Trap:</b> Without it the system is not fixed.</div></div>
+<div class="r ex"><div class="f"><b>Past paper:</b> 2024 Q1 y=2e<sup>jω₁t</sup>x(t−1)+e<sup>jω₂t</sup>x(t−2): linear Y, TI N, causal Y, memoryless N, stable Y, real N.</div></div>
+<div class="r ex"><div class="f"><b>Past paper:</b> Mid-sem: [x[n−1]]²+x[n] → not linear, memory, TI, causal.  e<sup>−t</sup>x(t+2) → linear, memory, TV, non-causal.  2022: Σ<sub>k=−1</sub><sup>1</sup>x[n−k] → linear, TI, memory, stable, non-causal.</div></div>
 </section>
-<section class="card" id="x-block" data-w="exam">
-<header><span class="tag">Exam</span><h3>Block diagram to difference equation</h3></header>
-<div class="when"><b>Use when:</b> Seen: 2024 Q2c, mock Q2, sample Q2.</div>
-<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
-<div class="row"><div class="f">Label each wire with its Z-transform. A delay multiplies by z⁻¹</div><div class="c"><span class="lab">Needs</span>Do the algebra in the z-domain.</div><div class="t"><span class="lab">Trap</span>Gains multiply the wire they sit on. Adders add the arriving wires.</div></div>
-<div class="row"><div class="f">Collect: Ŷ = Σ(gain × delays) X̂ + feedback × Ŷ, then read each coefficient</div><div class="c"></div><div class="t"><span class="lab">Trap</span>Read the shared final gain (0.1 in 2024 Q2c) into every term.</div></div>
-<div class="row"><div class="f">2024 Q2c: y[n]=0.5y[n−1]+x[n]+0.2x[n−1]+0.1x[n−2]</div><div class="c"><span class="lab">Needs</span>Matching coefficients gives a=1, b=2, d=0.5 with c=10 and final gain 0.1.</div><div class="t"></div></div>
-<div class="row"><div class="f">Direct difference equation to FIR diagram: y[n] = Σ b<sub>k</sub> x[n−k]</div><div class="c"><span class="lab">Needs</span>Delay chain, tap gains b<sub>k</sub>, one adder.</div><div class="t"><span class="lab">Trap</span>h[n] = Σ b<sub>k</sub> δ[n−k] (mock Q1).</div></div>
+<section class="sec" id="s5"><h2><span class="no">5</span>Convolution and impulse response<small>mid-sem, 2024 Q2</small></h2>
+<div class="r"><div class="f">y[n] = Σ x[k]h[n−k].  y(t) = ∫x(τ)h(t−τ)dτ</div><div class="n"><b>Needs:</b> LTI.</div><div class="t"><b>Trap:</b> Flip h, then slide. Split into overlap cases.</div></div>
+<div class="r"><div class="f">Support of x∗h = [a₁+a₂, b₁+b₂]</div><div class="n"><b>Needs:</b> Finite lengths: L₁+L₂−1 samples.</div></div>
+<div class="r"><div class="f">FIR equation y = Σbₖx[n−k] ⇒ h = Σbₖδ[n−k]</div><div class="t"><b>Trap:</b> Mock Q1: h = δ[n] − 0.5δ[n−1] − 0.5δ[n−2] + δ[n−3].</div></div>
+<div class="r"><div class="f">x∗δ(t−t₀) = x(t−t₀): each delta in h gives a delayed copy of x</div><div class="t"><b>Trap:</b> h = δ(t−1)−δ(t−2)+δ(t−3) ⇒ y = x(t−1)−x(t−2)+x(t−3). Stable (finite impulses).</div></div>
+<div class="r"><div class="f">Step response s = h∗u;  h = ds/dt.  y with u input: s(t) = u(t−1)−u(t−2)+u(t−3) for the h above</div></div>
+<div class="r ex"><div class="f"><b>Past paper:</b> 2024 Q2: z=u(t+1)−u(t−1), T<sub>s</sub>=2/3 ⇒ x[−2..1] = 0,1,1,1 (x=1 for n=−1,0,1). y[n] = Σ<sub>k=−1</sub><sup>1</sup> h[n−k] ⇒ A=−1, B=1. Q2c diagram (final gain 0.1): a=1, b=2, c=10, d=0.5.</div></div>
 </section>
-<section class="card" id="x-read" data-w="exam">
-<header><span class="tag">Exam</span><h3>Read h or the transform from a given expression</h3></header>
-<div class="when"><b>Use when:</b> Seen: sample Q4, mock Q1, mid-sem (impulse response of deltas).</div>
-<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
-<div class="row"><div class="f">Impulse response of an FIR equation: replace x by δ</div><div class="c"><span class="lab">Needs</span>LTI.</div><div class="t"><span class="lab">Trap</span>h[n] = δ[n] − 0.5δ[n−1] − 0.5δ[n−2] + δ[n−3].</div></div>
-<div class="row"><div class="f">H(ω) = 1.5 + 0.5 cos ω + cos 2ω: rewrite with Euler, then the coefficient of e<sup>−jωn</sup> is h[n]</div><div class="c"><span class="lab">Needs</span>cos ω = ½e<sup>jω</sup>+½e<sup>−jω</sup>.</div><div class="t"><span class="lab">Trap</span>h[−2]=0.5, h[−1]=0.25, h[0]=1.5, h[1]=0.25, h[2]=0.5. Not causal.</div></div>
-<div class="row"><div class="f">If H(ω) is multiplied by e<sup>−jωN</sup>, the whole h shifts right by N</div><div class="c"><span class="lab">Needs</span>Delay property.</div><div class="t"><span class="lab">Trap</span>Multiply by e<sup>−j2ω</sup>: all indices ≥ 0, so the system becomes causal.</div></div>
-<div class="row"><div class="f">h(t) = δ(t−1) − δ(t−2) + δ(t−3)</div><div class="c"><span class="lab">Needs</span>Finite number of impulses ⇒ ∫|h| = 3 &lt; ∞.</div><div class="t"><span class="lab">Trap</span>Stable. Step response s(t) = u(t−1) − u(t−2) + u(t−3). Output = x(t−1) − x(t−2) + x(t−3).</div></div>
-<div class="row"><div class="f">Sketch the output of a delta-sum system for a pulse input</div><div class="c"><span class="lab">Needs</span>Delay the pulse by 1, 2, 3 and add with signs.</div><div class="t"><span class="lab">Trap</span>The copies overlap: add them point by point.</div></div>
+<section class="sec" id="s6"><h2><span class="no">6</span>Fourier series questions<small>2022 Q3, 2024 Q4, mock Q3–4, sample Q8</small></h2>
+<div class="r"><div class="f">X₀ = (1/T₀)∫ one period of x = average value</div><div class="t"><b>Trap:</b> Duty cycle β, height 1 ⇒ X₀ = β.</div></div>
+<div class="r"><div class="f">Periodic x through LTI: Yₖ = H(kω₀)Xₖ.  DC: Y₀ = H(0)X₀</div><div class="n"><b>Needs:</b> Stable LTI.</div><div class="t"><b>Trap:</b> ω₀ = 2π/T₀, not 2π/T of some other signal.</div></div>
+<div class="r"><div class="f">H(0) = ∫h(t)dt (= DC gain)</div><div class="t"><b>Trap:</b> h = e<sup>−2t</sup>u − e<sup>−4t</sup>u ⇒ H(0) = 1/2 − 1/4 = 1/4.</div></div>
+<div class="r"><div class="f">Which harmonics pass a filter: list kω₀ for k = ±1, ±2, … and compare with the passband</div><div class="n"><b>Needs:</b> Include negative k.</div><div class="t"><b>Trap:</b> Two or more pairs pass ⇒ output is not a single cosine.</div></div>
+<div class="r"><div class="f">Real x, pair ±k passes: y = 2|Xₖ| cos(kω₀t + ∠Xₖ)</div></div>
+<div class="r"><div class="f">Parseval: (1/T₀)∫|x|² = Σ|Xₖ|².  Real x: Σ<sub>k≥1</sub>|Xₖ|² = (P − |X₀|²)/2</div><div class="t"><b>Trap:</b> Mid-sem: P = 4, X₀ = 0 ⇒ 2.</div></div>
+<div class="r"><div class="f">Modulation by cos(Mω₀t): Wₖ = ½Xₖ₋M + ½Xₖ₊M</div><div class="t"><b>Trap:</b> Demodulator: linear, NOT time-invariant.</div></div>
+<div class="r"><div class="f">Read Xₖ off Euler: cos θ = ½e<sup>jθ</sup> + ½e<sup>−jθ</sup></div><div class="t"><b>Trap:</b> No integral needed if x is a sum of harmonics.</div></div>
+<div class="r"><div class="f">H(kω₀) = 0 at some k ⇒ input not unique from output</div><div class="t"><b>Trap:</b> Add a cosine at that frequency to x (2024 Q4d).</div></div>
+<div class="r"><div class="f">Differential eq. from H(ω): cross-multiply, jω → d/dt, (jω)² = −ω² → d²/dt²</div><div class="n"><b>Needs:</b> State "initial rest".</div><div class="t"><b>Trap:</b> 2024 Q4a: y″ + a y′ + y = x + x″/(4π²).</div></div>
+<div class="r ex"><div class="f"><b>Past paper:</b> 2022 Q3: x = 1−t² on |t|≤1, T₀=2 ⇒ X₀ = 2/3; with H(0)=1/4 ⇒ Y₀ = 1/6.  2024 Q4: X₀=β, H(0)=1, Y₀=1/4 ⇒ β=1/4.</div></div>
+<div class="r ex"><div class="f"><b>Past paper:</b> Sample Q8: bandpass passes only ω = ±1. T=2π ⇒ k=±1 ⇒ y = (2/π)sin(π/5)cos t. T=4π ⇒ k=±2 ⇒ y = (1/π)sin(2π/5)cos t. T=8π ⇒ several k ⇒ not one cosine.</div></div>
+<div class="r ex"><div class="f"><b>Past paper:</b> Mock Q4: Wₖ = ½Xₖ₋₁+½Xₖ₊₁, Y₀ = A·W₀ = A(0.25+0.25) = 2 ⇒ A = 4, any 0 &lt; B &lt; ω_c.</div></div>
 </section>
-<section class="card" id="x-fs" data-w="exam">
-<header><span class="tag">Exam</span><h3>Fourier series questions</h3></header>
-<div class="when"><b>Use when:</b> Seen: 2022 Q3, 2024 Q4, mid-sem Q2, sample Q8, mock Q3 and Q4.</div>
-<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
-<div class="row"><div class="f">X₀ = (1/T₀)∫ over one period of x = average value</div><div class="c"><span class="lab">Needs</span>Periodic extension of a finite pulse.</div><div class="t"><span class="lab">Trap</span>2022 Q3: x=1−t² on |t|≤1, T₀=2 ⇒ X₀ = 2/3. 2024 Q4: duty cycle β ⇒ X₀ = β.</div></div>
-<div class="row"><div class="f">Y<sub>k</sub> = H(kω₀) X<sub>k</sub>.  Y₀ = H(0) X₀</div><div class="c"><span class="lab">Needs</span>Stable LTI, periodic input.</div><div class="t"><span class="lab">Trap</span>2022 Q3c: h = e<sup>−2t</sup>u − e<sup>−4t</sup>u ⇒ H(0)=1/2−1/4=1/4, Y₀=1/6.</div></div>
-<div class="row"><div class="f">Parseval: (1/T₀)∫|z|² = Σ<sub>k=−∞</sub><sup>∞</sup>|Z<sub>k</sub>|².  Real z: Σ<sub>k=1</sub><sup>∞</sup>|Z<sub>k</sub>|² = (power − |Z₀|²)/2</div><div class="c"><span class="lab">Needs</span>Real, periodic.</div><div class="t"><span class="lab">Trap</span>Mid-sem: power 4, Z₀=0 ⇒ Σ<sub>k≥1</sub>|Z<sub>k</sub>|² = 2.</div></div>
-<div class="row"><div class="f">Which harmonics survive a filter? Find kω₀ for each k and compare with the passband</div><div class="c"><span class="lab">Needs</span>Include negative k.</div><div class="t"><span class="lab">Trap</span>Sample Q8: T=2π ⇒ only k=±1 passes ⇒ y = 2|X₁|cos t. T=4π ⇒ k=±2 passes. T=8π ⇒ several pairs ⇒ not a single cosine.</div></div>
-<div class="row"><div class="f">Real pair X<sub>k</sub>, X₋k both in the passband ⇒ A cos(kω₀t+∠X<sub>k</sub>) with A = 2|X<sub>k</sub>|</div><div class="c"><span class="lab">Needs</span>Real signal.</div><div class="t"></div></div>
-<div class="row"><div class="f">Modulation: cos(ω_c t)x ⇒ W<sub>k</sub> = ½X<sub>k−1</sub> + ½X<sub>k+1</sub> when ω_c = ω₀</div><div class="c"><span class="lab">Needs</span>ω_c is an integer multiple of ω₀.</div><div class="t"><span class="lab">Trap</span>Demodulator (mock Q4): choose A so Y₀ = A·W₀ matches, and 0 &lt; B &lt; ω_c to block k≠0. Linear but not time-invariant.</div></div>
-<div class="row"><div class="f">Fundamental frequency of a sum of sinusoids = gcd of the component frequencies</div><div class="c"></div><div class="t"><span class="lab">Trap</span>Mock Q6a: 440, 330, 550 Hz ⇒ 110 Hz, so ω₀ = 220π.</div></div>
-<div class="row"><div class="f">Differential equation from H(ω): cross-multiply, then jω → d/dt</div><div class="c"><span class="lab">Needs</span>Initial rest.</div><div class="t"><span class="lab">Trap</span>2024 Q4a: (1+jaω−ω²)Y = (1−(ω/2π)²)X ⇒ y + a y′ + y″ = x + x″/4π².</div></div>
-<div class="row"><div class="f">If H(kω₀)=0 at some harmonic, x is not unique from y</div><div class="c"><span class="lab">Needs</span>Add or remove that harmonic.</div><div class="t"><span class="lab">Trap</span>2024 Q4d: add 10cos(2πt+φ) to x when H(2π)=0.</div></div>
-<p class="try"><b>Stuck? Try:</b> Write ω₀, list which k are relevant, evaluate H(kω₀) for each. Then build y.</p>
+<section class="sec" id="s7"><h2><span class="no">7</span>Frequency response<small>2022 Q4, sample Q6, mock Q6</small></h2>
+<div class="r"><div class="f">x = e<sup>jωt</sup> ⇒ y = H(ω)e<sup>jωt</sup>.  x = cos(ωt+φ) ⇒ y = |H(ω)|cos(ωt+φ+∠H(ω))</div><div class="n"><b>Needs:</b> Real, stable LTI. Eternal input.</div><div class="t"><b>Trap:</b> Frequency never changes. y = H(ω)x is wrong for general x.</div></div>
+<div class="r"><div class="f">Constant input a ⇒ y = a·H(0)</div><div class="n"><b>Needs:</b> a = a·e<sup>j0t</sup>.</div></div>
+<div class="r"><div class="f">Output sinusoid given, find input: divide each phasor by H(ω₀)</div><div class="t"><b>Trap:</b> Do each frequency separately.</div></div>
+<div class="r"><div class="f">From ODE: Σaₖ(jω)ᵏY = Σbₖ(jω)ᵏX.  From difference eq: Σaₖe<sup>−jωk</sup>Y = Σbₖe<sup>−jωk</sup>X</div><div class="t"><b>Trap:</b> RC: H = 1/(1+jωRC).</div></div>
+<div class="r"><div class="f">Delay τ: e<sup>−jωτ</sup>.  Gain 0.5 + delay 0.1: h = 0.5δ(t−0.1), H = 0.5e<sup>−0.1jω</sup></div><div class="t"><b>Trap:</b> Undo it: z(t) = 2y(t+0.1).</div></div>
+<div class="r"><div class="f">Ideal LPF |ω|&lt;W: h = sin(Wt)/(πt)</div><div class="t"><b>Trap:</b> Non-causal. sin(Wt)/(πt) has cutoff W rad/s.</div></div>
+<div class="r"><div class="f">H = Y/X fails where X = 0</div><div class="t"><b>Trap:</b> That is 0/0, not H = 0.</div></div>
+<div class="r ex"><div class="f"><b>Past paper:</b> Sample Q6: H = Y/X = e<sup>jω</sup>(jω+1)/(jω+a); input a ⇒ y = a·H(0) = 1.</div></div>
 </section>
-<section class="card" id="x-fr" data-w="exam">
-<header><span class="tag">Exam</span><h3>Frequency response and sinusoid questions</h3></header>
-<div class="when"><b>Use when:</b> Seen: 2022 Q4, sample Q6, mock Q6.</div>
-<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
-<div class="row"><div class="f">Output sinusoid → input: divide the output phasor by H(ω₀)</div><div class="c"><span class="lab">Needs</span>Real stable system.</div><div class="t"><span class="lab">Trap</span>Do each frequency separately.</div></div>
-<div class="row"><div class="f">Input constant a ⇒ output a·H(0)</div><div class="c"><span class="lab">Needs</span>x = a e<sup>j0t</sup>.</div><div class="t"><span class="lab">Trap</span>Sample Q6: H(ω)=Y/X, then y = a·H(0) = 1.</div></div>
-<div class="row"><div class="f">Periodic input: Y<sub>k</sub> = H(kω₀)X<sub>k</sub></div><div class="c"></div><div class="t"><span class="lab">Trap</span>Use ω₀ = 2π/T₀.</div></div>
-<div class="row"><div class="f">Delay + gain system: h = 0.5δ(t−0.1), H(ω) = 0.5e<sup>−0.1jω</sup></div><div class="c"></div><div class="t"><span class="lab">Trap</span>Undo it: z(t) = 2y(t+0.1).</div></div>
-<div class="row"><div class="f">H = Y/X using FT tables</div><div class="c"></div><div class="t"><span class="lab">Trap</span>If X(ω) = 0 anywhere, H is undetermined there.</div></div>
+<section class="sec" id="s8"><h2><span class="no">8</span>Fourier transform algebra (tables are given)<small>2022 Q5, 2024 Q7, mock Q3, sample Q4</small></h2>
+<div class="r"><div class="f">Equal-degree fraction: divide first. (4+jω)/(5+jω) = 1 − 1/(5+jω) ⇒ δ(t) − e<sup>−5t</sup>u(t)</div><div class="t"><b>Trap:</b> The constant term is an impulse.</div></div>
+<div class="r"><div class="f">nαⁿu[n] = (n+1)αⁿu[n] − αⁿu[n] ⇒ 1/(1−αe<sup>−jω</sup>)² − 1/(1−αe<sup>−jω</sup>)</div><div class="n"><b>Needs:</b> |α|&lt;1. Checked numerically.</div></div>
+<div class="r"><div class="f">αⁿcos(n)u[n] ⇒ ½/(1−αe<sup>−j(ω−1)</sup>) + ½/(1−αe<sup>−j(ω+1)</sup>)</div><div class="n"><b>Needs:</b> Euler, then modulation.</div></div>
+<div class="r"><div class="f">cos(ω₀t)x(t) ⇒ ½X(ω−ω₀) + ½X(ω+ω₀)</div><div class="t"><b>Trap:</b> Mock Q3: 10 periods in length 2 ⇒ period 0.2 ⇒ a = 10.</div></div>
+<div class="r"><div class="f">Periodic signal: X(ω) = 2πΣXₖδ(ω−kω₀)</div><div class="t"><b>Trap:</b> No ordinary FT exists.</div></div>
+<div class="r"><div class="f">Parseval: ∫|x|²dt = (1/2π)∫|X|²dω.  ∫1/(1+ω²)dω = 2π∫e<sup>−2t</sup>dt = π</div><div class="t"><b>Trap:</b> Use it to avoid a hard integral.</div></div>
+<div class="r"><div class="f">H(ω) = Σ h[n]e<sup>−jωn</sup>: rewrite cosines with Euler, coefficient of e<sup>−jωn</sup> is h[n]</div><div class="t"><b>Trap:</b> 1.5+0.5cos ω+cos 2ω ⇒ h[0]=1.5, h[±1]=0.25, h[±2]=0.5. Non-causal. Times e<sup>−j2ω</sup> ⇒ causal.</div></div>
+<div class="r"><div class="f">DT window u[n+N]−u[n−N] (2N samples) ⇔ [sin(Nω)/sin(ω/2)]e<sup>jω/2</sup></div><div class="n"><b>Needs:</b> Current formula sheet.</div><div class="t"><b>Trap:</b> 2024 paper printed sin(ω(N+½))/sin(ω/2): that is the 2N+1-sample window.</div></div>
+<div class="r ex"><div class="f"><b>Past paper:</b> 2024 Q7: Y=(4+jω)/(5+jω) ⇒ y=δ−e<sup>−5t</sup>u.  X=Y/H=(2+jω)/(5+jω)=1−3/(5+jω) ⇒ x=δ(t)−3e<sup>−5t</sup>u(t).</div></div>
 </section>
-<section class="card" id="x-ft" data-w="exam">
-<header><span class="tag">Exam</span><h3>Fourier transform algebra</h3></header>
-<div class="when"><b>Use when:</b> Seen: 2022 Q5, 2024 Q7, mock Q3.</div>
-<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
-<div class="row"><div class="f">Improper rational (4+jω)/(5+jω): divide first = 1 − 1/(5+jω)</div><div class="c"><span class="lab">Needs</span>Degree numerator = degree denominator.</div><div class="t"><span class="lab">Trap</span>The constant 1 gives δ(t). y(t) = δ(t) − e<sup>−5t</sup>u(t).</div></div>
-<div class="row"><div class="f">X = Y/H, then simplify and look up each term</div><div class="c"><span class="lab">Needs</span>H(ω) ≠ 0.</div><div class="t"><span class="lab">Trap</span>2024 Q7: X = (2+jω)/(5+jω) = 1 − 3/(5+jω) ⇒ x = δ(t) − 3e<sup>−5t</sup>u(t).</div></div>
-<div class="row"><div class="f">nαⁿu[n] = (n+1)αⁿu[n] − αⁿu[n] ⇒ 1/(1−αe<sup>−jω</sup>)² − 1/(1−αe<sup>−jω</sup>)</div><div class="c"><span class="lab">Needs</span>Table has (n+1)αⁿu[n] and αⁿu[n].</div><div class="t"><span class="lab">Trap</span>2022 Q5a with α=0.2.</div></div>
-<div class="row"><div class="f">0.2ⁿ cos(n) u[n]: write cos n = ½e<sup>jn</sup>+½e<sup>−jn</sup>, then modulation</div><div class="c"><span class="lab">Needs</span>Frequency shift by ±1.</div><div class="t"><span class="lab">Trap</span>½/(1−0.2e<sup>−j(ω−1)</sup>) + ½/(1−0.2e<sup>−j(ω+1)</sup>).</div></div>
-<div class="row"><div class="f">cos(ω₀t)x(t) ⇒ ½X(ω−ω₀) + ½X(ω+ω₀)</div><div class="c"></div><div class="t"><span class="lab">Trap</span>Mock Q3: cos(aπt)x with 10 periods in length 2 ⇒ a = 10, X(ω)=2 sin ω/ω.</div></div>
-<div class="row"><div class="f">Use the table you are given</div><div class="c"><span class="lab">Needs</span>Current formula sheet: u[n+N]−u[n−N] ⇔ [sin(Nω)/sin(ω/2)]e<sup>jω/2</sup> (2N samples, n=−N..N−1).</div><div class="t"><span class="lab">Trap</span>The 2024 paper printed sin(ω(N+½))/sin(ω/2), which is the (2N+1)-sample window u[n+N]−u[n−N−1]. Count the samples before choosing.</div></div>
+<section class="sec" id="s9"><h2><span class="no">9</span>Sampling, aliasing, reconstruction<small>2022 Q6, 2024 Q6, mock Q8, sample Q1, Q10</small></h2>
+<figure><svg viewBox="0 0 230 86" role="img" aria-label="Sampled spectrum: copies of X every 2π; no overlap if W·Ts &lt; π">
+<line class="ax" x1="4" y1="60" x2="226" y2="60"/>
+<polygon class="sp" points="95,60 115,22 135,60"/><polygon class="sp" points="155,60 175,22 195,60"/><polygon class="sp" points="35,60 55,22 75,60"/>
+<line class="dash" x1="145" y1="14" x2="145" y2="64"/><line class="dash" x1="85" y1="14" x2="85" y2="64"/>
+<text x="111" y="72">0</text><text x="139" y="72">π</text><text x="78" y="72">−π</text><text x="168" y="72">2π</text><text x="45" y="72">−2π</text>
+<text x="120" y="18">height 1/T_s</text><text x="127" y="56">W·T_s</text>
+<text x="4" y="83">X copied every 2π, edge at W·T_s. No aliasing iff W·T_s &lt; π.</text>
+</svg></figure>
+<div class="r"><div class="f">No aliasing iff T<sub>s</sub> &lt; π/W (ω_s &gt; 2W, f<sub>s</sub> &gt; 2f_max)</div><div class="n"><b>Needs:</b> W = highest frequency in rad/s.</div><div class="t"><b>Trap:</b> Bandpass 5π–8π: W = 8π ⇒ Nyquist rate 16π rad/s = 8 samples/s.</div></div>
+<div class="r"><div class="f">Nyquist rate = 2W (a rate).  Nyquist frequency = π/T<sub>s</sub></div><div class="t"><b>Trap:</b> Never sample a sinusoid at exactly T<sub>s</sub> = π/ω₀.</div></div>
+<div class="r"><div class="f">Anti-aliasing LPF cutoff ≤ π f<sub>s</sub> rad/s (= f<sub>s</sub>/2 Hz)</div><div class="n"><b>Needs:</b> Filter BEFORE sampling.</div><div class="t"><b>Trap:</b> Sample Q1: sin(Wt)/(πt) has cutoff W ⇒ largest W = π f<sub>s</sub>.</div></div>
+<div class="r"><div class="f">X<sub>s</sub>(ω) = (1/T<sub>s</sub>)Σ X((ω−2πℓ)/T<sub>s</sub>);  inside the band X(ω) = T<sub>s</sub> X<sub>s</sub>(T<sub>s</sub> ω)</div><div class="t"><b>Trap:</b> Mock Q8: peak 20 → 2, edge 2π/3 → 20π/3 rad/s.</div></div>
+<div class="r"><div class="f">Impulse train p = Σδ(t−nT): Z(ω) = (1/T)Σ X(ω−2πk/T)</div><div class="n"><b>Needs:</b> Copies every 2π/T rad/s.</div><div class="t"><b>Trap:</b> Recover with a filter of gain T on the band (2024 Q6: H₂ = 1/4 for 5π&lt;|ω|&lt;8π).</div></div>
+<div class="r"><div class="f">Hz to rad/sample: ω = 2πf/f<sub>s</sub></div><div class="n"><b>Needs:</b> DT filter design.</div><div class="t"><b>Trap:</b> 50 Hz at f<sub>s</sub>=500 ⇒ π/5. Sketch DT filters over −2π..2π (they repeat).</div></div>
+<div class="r"><div class="f">Energy of x<sub>s</sub>: Σ|x<sub>s</sub>|² = (1/2π)∫<sub>−π</sub><sup>π</sup>|X<sub>s</sub>|²dω</div><div class="n"><b>Needs:</b> Use evenness: (1/π)∫₀^π.</div><div class="t"><b>Trap:</b> Mock Q8: 800/9.</div></div>
+<div class="r"><div class="f">Ideal reconstruction: H = T<sub>s</sub> on |ω|&lt;π/T<sub>s</sub>; h = sinc, non-causal.  ZOH delay ≈ T<sub>s</sub>/2</div><div class="n"><b>Needs:</b> Interpolation needs h(nT<sub>s</sub>) = δ[n].</div></div>
+<div class="r"><div class="f">Write the reason: "f<sub>s</sub> &gt; 2f_max so the DTFT copies do not overlap"</div><div class="t"><b>Trap:</b> Marks are for this sentence.</div></div>
 </section>
-<section class="card" id="x-samp" data-w="exam">
-<header><span class="tag">Exam</span><h3>Sampling, aliasing, reconstruction questions</h3></header>
-<div class="when"><b>Use when:</b> Seen: 2022 Q6, 2024 Q6 and Q10 (sample), mock Q8, sample Q1.</div>
-<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
-<div class="row"><div class="f">No aliasing iff sampling frequency &gt; 2 × highest frequency (T<sub>s</sub>·W &lt; π)</div><div class="c"><span class="lab">Needs</span>Sinusoid: sin(4πt) has f=2 Hz, so f<sub>s</sub>&gt;4.</div><div class="t"><span class="lab">Trap</span>Bandpass signal: use the highest edge W, not the band width. 5π–8π ⇒ W=8π ⇒ Nyquist rate 8 samples/s.</div></div>
-<div class="row"><div class="f">Anti-aliasing LPF cutoff ≤ f<sub>s</sub>/2 Hz = π f<sub>s</sub> rad/s</div><div class="c"><span class="lab">Needs</span>Ideal LPF h = sin(Wt)/(πt) has H = u(ω+W) − u(ω−W), cutoff W.</div><div class="t"><span class="lab">Trap</span>Sample Q1: largest W = π f<sub>s</sub>. f<sub>s</sub>=500 ⇒ 500π rad/s.</div></div>
-<div class="row"><div class="f">Hz to rad/sample: ω = 2πf/f<sub>s</sub></div><div class="c"><span class="lab">Needs</span>DT filter design.</div><div class="t"><span class="lab">Trap</span>Sample Q10: 50 Hz at f<sub>s</sub>=500 ⇒ π/5. High-pass edge at π/5. Sketch −2π to 2π with edges ±π/5, ±(2π−π/5).</div></div>
-<div class="row"><div class="f">X<sub>s</sub>(ω) = (1/T<sub>s</sub>) Σ X((ω−2πℓ)/T<sub>s</sub>).  Inverse: X(ω) = T<sub>s</sub> X<sub>s</sub>(T<sub>s</sub>ω) inside the band</div><div class="c"><span class="lab">Needs</span>Mock Q8: peak 20 → X peak 2, edge (2π/3)/0.1 = 20π/3.</div><div class="t"><span class="lab">Trap</span>Horizontal axis scales by 1/T<sub>s</sub>, vertical by T<sub>s</sub>.</div></div>
-<div class="row"><div class="f">Energy of x<sub>s</sub>: Σ|x<sub>s</sub>[n]|² = (1/2π)∫ over one period of |X<sub>s</sub>|²</div><div class="c"><span class="lab">Needs</span>Parseval.</div><div class="t"><span class="lab">Trap</span>Mock Q8b = 800/9. Use evenness to integrate over 0 to π and double.</div></div>
-<div class="row"><div class="f">Impulse-train sampling p(t)=Σδ(t−nT): Z(ω) = (1/T) Σ X(ω−2πk/T)</div><div class="c"><span class="lab">Needs</span>T = 1/4 ⇒ ω_s = 8π, copies every 8π.</div><div class="t"><span class="lab">Trap</span>2024 Q6: H₂ = T = 1/4 on the band, 0 elsewhere. H₁ = 1 or a band-limiting filter.</div></div>
-<div class="row"><div class="f">ZOH: output is held; reconstruction delay ≈ T<sub>s</sub>/2</div><div class="c"></div><div class="t"><span class="lab">Trap</span>Order of ideal filter and sampler matters only if the signal is not already band-limited.</div></div>
-<div class="row"><div class="f">Always say why: "sampled at f<sub>s</sub> above twice the highest frequency, so the DTFT copies do not overlap"</div><div class="c"></div><div class="t"><span class="lab">Trap</span>Marks are for the sentence.</div></div>
+<section class="sec" id="s10"><h2><span class="no">10</span>Laplace: H(s), RoC, stability, output<small>2022 Q7, 2024 Q8, mock Q5, Q7, sample Q3, Q5</small></h2>
+<figure><svg viewBox="0 0 230 92" role="img" aria-label="s-plane: causal RoC is the half-plane right of the rightmost pole">
+<rect class="roc" x="150" y="6" width="76" height="72"/>
+<line class="ax" x1="6" y1="42" x2="226" y2="42"/><line class="ax" x1="110" y1="6" x2="110" y2="78"/>
+<g class="pole"><line x1="66" y1="38" x2="74" y2="46"/><line x1="74" y1="38" x2="66" y2="46"/>
+<line x1="146" y1="38" x2="154" y2="46"/><line x1="154" y1="38" x2="146" y2="46"/></g>
+<line class="dash" x1="150" y1="6" x2="150" y2="78"/>
+<text x="62" y="58">−2</text><text x="147" y="58">1</text><text x="113" y="12">jω</text><text x="214" y="38">σ</text>
+<text x="156" y="16">RoC: Re(s) &gt; 1</text><text x="6" y="88">Causal: right of the rightmost pole. Stable: jω axis inside RoC.</text>
+</svg></figure>
+<div class="r"><div class="f">ODE → Ĥ: d/dt → s, initial rest.  y″+ay′+by = x ⇒ Ĥ = 1/(s²+as+b)</div><div class="t"><b>Trap:</b> Poles −1, −2 ⇒ a=3, b=2.</div></div>
+<div class="r"><div class="f">Block diagram: name every wire in s, write one equation per adder, solve for Ŷ/X̂</div><div class="n"><b>Needs:</b> 1/s is an integrator.</div></div>
+<div class="r"><div class="f">Causal ⇒ RoC: Re(s) &gt; (rightmost pole)</div><div class="n"><b>Needs:</b> All subsystems causal.</div><div class="t"><b>Trap:</b> RoC never contains a pole.</div></div>
+<div class="r"><div class="f">BIBO stable ⇔ RoC contains the jω axis.  Causal + stable ⇔ all poles Re &lt; 0</div><div class="t"><b>Trap:</b> Poles on the jω axis (±2j) are NOT stable.</div></div>
+<div class="r"><div class="f">Left-sided: RoC left of leftmost pole. Two-sided: strip</div><div class="t"><b>Trap:</b> Same 1/(s+a) for e<sup>−at</sup>u(t) and −e<sup>−at</sup>u(−t). Only the RoC differs.</div></div>
+<div class="r"><div class="f">Ŷ = Ĥ X̂, then partial fractions, then table (right-sided for causal)</div><div class="n"><b>Needs:</b> Rational.</div><div class="t"><b>Trap:</b> Divide first if degree num ≥ degree den.</div></div>
+<div class="r"><div class="f">Simple pole A/(s−p): A = [(s−p)Ŷ] at s=p.  Repeated: A/(s+1)² + B/(s+1); get B by plugging s=0</div><div class="t"><b>Trap:</b> 1/(s+a)² ⇔ te<sup>−at</sup>u(t).</div></div>
+<div class="r"><div class="f">Step response = inverse of Ĥ(s)/s.  Final value (stable) = Ĥ(0)</div><div class="t"><b>Trap:</b> Bounded step response does NOT prove BIBO stability.</div></div>
+<div class="r"><div class="f">Real system: complex poles come in conjugate pairs.  "Input 1 gives output 0" ⇒ zero at s = 0</div></div>
+<div class="r ex"><div class="f"><b>Past paper:</b> 2024 Q8: Ĥ = (2s²−1)/((s−1)(s+2)), RoC Re(s)&gt;1, not stable. x = te<sup>−t</sup>u+e<sup>−t</sup>u ⇒ X̂=(s+2)/(s+1)² ⇒ y = −½te<sup>−t</sup>u + (7/4)e<sup>−t</sup>u + (1/4)eᵗu.</div></div>
+<div class="r ex"><div class="f"><b>Past paper:</b> Sample Q5: Ĥ = 2s/(s²+4)+s/(s+1) ⇒ step response [sin 2t + e<sup>−t</sup>]u(t); poles ±2j ⇒ not stable.  Mock Q7: Ŷ=1/(s(s−1)) ⇒ y=(eᵗ−1)u, Ĥ=(s+2)/(s(s−1)).</div></div>
+<div class="r ex"><div class="f"><b>Past paper:</b> Sample Q3: RoC Re(s)&gt;2, pole −1+j, real, 3 poles, input 1 → 0 ⇒ poles −1±j and 2, zero at 0, right-sided h.</div></div>
 </section>
-<section class="card" id="x-tf" data-w="exam">
-<header><span class="tag">Exam</span><h3>Transfer function, RoC, stability, output</h3></header>
-<div class="when"><b>Use when:</b> Seen: 2022 Q7, 2024 Q8, mock Q5 and Q7, sample Q5.</div>
-<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
-<div class="row"><div class="f">Block diagram: name wires, write equations in s, solve for Ŷ/X̂</div><div class="c"><span class="lab">Needs</span>Integrator block 1/s, delay e<sup>−sτ</sup>, gain constants.</div><div class="t"><span class="lab">Trap</span>2024 Q8: Ĥ = (2s²−1)/((s−1)(s+2)).</div></div>
-<div class="row"><div class="f">RoC: "all subsystems causal" ⇒ right of the rightmost pole</div><div class="c"><span class="lab">Needs</span>Rational Ĥ.</div><div class="t"><span class="lab">Trap</span>2024 Q8: poles 1 and −2 ⇒ RoC Re(s) &gt; 1.</div></div>
-<div class="row"><div class="f">Stable? RoC must contain the jω axis; equivalently all poles in the open left half-plane</div><div class="c"></div><div class="t"><span class="lab">Trap</span>Pole at +1 ⇒ not stable. Poles at ±2j (sample Q5) ⇒ not stable.</div></div>
-<div class="row"><div class="f">Output for a given input: Ŷ = ĤX̂, partial fractions, inverse with the right-sided table</div><div class="c"><span class="lab">Needs</span>Causal system, right-sided signals.</div><div class="t"><span class="lab">Trap</span>te<sup>−t</sup>u+e<sup>−t</sup>u has X̂ = (s+2)/(s+1)². It cancels the (s+2) pole.</div></div>
-<div class="row"><div class="f">Repeated pole at −1: Ŷ = A/(s+1)² + B/(s+1) + C/(s−1)</div><div class="c"><span class="lab">Needs</span>Get C by cover-up, A by cover-up, B by evaluating at s=0 (or any s).</div><div class="t"><span class="lab">Trap</span>2024 Q8e: y = −½te<sup>−t</sup>u + (7/4)e<sup>−t</sup>u + (1/4)e<sup>t</sup>u.</div></div>
-<div class="row"><div class="f">Step response: inverse of Ĥ(s)/s</div><div class="c"><span class="lab">Needs</span>Causal.</div><div class="t"><span class="lab">Trap</span>Sample Q5: Ĥ = 2s/(s²+4)+s/(s+1) ⇒ y = [sin 2t + e<sup>−t</sup>]u(t).</div></div>
-<div class="row"><div class="f">Bounded step response does NOT imply BIBO stability</div><div class="c"></div><div class="t"><span class="lab">Trap</span>Same example: bounded step response, poles on the jω axis.</div></div>
-<div class="row"><div class="f">ODE y″+ay′+by=x ⇒ Ĥ = 1/(s²+as+b).  Causal and stable ⇒ poles with negative real part</div><div class="c"></div><div class="t"><span class="lab">Trap</span>Pick p=−1, q=−2 ⇒ s²+3s+2 ⇒ a=3, b=2.</div></div>
-<div class="row"><div class="f">Ŷ=1/(s(s−1)), RoC Re(s)&gt;1 ⇒ y = (eᵗ−1)u(t)</div><div class="c"><span class="lab">Needs</span>Right-sided inverse for both terms.</div><div class="t"><span class="lab">Trap</span>Ĥ = Ŷ/X̂ = (s+2)/(s(s−1)) when X̂=1/(s+2) (RoC Re(s)&gt;−2).</div></div>
+<section class="sec" id="s11"><h2><span class="no">11</span>Z-transform: H(z), poles, stability<small>2022 Q8, 2024 Q2–3, Q5, mock Q9, sample Q7</small></h2>
+<figure><svg viewBox="0 0 230 100" role="img" aria-label="z-plane: causal RoC is outside the outermost pole; stable if the unit circle is inside the RoC">
+<rect class="roc" x="6" y="4" width="150" height="84"/>
+<circle cx="80" cy="46" r="26" fill="var(--paper)" stroke="none"/>
+<circle class="dash" cx="80" cy="46" r="34"/>
+<line class="ax" x1="6" y1="46" x2="156" y2="46"/><line class="ax" x1="80" y1="4" x2="80" y2="88"/>
+<circle class="ax" cx="80" cy="46" r="26" stroke-width="1.2"/>
+<g class="pole"><line x1="62" y1="25" x2="68" y2="31"/><line x1="68" y1="25" x2="62" y2="31"/>
+<line x1="62" y1="61" x2="68" y2="67"/><line x1="68" y1="61" x2="62" y2="67"/></g>
+<text x="98" y="16">|z| &gt; 1 (outside poles)</text><text x="108" y="44">unit circle</text>
+<text x="160" y="30">Causal: outside</text><text x="160" y="41">outermost pole.</text><text x="160" y="56">Stable: unit circle</text><text x="160" y="67">inside the RoC.</text>
+<text x="160" y="82">Poles on |z|=1:</text><text x="160" y="93">not stable.</text>
+</svg></figure>
+<div class="r"><div class="f">Difference eq. → Ĥ: x[n−m] → z<sup>−m</sup>X̂, solve Ŷ/X̂</div><div class="t"><b>Trap:</b> Then multiply top and bottom by z² to match a requested form.</div></div>
+<div class="r"><div class="f">Poles: roots of the denominator in z. Polar form re<sup>jθ</sup></div><div class="t"><b>Trap:</b> z²+z+1 = 0 ⇒ e<sup>±j2π/3</sup> (on the unit circle).</div></div>
+<div class="r"><div class="f">Causal ⇒ |z| &gt; outermost pole. Stable ⇔ unit circle in the RoC</div><div class="n"><b>Needs:</b> Independent checks. FIR: poles only at 0 (always stable); IIR: any other pole.</div><div class="t"><b>Trap:</b> Pole on |z|=1 ⇒ not stable. Step response: Ĥ(z)/(1−z⁻¹).</div></div>
+<div class="r"><div class="f">Inverse: match a table row, or partial fractions on Ŷ/z, then multiply by z</div><div class="t"><b>Trap:</b> αⁿcos(ω₀n)u[n] row: numerator 1−αz⁻¹cos ω₀.</div></div>
+<div class="r"><div class="f">Unstable ⇒ give a bounded input at the pole frequency (resonance)</div><div class="t"><b>Trap:</b> x = cos(2πn/3) into poles e<sup>±j2π/3</sup> ⇒ y grows.</div></div>
+<div class="r"><div class="f">Ĥ → difference equation: cross-multiply, z<sup>−m</sup> → delay m</div><div class="n"><b>Needs:</b> Say "subject to initial rest".</div><div class="t"><b>Trap:</b> Forgetting initial rest loses a mark.</div></div>
+<div class="r"><div class="f">x[n+1] in the equation ⇒ positive power of z in the numerator</div><div class="t"><b>Trap:</b> 2022 Q8: Ĥ = z(2z+1)/(z+2), pole −2 ⇒ not stable.</div></div>
+<div class="r ex"><div class="f"><b>Past paper:</b> 2024 Q3: ½+z⁻¹−z⁻²  over 1+2z⁻¹+z⁻² = (z²+2z−2)/(2z²+4z+2) ⇒ a=2, b=−2, c=2, d=4, e=2. Causal and LTI (initial rest).</div></div>
+<div class="r ex"><div class="f"><b>Past paper:</b> 2024 Q5: (1+0.5z⁻¹)/(1+z⁻¹+z⁻²): poles e<sup>±j2π/3</sup>, RoC |z|&gt;1, h = cos(2πn/3)u[n] (α=1, cos ω₀ = −½), not stable.</div></div>
+<div class="r ex"><div class="f"><b>Past paper:</b> Mock Q9: x=0.5ⁿu, y=0.25ⁿu ⇒ Ĥ=(1−0.5z⁻¹)/(1−0.25z⁻¹), IIR, h = 2δ[n] − 0.25ⁿu[n].  Sample Q7: step of 1/(1+z⁻¹+z⁻²) has Z-transform 1/(1−z⁻³), |z|&gt;1.</div></div>
 </section>
-<section class="card" id="x-pz" data-w="exam">
-<header><span class="tag">Exam</span><h3>Poles, zeros and properties puzzle</h3></header>
-<div class="when"><b>Use when:</b> Seen: sample Q3. Every property in the statement is a clue.</div>
-<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
-<div class="row"><div class="f">"Input 1 for all t gives output 0" ⇒ H(0) = 0 ⇒ zero at s = 0</div><div class="c"><span class="lab">Needs</span>Constant = e<sup>0t</sup>.</div><div class="t"></div></div>
-<div class="row"><div class="f">"Real-valued system" ⇒ complex poles and zeros come in conjugate pairs</div><div class="c"></div><div class="t"><span class="lab">Trap</span>Pole at −1+j ⇒ also −1−j.</div></div>
-<div class="row"><div class="f">"RoC is Re(s) &gt; 2" ⇒ rightmost pole has real part 2</div><div class="c"></div><div class="t"><span class="lab">Trap</span>Three poles, two used by the pair, so the third is real: s = 2.</div></div>
-<div class="row"><div class="f">Right-sided RoC ⇒ right-sided impulse response. Strip −1&lt;Re(s)&lt;2 ⇒ two-sided</div><div class="c"></div><div class="t"></div></div>
-<div class="row"><div class="f">Write each answer with the property that forced it</div><div class="c"><span class="lab">Needs</span>The hint says: refer to all properties.</div><div class="t"><span class="lab">Trap</span>1 mark for the location, 1 for the reason.</div></div>
-</section>
-<section class="card" id="x-z" data-w="exam">
-<header><span class="tag">Exam</span><h3>Z-domain questions</h3></header>
-<div class="when"><b>Use when:</b> Seen: 2022 Q8, 2024 Q3 and Q5, mock Q9, sample Q7.</div>
-<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
-<div class="row"><div class="f">y[n]+2y[n−1]+y[n−2] = ½x[n]+x[n−1]−x[n−2]: Ĥ = (½+z⁻¹−z⁻²)/(1+2z⁻¹+z⁻²). Multiply by 2z²: (z²+2z−2)/(2z²+4z+2)</div><div class="c"><span class="lab">Needs</span>To match the form (z²+az+b)/(cz²+dz+e): a=2, b=−2, c=2, d=4, e=2.</div><div class="t"><span class="lab">Trap</span>Initial rest ⇒ causal and LTI.</div></div>
-<div class="row"><div class="f">Poles: solve z²+z+1=0 ⇒ z = −½ ± j√3/2 = e<sup>±j2π/3</sup></div><div class="c"><span class="lab">Needs</span>Polar form means magnitude and angle.</div><div class="t"><span class="lab">Trap</span>|z|=1: on the unit circle.</div></div>
-<div class="row"><div class="f">Causal ⇒ RoC |z| &gt; 1. Unit circle not inside ⇒ not BIBO stable</div><div class="c"></div><div class="t"><span class="lab">Trap</span>Poles on the circle are not stable.</div></div>
-<div class="row"><div class="f">h[n] for (1+0.5z⁻¹)/(1+z⁻¹+z⁻²): match αⁿcos(ω₀n)u[n] with α=1, ω₀=2π/3 (−cos ω₀ = 0.5)</div><div class="c"></div><div class="t"><span class="lab">Trap</span>h[n] = cos(2πn/3)u[n].</div></div>
-<div class="row"><div class="f">Unbounded output for a bounded input: a real bounded x at the pole frequency</div><div class="c"><span class="lab">Needs</span>Resonance.</div><div class="t"><span class="lab">Trap</span>x[n]=cos(2πn/3) ⇒ y grows. Say "bounded by 1, output unbounded".</div></div>
-<div class="row"><div class="f">Given x[n]=(0.5)ⁿu[n], y[n]=(0.25)ⁿu[n]: Ĥ = Ŷ/X̂ = (1−0.5z⁻¹)/(1−0.25z⁻¹)</div><div class="c"><span class="lab">Needs</span>Table pairs for αⁿu[n].</div><div class="t"><span class="lab">Trap</span>IIR (pole at 0.25 ≠ 0). h = 2δ[n] − 0.25ⁿu[n].</div></div>
-<div class="row"><div class="f">FIR ⇔ no poles except z=0. IIR ⇔ a pole elsewhere</div><div class="c"></div><div class="t"></div></div>
-<div class="row"><div class="f">Step response in Z: Ĥ(z)/(1−z⁻¹), RoC |z|&gt;1</div><div class="c"><span class="lab">Needs</span>Causal.</div><div class="t"><span class="lab">Trap</span>Sample Q7: 1/((1+z⁻¹+z⁻²)(1−z⁻¹)) = 1/(1−z⁻³).</div></div>
-<div class="row"><div class="f">Write the difference equation from Ĥ: cross-multiply, z⁻ᵐ → delay by m</div><div class="c"><span class="lab">Needs</span>State "subject to initial rest".</div><div class="t"><span class="lab">Trap</span>Missing initial rest loses a mark.</div></div>
-<div class="row"><div class="f">2022 Q8: y[n]=x[n]+2x[n+1]−2y[n−1]: x[n+1] gives a positive power of z in the numerator</div><div class="c"><span class="lab">Needs</span>Pole at −2, so RoC |z|&gt;2 for a causal solution.</div><div class="t"><span class="lab">Trap</span>Not stable (pole outside the unit circle).</div></div>
-<p class="try"><b>Stuck? Try:</b> Always: transfer function → poles → RoC from causality → stability test → output.</p>
-</section>
-<section class="card" id="w1-trans" data-w="w1">
-<header><span class="tag">W1</span><h3>Transformations of signals</h3></header>
-<div class="when"><b>Use when:</b> x(t−τ), x(αt), x(−t+2), "draw y" questions.</div>
-<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
-<div class="row"><div class="f">y(t) = x(t − τ)    y[n] = x[n − N]</div><div class="c"><span class="lab">Needs</span>τ&gt;0 or N&gt;0 shifts right (delay); negative shifts left (advance).</div><div class="t"><span class="lab">Trap</span>"+" inside the bracket moves the graph LEFT. Check one point.</div></div>
-<div class="row"><div class="f">y(t) = x(αt)</div><div class="c"><span class="lab">Needs</span>|α|&gt;1 compresses, |α|&lt;1 stretches. α=−1 is time reversal.</div><div class="t"><span class="lab">Trap</span>Dilation is clean for CT only; DT x[n/2] is undefined at odd n.</div></div>
-<div class="row"><div class="f">x(−t+2) = x(−(t−2))</div><div class="c"><span class="lab">Needs</span>Reflect first: z(t)=x(−t), then shift right by 2: y(t)=z(t−2).</div><div class="t"><span class="lab">Trap</span>Shift-then-reflect gives the wrong picture. Check y(0)=x(2), y(4)=x(−2).</div></div>
-<div class="row"><div class="f">y = αx,  y = x₁+x₂,  y = x₁x₂ (pointwise)</div><div class="c"><span class="lab">Needs</span>α real or complex.</div><div class="t"></div></div>
-<p class="try"><b>Stuck? Try:</b> Plug in two or three t values and read them off x. Do not trust the order of operations by eye.</p>
-</section>
-<section class="card" id="w1-cexp" data-w="w1">
-<header><span class="tag">W1</span><h3>Complex numbers, exponentials, sinusoids</h3></header>
-<div class="when"><b>Use when:</b> Magnitude, phase, growth or decay, writing x[n] from a plot.</div>
-<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
-<div class="row"><div class="f">x(t) = x<sub>R</sub> + j x<sub>I</sub>,   r = √(x<sub>R</sub>² + x<sub>I</sub>²),   x = r e<sup>jθ</sup></div><div class="c"><span class="lab">Needs</span>Phase usually in (−π, π].</div><div class="t"><span class="lab">Trap</span>tan⁻¹ alone loses the quadrant. Use the case rule for x<sub>R</sub>&lt;0.</div></div>
-<div class="row"><div class="f">e<sup>jω₀t</sup> = cos ω₀t + j sin ω₀t,   |e<sup>jω₀t</sup>| = 1</div><div class="c"><span class="lab">Needs</span>ω₀&gt;0 rotates anticlockwise.</div><div class="t"></div></div>
-<div class="row"><div class="f">General CT: e<sup>st</sup> = e<sup>σt</sup>e<sup>jωt</sup>,  s = σ + jω</div><div class="c"><span class="lab">Needs</span>σ&lt;0 decays, σ&gt;0 grows.</div><div class="t"></div></div>
-<div class="row"><div class="f">General DT: αⁿ = rⁿe<sup>jω₀n</sup>,  α = re<sup>jω₀</sup></div><div class="c"><span class="lab">Needs</span>r&lt;1 decays, r&gt;1 grows.</div><div class="t"><span class="lab">Trap</span>Read x[0] first to get the amplitude, then r from x[1]/x[0].</div></div>
-<div class="row"><div class="f">A cos(ω₀t+θ) = A Re{e<sup>j(ω₀t+θ)</sup>}</div><div class="c"><span class="lab">Needs</span>A&gt;0.</div><div class="t"><span class="lab">Trap</span>DT: |ω₀|&gt;π looks like a smaller frequency (aliasing).</div></div>
-<p class="try"><b>Stuck? Try:</b> For a decaying DT plot: x[0]=β, x[1]=βr gives r. A real positive plot means ω₀=0.</p>
-</section>
-<section class="card" id="w1-step" data-w="w1">
-<header><span class="tag">W1</span><h3>Unit step and unit impulse</h3></header>
-<div class="when"><b>Use when:</b> Build a pulse train from steps, sifting integrals and sums.</div>
-<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
-<div class="row"><div class="f">u[n]=1 for n≥0, else 0.   u(t)=1 for t&gt;0, 0 for t&lt;0</div><div class="c"></div><div class="t"><span class="lab">Trap</span>In this unit u(0) is left undefined in CT.</div></div>
-<div class="row"><div class="f">δ[n]=1 only at n=0.     Σ x[n]δ[n] = x[0]</div><div class="c"></div><div class="t"></div></div>
-<div class="row"><div class="f">∫ x(t)δ(t) dt = x(0)</div><div class="c"><span class="lab">Needs</span>x continuous at 0.</div><div class="t"></div></div>
-<div class="row"><div class="f">Pulse from t₁ to t₂ = u(t−t₁) − u(t−t₂)</div><div class="c"></div><div class="t"><span class="lab">Trap</span>Repeated pulses: find one, then shift copies.</div></div>
-<div class="row"><div class="f">δ(t) ≈ [u(t+ε) − u(t)]/ε as ε→0</div><div class="c"><span class="lab">Needs</span>Area stays 1.</div><div class="t"></div></div>
-<p class="try"><b>Stuck? Try:</b> Use δ(t−t₀) inside an integral to pick x(t₀). Delta and step relate by derivative or integral.</p>
-</section>
-<section class="card" id="w1-per" data-w="w1">
-<header><span class="tag">W1</span><h3>Periodicity</h3></header>
-<div class="when"><b>Use when:</b> "Is it periodic? Find the fundamental period."</div>
-<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
-<div class="row"><div class="f">CT: x(t+T)=x(t).  e<sup>jω₀t</sup> has T₀ = 2π/|ω₀|</div><div class="c"><span class="lab">Needs</span>Always periodic for ω₀≠0.</div><div class="t"></div></div>
-<div class="row"><div class="f">DT: x[n+N]=x[n], N a positive integer.  N = m·(2π/|ω₀|)</div><div class="c"><span class="lab">Needs</span>Periodic iff 2π/ω₀ is rational. Take the smallest m that makes N an integer.</div><div class="t"><span class="lab">Trap</span>sin(4πn/5): 2π/ω₀=5/2, so m=2, N₀=5. Fundamental frequency is 2π/N₀, not the given ω.</div></div>
-<div class="row"><div class="f">Fundamental frequency: f₀=1/T₀, ω₀=2π/T₀ (CT),  ω₀=2π/N₀ (DT)</div><div class="c"></div><div class="t"></div></div>
-<div class="row"><div class="f">Sum of two periodic signals</div><div class="c"><span class="lab">Needs</span>Same period gives that period. DT sum is always periodic. CT sum with different periods only if the ratio is rational.</div><div class="t"><span class="lab">Trap</span>Sampling a periodic CT signal may give an aperiodic DT signal.</div></div>
-<p class="try"><b>Stuck? Try:</b> Write ω₀/2π as a reduced fraction a/b. Then N₀ = b. Irrational means aperiodic.</p>
-</section>
-<section class="card" id="w1-prop" data-w="w1">
-<header><span class="tag">W1</span><h3>Bounded, even, odd</h3></header>
-<div class="when"><b>Use when:</b> Bounded signal tests, symmetry shortcuts.</div>
-<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
-<div class="row"><div class="f">Bounded: ∃M, |x(t)| ≤ M for all t</div><div class="c"><span class="lab">Needs</span>Use the magnitude for complex signals.</div><div class="t"><span class="lab">Trap</span>|e<sup>j(π/2)n + cos n</sup>| = e<sup>cos n</sup>, so bounded with M = e.</div></div>
-<div class="row"><div class="f">Even: x(−t)=x(t).   Odd: x(−t)=−x(t)</div><div class="c"></div><div class="t"></div></div>
-<div class="row"><div class="f">x_even = [x(t)+x(−t)]/2,   x_odd = [x(t)−x(−t)]/2</div><div class="c"><span class="lab">Needs</span>Any signal splits this way.</div><div class="t"></div></div>
-<div class="row"><div class="f">Odd ⇒ ∫ from −a to a of x = 0</div><div class="c"></div><div class="t"></div></div>
-<div class="row"><div class="f">even·even=even,  odd·odd=even,  even·odd=odd,  even+even=even,  odd+odd=odd</div><div class="c"></div><div class="t"></div></div>
-</section>
-<section class="card" id="w2-inter" data-w="w2">
-<header><span class="tag">W2</span><h3>Interconnecting systems</h3></header>
-<div class="when"><b>Use when:</b> Block diagrams, delay/gain/adder networks.</div>
-<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
-<div class="row"><div class="f">Series: S₂(S₁ x)</div><div class="c"><span class="lab">Needs</span>LTI blocks commute.</div><div class="t"><span class="lab">Trap</span>Order matters for general (non-LTI) systems.</div></div>
-<div class="row"><div class="f">Parallel: S₁x + S₂x</div><div class="c"></div><div class="t"></div></div>
-<div class="row"><div class="f">Feedback: write the signal on every wire, then eliminate</div><div class="c"><span class="lab">Needs</span>DT: put a delay in every loop.</div><div class="t"></div></div>
-<div class="row"><div class="f">Series or parallel of linear (or TI, or LTI) systems is linear (or TI, or LTI)</div><div class="c"><span class="lab">Needs</span>Gain, delay, integrator and differentiator are each LTI.</div><div class="t"><span class="lab">Trap</span>A network built only from gains, delays and adders is LTI without a proof.</div></div>
-</section>
-<section class="card" id="w2-tests" data-w="w2">
-<header><span class="tag">W2</span><h3>The five property tests</h3></header>
-<div class="when"><b>Use when:</b> Classify a system. Do each test separately.</div>
-<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
-<div class="row"><div class="f">Memoryless: y(t)=F(t,x(t))</div><div class="c"><span class="lab">Needs</span>Output at t uses only x at t.</div><div class="t"><span class="lab">Trap</span>Delay, advance, integrator and differentiator all have memory.</div></div>
-<div class="row"><div class="f">Causal: no future input</div><div class="c"><span class="lab">Needs</span>Memoryless systems are causal. Check y at one time.</div><div class="t"><span class="lab">Trap</span>y(t)=x(2t) is non-causal (y(1)=x(2)). A predictor built from past data is causal.</div></div>
-<div class="row"><div class="f">BIBO stable: |x| ≤ M ⇒ |y| ≤ M′</div><div class="c"><span class="lab">Needs</span>To disprove, one bounded input with unbounded output is enough.</div><div class="t"><span class="lab">Trap</span>Integrator is unstable (step in, ramp out). Differentiator is unstable (x=sin t²).</div></div>
-<div class="row"><div class="f">Linear: S(x₁+x₂)=Sx₁+Sx₂ and S(αx)=αSx</div><div class="c"><span class="lab">Needs</span>Both parts, for complex α. Zero in must give zero out.</div><div class="t"><span class="lab">Trap</span>y=x+1 fails (α=0). x² and |x| fail. t·x(t) and x(t²) are linear (they act on time, not on the value).</div></div>
-<div class="row"><div class="f">Time-invariant: S(Delay x) = Delay(Sx)</div><div class="c"><span class="lab">Needs</span>Compare delay-then-S with S-then-delay.</div><div class="t"><span class="lab">Trap</span>sin(t)·x(t) is TV. x(2t) is TV. Linear and TI are independent properties.</div></div>
-<p class="try"><b>Stuck? Try:</b> Linear: try α=2 or x=0. TI: put in a shifted input and compare. Stable: try a step.</p>
-</section>
-<section class="card" id="w2-eq" data-w="w2">
-<header><span class="tag">W2</span><h3>Difference and differential equations, initial rest</h3></header>
-<div class="when"><b>Use when:</b> A recursive equation is given with no extra condition.</div>
-<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
-<div class="row"><div class="f">FIR: y[n] = Σ b<sub>k</sub> x[n−k]</div><div class="c"><span class="lab">Needs</span>Always causal and LTI.</div><div class="t"></div></div>
-<div class="row"><div class="f">IIR: Σ a<sub>k</sub> y[n−k] = Σ b<sub>k</sub> x[n−k]</div><div class="c"><span class="lab">Needs</span>Needs an auxiliary condition.</div><div class="t"><span class="lab">Trap</span>y[0]=0 at a fixed time breaks time-invariance. y[−1]=1 breaks linearity.</div></div>
-<div class="row"><div class="f">Initial rest: x[n]=0 for n&lt;n₀ ⇒ y[n]=0 for n&lt;n₀</div><div class="c"><span class="lab">Needs</span>Applies to difference and differential equations (CT: y and its first N−1 derivatives are 0 at t₀).</div><div class="t"><span class="lab">Trap</span>Initial rest gives a causal LTI system.</div></div>
-<div class="row"><div class="f">Running average: y[n] = (1/L)Σ x[n−k]</div><div class="c"><span class="lab">Needs</span>Causal, FIR, LTI.</div><div class="t"></div></div>
-</section>
-<section class="card" id="w3-dt" data-w="w3">
-<header><span class="tag">W3</span><h3>DT convolution and impulse response</h3></header>
-<div class="when"><b>Use when:</b> Find y from x and h, find h from a difference equation.</div>
-<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
-<div class="row"><div class="f">x[n] = Σ x[k]δ[n−k]  (sifting)</div><div class="c"></div><div class="t"></div></div>
-<div class="row"><div class="f">h[n] = response to δ[n]</div><div class="c"><span class="lab">Needs</span>LTI system.</div><div class="t"><span class="lab">Trap</span>h is one signal. The convolution is the general rule.</div></div>
-<div class="row"><div class="f">y[n] = Σ x[k] h[n−k] = (x∗h)[n]</div><div class="c"><span class="lab">Needs</span>LTI. Flip h, then shift.</div><div class="t"><span class="lab">Trap</span>Never write x[n]∗h[n] as a pointwise product of values.</div></div>
-<div class="row"><div class="f">Support of x∗h = [a₁+a₂, b₁+b₂]</div><div class="c"><span class="lab">Needs</span>Both finite-duration.</div><div class="t"><span class="lab">Trap</span>Add the endpoints. Length = L₁+L₂−1.</div></div>
-<div class="row"><div class="f">x∗h=h∗x,   (x∗h₁)∗h₂ = x∗(h₁∗h₂),   x∗(h₁+h₂)=x∗h₁+x∗h₂,   x∗δ=x,   x∗δ[n−N]=x[n−N]</div><div class="c"></div><div class="t"></div></div>
-<div class="row"><div class="f">Series: h₁∗h₂.   Parallel: h₁+h₂</div><div class="c"></div><div class="t"></div></div>
-<p class="try"><b>Stuck? Try:</b> Three ways: table or sliding window, polynomial multiplication (FIR only), or the sum with case splits (IIR).</p>
-</section>
-<section class="card" id="w3-ct" data-w="w3">
-<header><span class="tag">W3</span><h3>CT convolution</h3></header>
-<div class="when"><b>Use when:</b> Integral convolution with piecewise signals.</div>
-<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
-<div class="row"><div class="f">y(t) = ∫ x(τ) h(t−τ) dτ</div><div class="c"><span class="lab">Needs</span>LTI. Flip h, slide by t, integrate the overlap.</div><div class="t"><span class="lab">Trap</span>Split into cases for each overlap region. The result should be continuous at the boundaries (no impulses).</div></div>
-<div class="row"><div class="f">x∗δ = x,   x∗δ(t−τ₀) = x(t−τ₀)</div><div class="c"></div><div class="t"></div></div>
-<div class="row"><div class="f">Step response s(t) = (h∗u)(t);  h(t) = ds/dt</div><div class="c"><span class="lab">Needs</span>Step response differentiable.</div><div class="t"></div></div>
-<div class="row"><div class="f">Support [a₁+a₂, b₁+b₂]</div><div class="c"></div><div class="t"></div></div>
-</section>
-<section class="card" id="w3-hprops" data-w="w3">
-<header><span class="tag">W3</span><h3>LTI properties from the impulse response</h3></header>
-<div class="when"><b>Use when:</b> "Is this LTI system causal / stable / memoryless?" and you are given h.</div>
-<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
-<div class="row"><div class="f">Memoryless</div><div class="c"><span class="lab">Needs</span>h[n]=0 for n≠0, h(t)=0 for t≠0</div><div class="t"><span class="lab">Trap</span>Memoryless LTI = gain system, h = αδ.</div></div>
-<div class="row"><div class="f">Causal</div><div class="c"><span class="lab">Needs</span>h[n]=0 for n&lt;0,  h(t)=0 for t&lt;0</div><div class="t"></div></div>
-<div class="row"><div class="f">BIBO stable (DT)</div><div class="c"><span class="lab">Needs</span>Σ|h[n]| &lt; ∞  (absolutely summable)</div><div class="t"><span class="lab">Trap</span>1/n decay is NOT summable. u[n] is not summable.</div></div>
-<div class="row"><div class="f">BIBO stable (CT)</div><div class="c"><span class="lab">Needs</span>∫|h(t)| dt &lt; ∞  (absolutely integrable)</div><div class="t"><span class="lab">Trap</span>e<sup>−t</sup>u(t) is integrable (=1). u(t) and (1/t)u(t−1) are not.</div></div>
-<div class="row"><div class="f">Bounded and zero outside [a,b] ⇒ absolutely integrable</div><div class="c"></div><div class="t"><span class="lab">Trap</span>Stable does not imply causal (a boxcar around 0 is stable, non-causal).</div></div>
-<p class="try"><b>Stuck? Try:</b> Stability is the hardest test: check the sum or integral actually converges.</p>
-</section>
-<section class="card" id="w4-per" data-w="w4">
-<header><span class="tag">W4</span><h3>Periodic extension and finite-duration signals</h3></header>
-<div class="when"><b>Use when:</b> A finite-duration x is repeated every T.</div>
-<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
-<div class="row"><div class="f">x_per(t) = Σ_m x(t − mT)</div><div class="c"><span class="lab">Needs</span>Take T = duration b−a (CT) or N₀ = B−A+1 (DT).</div><div class="t"><span class="lab">Trap</span>DT length has the "+1". CT length does not.</div></div>
-<div class="row"><div class="f">Fundamental period of the extension can be shorter than T</div><div class="c"><span class="lab">Needs</span>Happens when x repeats inside itself.</div><div class="t"><span class="lab">Trap</span>Two equal triangles in a 2-second window give T₀=1, not 2.</div></div>
-<div class="row"><div class="f">DT piece of length 1 (single impulse)</div><div class="c"></div><div class="t"><span class="lab">Trap</span>Its periodic extension is a constant.</div></div>
-</section>
-<section class="card" id="w4-fs" data-w="w4">
-<header><span class="tag">W4</span><h3>Fourier series formulas</h3></header>
-<div class="when"><b>Use when:</b> Periodic x, "find the coefficients", spectrum plots.</div>
-<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
-<div class="row"><div class="f">CT synthesis:  x(t) = Σₖ Xₖ e<sup>jkω₀t</sup></div><div class="c"><span class="lab">Needs</span>Periodic, T₀ = 2π/ω₀.</div><div class="t"></div></div>
-<div class="row"><div class="f">CT analysis:  Xₖ = (1/T₀) ∫ over one period of x(t) e<sup>−jkω₀t</sup> dt</div><div class="c"><span class="lab">Needs</span>Any period works.</div><div class="t"><span class="lab">Trap</span>Choose the interval that uses symmetry.</div></div>
-<div class="row"><div class="f">DT synthesis:  x[n] = Σ for k=0..N₀−1 of Xₖ e<sup>jkω₀n</sup></div><div class="c"><span class="lab">Needs</span>ω₀=2π/N₀.</div><div class="t"></div></div>
-<div class="row"><div class="f">DT analysis:  Xₖ = (1/N₀) Σ for n=0..N₀−1 of x[n] e<sup>−jkω₀n</sup></div><div class="c"></div><div class="t"><span class="lab">Trap</span>DT Xₖ is periodic in k with period N₀. CT Xₖ is not.</div></div>
-<div class="row"><div class="f">Read Xₖ straight from Euler: cos(ω₀t)=½e<sup>jω₀t</sup>+½e<sup>−jω₀t</sup></div><div class="c"><span class="lab">Needs</span>Coefficients are unique.</div><div class="t"><span class="lab">Trap</span>No integral needed if x is already a sum of harmonics.</div></div>
-<div class="row"><div class="f">X₀ = average value of x</div><div class="c"></div><div class="t"></div></div>
-<div class="row"><div class="f">DT square wave x=1 for |n| ≤ N (2N+1 samples): Xₖ = sin(kω₀(N+½)) / (N₀ sin(kω₀/2))</div><div class="c"><span class="lab">Needs</span>Check by summing the geometric series.</div><div class="t"><span class="lab">Trap</span>The formula sheet prints sin(kω₀(2N+1)/2)/(kω₀/2), which drops the 1/N₀ and has no sin in the denominator. Use the corrected form.</div></div>
-<div class="row"><div class="f">Square pulse |t|&lt;T₁ in period T₀:  Xₖ = sin(kω₀T₁)/(kπ),  X₀ = 2T₁/T₀</div><div class="c"><span class="lab">Needs</span>Standard pair. Re-derive if the pulse is shifted.</div><div class="t"><span class="lab">Trap</span>Shifting by t₀ multiplies Xₖ by e<sup>−jkω₀t₀</sup>.</div></div>
-<div class="row"><div class="f">Convergence at a jump → average of the left and right limits</div><div class="c"><span class="lab">Needs</span>Dirichlet conditions.</div><div class="t"><span class="lab">Trap</span>Truncated sums overshoot near a jump.</div></div>
-<p class="try"><b>Stuck? Try:</b> Check geometric series first: if x = Σ aᵏ-type terms, the coefficients are just those terms. In MATLAB: X = fft(x)/N, x = N*ifft(X).</p>
-</section>
-<section class="card" id="w4-fsprop" data-w="w4">
-<header><span class="tag">W4</span><h3>Fourier series properties</h3></header>
-<div class="when"><b>Use when:</b> Modify a signal and ask for new coefficients.</div>
-<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
-<div class="row"><div class="f">Linearity: αx+βz ⇒ αXₖ+βZₖ</div><div class="c"><span class="lab">Needs</span>Same period.</div><div class="t"></div></div>
-<div class="row"><div class="f">Real x ⇒ Xₖ = X*₋ₖ</div><div class="c"><span class="lab">Needs</span>|Xₖ| even in k, ∠Xₖ odd in k.</div><div class="t"></div></div>
-<div class="row"><div class="f">Conjugation: x* ⇒ X*₋ₖ</div><div class="c"></div><div class="t"></div></div>
-<div class="row"><div class="f">Modulation: e<sup>jMω₀t</sup>x ⇒ Yₖ = Xₖ₋M</div><div class="c"><span class="lab">Needs</span>M integer.</div><div class="t"><span class="lab">Trap</span>cos(Mω₀t)x gives ½Xₖ₋M + ½Xₖ₊M.</div></div>
-<div class="row"><div class="f">Periodic convolution ⇒ Yₖ = T₀ XₖZₖ (CT);   N₀XₖZₖ (DT)</div><div class="c"><span class="lab">Needs</span>Convolution over one period.</div><div class="t"><span class="lab">Trap</span>Do not forget the T₀ or N₀ factor.</div></div>
-<div class="row"><div class="f">Multiplication ⇒ Yₖ = Σ_ℓ XℓZₖ₋ℓ</div><div class="c"></div><div class="t"></div></div>
-<div class="row"><div class="f">Parseval: average power = (1/T₀)∫|x|² = Σ|Xₖ|²</div><div class="c"><span class="lab">Needs</span>DT: (1/N₀)Σ|x[n]|² = Σ over one period of |Xₖ|².</div><div class="t"><span class="lab">Trap</span>Square the magnitudes. Do not just sum Xₖ.</div></div>
-<div class="row"><div class="f">Differentiation: dx/dt ⇒ jkω₀Xₖ</div><div class="c"><span class="lab">Needs</span>CT only.</div><div class="t"><span class="lab">Trap</span>There is no DT differentiation property.</div></div>
-</section>
-<section class="card" id="w5-fr" data-w="w5">
-<header><span class="tag">W5</span><h3>Frequency response</h3></header>
-<div class="when"><b>Use when:</b> Response to e<sup>jωt</sup>, cos, steady-state, reading H from an equation.</div>
-<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
-<div class="row"><div class="f">x = e<sup>jωt</sup> ⇒ y = H(ω) e<sup>jωt</sup>.   DT: x = e<sup>jωn</sup> ⇒ y = H(ω) e<sup>jωn</sup></div><div class="c"><span class="lab">Needs</span>BIBO stable LTI. Eternal input (all t).</div><div class="t"><span class="lab">Trap</span>y = H(ω)x holds only when x is exactly e<sup>jωt</sup> at that ω.</div></div>
-<div class="row"><div class="f">H(ω) = ∫ h(τ)e<sup>−jωτ</sup>dτ   (CT);   H(ω) = Σ h[k]e<sup>−jωk</sup>   (DT)</div><div class="c"><span class="lab">Needs</span>h absolutely integrable or summable.</div><div class="t"></div></div>
-<div class="row"><div class="f">H(ω) = |H|e<sup>j∠H</sup>.   Real system: H(−ω) = H(ω)*</div><div class="c"><span class="lab">Needs</span>|H| even, ∠H odd.</div><div class="t"></div></div>
-<div class="row"><div class="f">x = cos(ωt+φ) ⇒ y = |H(ω)| cos(ωt + φ + ∠H(ω))</div><div class="c"><span class="lab">Needs</span>Real, stable system.</div><div class="t"><span class="lab">Trap</span>Frequency never changes. Amplitude scales by |H|, phase shifts by ∠H.</div></div>
-<div class="row"><div class="f">DT: H(ω) = H(ω+2π)</div><div class="c"><span class="lab">Needs</span>Always true.</div><div class="t"><span class="lab">Trap</span>CT frequency response is generally not periodic.</div></div>
-<div class="row"><div class="f">Delay τ: H = e<sup>−jωτ</sup>.   DT unit delay: H = e<sup>−jω</sup></div><div class="c"></div><div class="t"><span class="lab">Trap</span>Magnitude 1, linear phase.</div></div>
-<div class="row"><div class="f">H(0) = DC gain</div><div class="c"></div><div class="t"><span class="lab">Trap</span>A high-pass kills a DC offset.</div></div>
-<p class="try"><b>Stuck? Try:</b> Read H straight off the equation: substitute x=e<sup>jωt</sup>, y=H e<sup>jωt</sup>, divide by e<sup>jωt</sup>.</p>
-</section>
-<section class="card" id="w5-eq" data-w="w5">
-<header><span class="tag">W5</span><h3>H(ω) from a differential or difference equation</h3></header>
-<div class="when"><b>Use when:</b> LCCDE given; find H(ω), |H|, ∠H.</div>
-<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
-<div class="row"><div class="f">Σ a<sub>k</sub> (jω)ᵏ  H(ω) = Σ b<sub>k</sub> (jω)ᵏ   ⇒ H = Σ b<sub>k</sub> (jω)ᵏ / Σ a<sub>k</sub> (jω)ᵏ</div><div class="c"><span class="lab">Needs</span>CT, stable.</div><div class="t"><span class="lab">Trap</span>RC circuit: H = 1/(1 + jωRC).</div></div>
-<div class="row"><div class="f">Σ a<sub>k</sub> e<sup>−jωk</sup> H(ω) = Σ b<sub>k</sub> e<sup>−jωk</sup>  ⇒ H = Σ b<sub>k</sub> e<sup>−jωk</sup> / Σ a<sub>k</sub> e<sup>−jωk</sup></div><div class="c"><span class="lab">Needs</span>DT, stable.</div><div class="t"><span class="lab">Trap</span>First difference: H = 1 − e<sup>−jω</sup>, |H| = √(2−2cos ω).</div></div>
-<div class="row"><div class="f">Positive real factor × e<sup>−jω·c</sup> ⇒ magnitude = |real factor|, phase = −cω</div><div class="c"><span class="lab">Needs</span>FIR averagers.</div><div class="t"><span class="lab">Trap</span>Phase jumps by π wherever the real factor changes sign. That is not an error.</div></div>
-<div class="row"><div class="f">Series: H₁H₂.   Parallel: H₁+H₂.   Feedback: H₁/(1−H₁H₂)</div><div class="c"></div><div class="t"><span class="lab">Trap</span>Memorise the minus sign.</div></div>
-</section>
-<section class="card" id="w5-ss" data-w="w5">
-<header><span class="tag">W5</span><h3>Transient and steady state</h3></header>
-<div class="when"><b>Use when:</b> Input is switched on: e<sup>jωt</sup>u(t).</div>
-<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
-<div class="row"><div class="f">y = H(ω)e<sup>jωt</sup>u(t) + y_tr(t),   y_tr → 0</div><div class="c"><span class="lab">Needs</span>Causal, BIBO stable.</div><div class="t"><span class="lab">Trap</span>Eternal input has no transient.</div></div>
-<div class="row"><div class="f">FIR ⇒ transient lasts finitely many samples</div><div class="c"></div><div class="t"><span class="lab">Trap</span>IIR transients decay but never reach exactly zero.</div></div>
-</section>
-<section class="card" id="w6-per" data-w="w6">
-<header><span class="tag">W6</span><h3>Periodic input through an LTI system</h3></header>
-<div class="when"><b>Use when:</b> x periodic, find y (CT or DT).</div>
-<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
-<div class="row"><div class="f">Yₖ = H(kω₀) Xₖ</div><div class="c"><span class="lab">Needs</span>Stable LTI, x periodic with ω₀.</div><div class="t"><span class="lab">Trap</span>y has the same period as x.</div></div>
-<div class="row"><div class="f">y(t) = Σ H(kω₀)Xₖ e<sup>jkω₀t</sup></div><div class="c"></div><div class="t"></div></div>
-<div class="row"><div class="f">Frequency in x but not in y ⇒ H = 0 there</div><div class="c"></div><div class="t"><span class="lab">Trap</span>A frequency missing from both x and y tells you nothing about H.</div></div>
-<div class="row"><div class="f">Adding a component that sits on a zero of H changes nothing</div><div class="c"></div><div class="t"><span class="lab">Trap</span>Check H at every new frequency.</div></div>
-</section>
-<section class="card" id="w6-filt" data-w="w6">
-<header><span class="tag">W6</span><h3>Ideal filters, FIR design, delay</h3></header>
-<div class="when"><b>Use when:</b> Filter type from H, ideal filter sketches, linear-phase FIR.</div>
-<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
-<div class="row"><div class="f">Ideal low-pass: |H|=1 for |ω|&lt;ω_c, else 0.  h(t) = sin(ω_c t)/(πt)</div><div class="c"><span class="lab">Needs</span>Symmetric about 0.</div><div class="t"><span class="lab">Trap</span>Always non-causal. Cannot be built.</div></div>
-<div class="row"><div class="f">DT ideal filters repeat every 2π</div><div class="c"><span class="lab">Needs</span>Sketch (−π, π] first, then replicate.</div><div class="t"></div></div>
-<div class="row"><div class="f">Series of ideal filters: only the overlap survives. Parallel: passbands add</div><div class="c"></div><div class="t"><span class="lab">Trap</span>Non-overlapping passbands in series give the zero system.</div></div>
-<div class="row"><div class="f">Linear-phase FIR, length L: ∠H = −((L−1)/2)ω</div><div class="c"><span class="lab">Needs</span>Symmetric coefficients.</div><div class="t"><span class="lab">Trap</span>Delay is (L−1)/2 samples for every passband frequency. Longer filter = better magnitude, more delay.</div></div>
-<div class="row"><div class="f">firpm(L−1, F, A)</div><div class="c"><span class="lab">Needs</span>First argument is the order = length − 1. F is in units of π.</div><div class="t"><span class="lab">Trap</span>Needs a transition band. No brick wall.</div></div>
-<div class="row"><div class="f">Reading filter type from y[n] = x[n] ± x[n−1]: sum = low-pass, difference = high-pass</div><div class="c"><span class="lab">Needs</span>Check H at ω=0 and ω=π.</div><div class="t"></div></div>
-</section>
-<section class="card" id="w8-def" data-w="w8">
-<header><span class="tag">W8</span><h3>Fourier transform definitions</h3></header>
-<div class="when"><b>Use when:</b> Aperiodic signal, spectrum, "find X(ω)".</div>
-<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
-<div class="row"><div class="f">DTFT:  X(ω) = Σ x[k] e<sup>−jωk</sup>.   Inverse: x[n] = (1/2π)∫ over any 2π of X(ω)e<sup>jωn</sup>dω</div><div class="c"><span class="lab">Needs</span>x absolutely summable.</div><div class="t"><span class="lab">Trap</span>X(ω) is always 2π-periodic.</div></div>
-<div class="row"><div class="f">CTFT:  X(ω) = ∫ x(t)e<sup>−jωt</sup>dt.   Inverse: x(t) = (1/2π)∫X(ω)e<sup>jωt</sup>dω</div><div class="c"><span class="lab">Needs</span>x absolutely integrable.</div><div class="t"><span class="lab">Trap</span>Course convention is ω in rad/s with the 1/2π in the inverse.</div></div>
-<div class="row"><div class="f">Geometric series: Σ αⁿ = 1/(1−α) for |α|&lt;1</div><div class="c"></div><div class="t"><span class="lab">Trap</span>Spot this before integrating.</div></div>
-<div class="row"><div class="f">Discrete in one domain ⇔ periodic in the other</div><div class="c"></div><div class="t"><span class="lab">Trap</span>Periodic signal ⇒ discrete spectrum. DT signal ⇒ periodic spectrum.</div></div>
-<p class="try"><b>Stuck? Try:</b> Check whether x is already in the pairs table, then apply properties instead of integrating.</p>
-</section>
-<section class="card" id="w8-prop" data-w="w8">
-<header><span class="tag">W8</span><h3>Fourier transform properties (CT and DT)</h3></header>
-<div class="when"><b>Use when:</b> Chain properties on a known pair.</div>
-<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
-<div class="row"><div class="f">Linearity: αx+βz ⇒ αX+βZ</div><div class="c"></div><div class="t"></div></div>
-<div class="row"><div class="f">Delay: x(t−τ) ⇒ e<sup>−jωτ</sup>X(ω).   DT: x[n−N] ⇒ e<sup>−jωN</sup>X(ω)</div><div class="c"></div><div class="t"></div></div>
-<div class="row"><div class="f">Modulation: e<sup>jω₀t</sup>x ⇒ X(ω−ω₀)</div><div class="c"></div><div class="t"><span class="lab">Trap</span>Spectrum slides right by ω₀. DT wraps every 2π.</div></div>
-<div class="row"><div class="f">Convolution: x∗z ⇒ XZ</div><div class="c"></div><div class="t"><span class="lab">Trap</span>Standard exam pattern: linearity + delay + convolution in one line.</div></div>
-<div class="row"><div class="f">Multiplication: xz ⇒ (1/2π)∫X(Ω)Z(ω−Ω)dΩ</div><div class="c"><span class="lab">Needs</span>DT integral over any 2π interval.</div><div class="t"></div></div>
-<div class="row"><div class="f">Time scaling (CT): x(at) ⇒ (1/|a|)X(ω/a)</div><div class="c"><span class="lab">Needs</span>a≠0 real.</div><div class="t"><span class="lab">Trap</span>No general DT version. Only x[n/k] (zeros between) gives X(kω).</div></div>
-<div class="row"><div class="f">Conjugation: x* ⇒ X(−ω)*</div><div class="c"></div><div class="t"></div></div>
-<div class="row"><div class="f">Real x ⇒ X(−ω) = X(ω)*</div><div class="c"><span class="lab">Needs</span>|X| even, ∠X odd.</div><div class="t"></div></div>
-<div class="row"><div class="f">Even real x ⇒ X real</div><div class="c"></div><div class="t"></div></div>
-<div class="row"><div class="f">Parseval: ∫|x|²dt = (1/2π)∫|X|²dω.   DT: Σ|x[n]|² = (1/2π)∫ over 2π of |X|²dω</div><div class="c"></div><div class="t"><span class="lab">Trap</span>Use Parseval to turn a hard integral like ∫1/(1+ω²)dω into 2π∫e<sup>−2t</sup>dt = π.</div></div>
-<div class="row"><div class="f">AM: A cos(ω_c t+θ)x(t) ⇒ (A/2)[X(ω−ω_c)e<sup>jθ</sup> + X(ω+ω_c)e<sup>−jθ</sup>]</div><div class="c"></div><div class="t"></div></div>
-</section>
-<section class="card" id="w8-pairs" data-w="w8">
-<header><span class="tag">W8</span><h3>Transform pairs (given table)</h3></header>
-<div class="when"><b>Use when:</b> Look these up. Combine with properties.</div>
-<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
-<div class="row"><div class="f">e<sup>−at</sup>u(t) ⇔ 1/(a+jω)</div><div class="c"><span class="lab">Needs</span>Re(a)&gt;0.</div><div class="t"></div></div>
-<div class="row"><div class="f">te<sup>−at</sup>u(t) ⇔ 1/(a+jω)²</div><div class="c"><span class="lab">Needs</span>Re(a)&gt;0.</div><div class="t"></div></div>
-<div class="row"><div class="f">u(t+T₁) − u(t−T₁) ⇔ 2 sin(ωT₁)/ω</div><div class="c"></div><div class="t"></div></div>
-<div class="row"><div class="f">sin(Wt)/(πt) ⇔ u(ω+W) − u(ω−W)</div><div class="c"><span class="lab">Needs</span>W&gt;0.</div><div class="t"><span class="lab">Trap</span>Ideal low-pass impulse response.</div></div>
-<div class="row"><div class="f">δ(t) ⇔ 1.    δ(t−τ) ⇔ e<sup>−jωτ</sup></div><div class="c"></div><div class="t"></div></div>
-<div class="row"><div class="f">u(t) ⇔ 1/(jω) + πδ(ω)</div><div class="c"></div><div class="t"></div></div>
-<div class="row"><div class="f">e<sup>jω₀t</sup> ⇔ 2πδ(ω−ω₀)</div><div class="c"></div><div class="t"></div></div>
-<div class="row"><div class="f">DT: αⁿu[n] ⇔ 1/(1−αe<sup>−jω</sup>)</div><div class="c"><span class="lab">Needs</span>|α|&lt;1.</div><div class="t"></div></div>
-<div class="row"><div class="f">DT: (n+1)αⁿu[n] ⇔ 1/(1−αe<sup>−jω</sup>)²</div><div class="c"><span class="lab">Needs</span>|α|&lt;1.</div><div class="t"></div></div>
-<div class="row"><div class="f">DT window u[n+N]−u[n−N] ⇔ [sin(Nω)/sin(ω/2)]e<sup>jω/2</sup></div><div class="c"><span class="lab">Needs</span>Matches the current formula sheet and your notes (2N samples).</div><div class="t"><span class="lab">Trap</span>The (2N+1)-sample window u[n+N]−u[n−N−1] gives sin(ω(N+½))/sin(ω/2), as printed in the 2024 paper.</div></div>
-<div class="row"><div class="f">DT: sin(Wn)/(πn) ⇔ 2π-periodic extension of u(ω+W) − u(ω−W)</div><div class="c"><span class="lab">Needs</span>0&lt;W&lt;π.</div><div class="t"></div></div>
-<div class="row"><div class="f">DT: δ[n−n₀] ⇔ e<sup>−jωn₀</sup></div><div class="c"></div><div class="t"></div></div>
-</section>
-<section class="card" id="w8-sys" data-w="w8">
-<header><span class="tag">W8</span><h3>LTI systems and generalised transforms</h3></header>
-<div class="when"><b>Use when:</b> Output of a system, periodic signals in the Fourier transform.</div>
-<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
-<div class="row"><div class="f">Y(ω) = H(ω)X(ω)  (H = FT of h)</div><div class="c"><span class="lab">Needs</span>Stable LTI.</div><div class="t"><span class="lab">Trap</span>H = Y/X fails where X=0 (that is 0/0, not H=0).</div></div>
-<div class="row"><div class="f">Periodic x: X(ω) = 2π Σₖ Xₖ δ(ω − kω₀)</div><div class="c"><span class="lab">Needs</span>Xₖ are the Fourier series coefficients.</div><div class="t"><span class="lab">Trap</span>Periodic signals have no ordinary FT (not absolutely integrable).</div></div>
-<div class="row"><div class="f">DT periodic: impulse train repeating every 2π</div><div class="c"></div><div class="t"><span class="lab">Trap</span>A single impulse is not enough in DT.</div></div>
-<div class="row"><div class="f">DC motor and similar: derive H(ω) from the ODE, read h from the table</div><div class="c"><span class="lab">Needs</span>Impulse cannot always be measured.</div><div class="t"></div></div>
-</section>
-<section class="card" id="w9-alias" data-w="w9">
-<header><span class="tag">W9</span><h3>Sampling and aliasing</h3></header>
-<div class="when"><b>Use when:</b> Choose a sampling rate, find an aliased frequency.</div>
-<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
-<div class="row"><div class="f">x<sub>s</sub>[n] = x(nT<sub>s</sub>),   ω_s = 2π/T<sub>s</sub>,   f<sub>s</sub> = 1/T<sub>s</sub></div><div class="c"></div><div class="t"></div></div>
-<div class="row"><div class="f">cos(ω₀t) sampled: no aliasing iff T<sub>s</sub> &lt; π/ω₀</div><div class="c"></div><div class="t"><span class="lab">Trap</span>Exactly T<sub>s</sub> = π/ω₀ is a degenerate case (samples can be all zero). Never use it.</div></div>
-<div class="row"><div class="f">Bandwidth W: X(ω)=0 for |ω|&gt;W.  No aliasing iff W·T<sub>s</sub> &lt; π</div><div class="c"><span class="lab">Needs</span>Nyquist frequency = π/T<sub>s</sub>.</div><div class="t"><span class="lab">Trap</span>Nyquist rate is 2W (a rate). Nyquist frequency is π/T<sub>s</sub>. Do not mix them up.</div></div>
-<div class="row"><div class="f">X<sub>s</sub>(ω) = (1/T<sub>s</sub>) Σ_ℓ X((ω − 2πℓ)/T<sub>s</sub>)</div><div class="c"><span class="lab">Needs</span>DTFT of the samples.</div><div class="t"><span class="lab">Trap</span>Copies of X scaled by T<sub>s</sub> horizontally and 1/T<sub>s</sub> vertically, every 2π.</div></div>
-<div class="row"><div class="f">Alias of f above f<sub>s</sub>/2: fold about multiples of f<sub>s</sub></div><div class="c"><span class="lab">Needs</span>Example: 50 Hz at f<sub>s</sub>=80 Hz lands at 30 Hz.</div><div class="t"><span class="lab">Trap</span>Noise outside the band can still alias onto the signal.</div></div>
-<div class="row"><div class="f">Modulated signal: compute the bandwidth of the signal you actually sample</div><div class="c"></div><div class="t"><span class="lab">Trap</span>Modulation by cos(ω_c t) raises the bandwidth to W+ω_c.</div></div>
-<p class="try"><b>Stuck? Try:</b> Draw X(ω) and its copies every 2π/T<sub>s</sub>. Overlap means aliasing.</p>
-</section>
-<section class="card" id="w9-recon" data-w="w9">
-<header><span class="tag">W9</span><h3>Anti-aliasing and reconstruction</h3></header>
-<div class="when"><b>Use when:</b> Reconstruction filter, interpolation, ZOH vs FOH vs sinc.</div>
-<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
-<div class="row"><div class="f">Always low-pass filter before sampling or downsampling</div><div class="c"><span class="lab">Needs</span>Cut off at the band you care about, not the raw bandwidth.</div><div class="t"><span class="lab">Trap</span>Skipping it is the most common project mistake.</div></div>
-<div class="row"><div class="f">Reconstruction: y = h ∗ w,  w(t) = Σ x<sub>s</sub>[n]δ(t−nT<sub>s</sub>),  Y(ω) = H(ω)X<sub>s</sub>(T<sub>s</sub>ω)</div><div class="c"></div><div class="t"></div></div>
-<div class="row"><div class="f">Interpolation condition: h(nT<sub>s</sub>) = δ[n]</div><div class="c"><span class="lab">Needs</span>Both h(0)=1 and zeros at other sample times.</div><div class="t"></div></div>
-<div class="row"><div class="f">Ideal: H = T<sub>s</sub> for |ω|&lt;π/T<sub>s</sub>, else 0.  h(t) = sin(πt/T<sub>s</sub>)/(πt/T<sub>s</sub>)</div><div class="c"><span class="lab">Needs</span>W·T<sub>s</sub> &lt; π.</div><div class="t"><span class="lab">Trap</span>Non-causal. Needs all past and future samples.</div></div>
-<div class="row"><div class="f">Shannon–Nyquist: ω_s &gt; 2W ⇒ exact reconstruction by the sinc filter</div><div class="c"><span class="lab">Needs</span>Bandlimited signal.</div><div class="t"><span class="lab">Trap</span>ECG with 40 Hz bandwidth needs f<sub>s</sub> &gt; 80 Hz.</div></div>
-<div class="row"><div class="f">ZOH: h = u(t) − u(t−T<sub>s</sub>), delay ≈ T<sub>s</sub>/2.   Causal FOH: delay T<sub>s</sub></div><div class="c"><span class="lab">Needs</span>Causal.</div><div class="t"><span class="lab">Trap</span>Better interpolation costs either causality or delay.</div></div>
-<div class="row"><div class="f">Signal not exactly bandlimited loses energy in the filter</div><div class="c"><span class="lab">Needs</span>Lost energy = (1/2π)∫|X|² over the removed band.</div><div class="t"><span class="lab">Trap</span>Use Parseval, not inspection.</div></div>
-<div class="row"><div class="f">Reconstruction recipe: put a scaled copy of h at each sample and sum</div><div class="c"></div><div class="t"></div></div>
-</section>
-<section class="card" id="w10-lt" data-w="w10">
-<header><span class="tag">W10</span><h3>Laplace transform and RoC</h3></header>
-<div class="when"><b>Use when:</b> Transform a signal, find the region of convergence.</div>
-<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
-<div class="row"><div class="f">X̂(s) = ∫ x(t)e<sup>−st</sup>dt,   s = σ+jω</div><div class="c"></div><div class="t"><span class="lab">Trap</span>The answer is incomplete without the RoC.</div></div>
-<div class="row"><div class="f">RoC depends only on σ = Re(s)</div><div class="c"></div><div class="t"><span class="lab">Trap</span>It is a vertical strip, half-plane, whole plane or empty. Never depends on ω.</div></div>
-<div class="row"><div class="f">Right-sided ⇒ half-plane to the RIGHT of the rightmost pole</div><div class="c"></div><div class="t"><span class="lab">Trap</span>e<sup>−αt</sup>u(t) and −e<sup>−αt</sup>u(−t) share 1/(s+α). Only the RoC tells them apart.</div></div>
-<div class="row"><div class="f">Left-sided ⇒ half-plane to the LEFT of the leftmost pole</div><div class="c"></div><div class="t"></div></div>
-<div class="row"><div class="f">Two-sided ⇒ vertical strip (or empty)</div><div class="c"></div><div class="t"></div></div>
-<div class="row"><div class="f">Finite duration and absolutely integrable ⇒ whole plane</div><div class="c"></div><div class="t"></div></div>
-<div class="row"><div class="f">RoC never contains a pole</div><div class="c"><span class="lab">Needs</span>Rational X̂.</div><div class="t"><span class="lab">Trap</span>Use it to sanity-check any answer.</div></div>
-<div class="row"><div class="f">x has a CTFT iff the RoC contains the jω axis. Then X(ω) = X̂(jω)</div><div class="c"><span class="lab">Needs</span>Absolutely integrable.</div><div class="t"><span class="lab">Trap</span>Right-sided with rightmost pole at −a: need a&gt;0.</div></div>
-<div class="row"><div class="f">Rational: poles = roots of denominator, zeros = roots of numerator</div><div class="c"><span class="lab">Needs</span>Degree numerator &gt; denominator ⇒ pole at infinity.</div><div class="t"><span class="lab">Trap</span>Check the discriminant when you find complex roots.</div></div>
-<div class="row"><div class="f">Sum or convolution: RoC ⊇ intersection</div><div class="c"></div><div class="t"><span class="lab">Trap</span>Pole–zero cancellation can enlarge it.</div></div>
-<p class="try"><b>Stuck? Try:</b> Ask: is the signal right-, left- or two-sided? That fixes the RoC shape. Then the poles fix the edge.</p>
-</section>
-<section class="card" id="w10-tab" data-w="w10">
-<header><span class="tag">W10</span><h3>Laplace pairs and properties (given tables)</h3></header>
-<div class="when"><b>Use when:</b> Combine rows. State the RoC every time.</div>
-<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
-<div class="row"><div class="f">δ(t−τ) ⇔ e<sup>−sτ</sup>,  RoC = ℂ</div><div class="c"></div><div class="t"></div></div>
-<div class="row"><div class="f">u(t) ⇔ 1/s,  Re(s)&gt;0</div><div class="c"></div><div class="t"></div></div>
-<div class="row"><div class="f">e<sup>−αt</sup>u(t) ⇔ 1/(s+α),  Re(s) &gt; −Re(α)</div><div class="c"></div><div class="t"></div></div>
-<div class="row"><div class="f">−e<sup>−αt</sup>u(−t) ⇔ 1/(s+α),  Re(s) &lt; −Re(α)</div><div class="c"></div><div class="t"></div></div>
-<div class="row"><div class="f">tⁿ⁻¹/(n−1)! e<sup>−αt</sup>u(t) ⇔ 1/(s+α)ⁿ,  Re(s) &gt; −Re(α)</div><div class="c"></div><div class="t"></div></div>
-<div class="row"><div class="f">cos(ω₀t)u(t) ⇔ s/(s²+ω₀²).   sin(ω₀t)u(t) ⇔ ω₀/(s²+ω₀²)</div><div class="c"><span class="lab">Needs</span>Re(s)&gt;0.</div><div class="t"></div></div>
-<div class="row"><div class="f">Linearity, convolution: RoC ⊇ RoC₁ ∩ RoC₂</div><div class="c"></div><div class="t"></div></div>
-<div class="row"><div class="f">Delay: x(t−τ) ⇒ e<sup>−sτ</sup>X̂(s), same RoC</div><div class="c"></div><div class="t"></div></div>
-<div class="row"><div class="f">Multiply by e<sup>s₀t</sup>: ⇒ X̂(s−s₀), RoC shifted by s₀</div><div class="c"></div><div class="t"></div></div>
-<div class="row"><div class="f">Time scaling: x(at) ⇒ (1/|a|)X̂(s/a)</div><div class="c"></div><div class="t"></div></div>
-<div class="row"><div class="f">Multiply by t: tx(t) ⇒ −dX̂/ds</div><div class="c"></div><div class="t"><span class="lab">Trap</span>The factor t becomes a derivative in s. Do not write a (s+2) factor.</div></div>
-<div class="row"><div class="f">Integration: ∫x ⇒ X̂/s.  Differentiation: dx/dt ⇒ sX̂(s)</div><div class="c"><span class="lab">Needs</span>RoC ⊇ RoC(x) (and Re(s)&gt;0 for integration).</div><div class="t"><span class="lab">Trap</span>Used for differential equations in Topic 11.</div></div>
-</section>
-<section class="card" id="w11-tf" data-w="w11">
-<header><span class="tag">W11</span><h3>Transfer function</h3></header>
-<div class="when"><b>Use when:</b> LTI system in the Laplace domain. Differential equation to H(s).</div>
-<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
-<div class="row"><div class="f">x=e<sup>st</sup> ⇒ y=Ĥ(s)e<sup>st</sup>.   Ĥ(s) = Laplace transform of h</div><div class="c"></div><div class="t"><span class="lab">Trap</span>Ĥ(s) with its RoC defines the system.</div></div>
-<div class="row"><div class="f">Ŷ(s) = Ĥ(s)X̂(s),   Ĥ = Ŷ/X̂</div><div class="c"></div><div class="t"></div></div>
-<div class="row"><div class="f">H(ω) = Ĥ(jω)</div><div class="c"><span class="lab">Needs</span>Stable (or jω axis in the RoC).</div><div class="t"></div></div>
-<div class="row"><div class="f">Delay: e<sup>−τs</sup>.  Differentiator: s.  Integrator: 1/s  (Re(s)&gt;0)</div><div class="c"></div><div class="t"><span class="lab">Trap</span>Delay is not rational, so no partial fractions.</div></div>
-<div class="row"><div class="f">ODE → Ĥ: replace d/dt by s, and x, y by X̂, Ŷ</div><div class="c"><span class="lab">Needs</span>Initial rest.</div><div class="t"><span class="lab">Trap</span>RC circuit: Ĥ = (1/RC)/(s + 1/RC), one pole at −1/RC.</div></div>
-<div class="row"><div class="f">Series: Ĥ₁Ĥ₂.   Parallel: Ĥ₁+Ĥ₂.   Feedback: Ĥ₁/(1 − Ĥ₁Ĥ₂)</div><div class="c"></div><div class="t"><span class="lab">Trap</span>Negative feedback means Ĥ₂ = −1 (sign flips the denominator to 1+Ĥ₁).</div></div>
-</section>
-<section class="card" id="w11-roc" data-w="w11">
-<header><span class="tag">W11</span><h3>RoC, causality and stability</h3></header>
-<div class="when"><b>Use when:</b> "Is it causal / BIBO stable / both?" from poles.</div>
-<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
-<div class="row"><div class="f">Causal ⇔ RoC is a right half-plane (for rational Ĥ also needs deg num ≤ deg den)</div><div class="c"></div><div class="t"></div></div>
-<div class="row"><div class="f">BIBO stable ⇔ RoC contains the jω axis</div><div class="c"></div><div class="t"><span class="lab">Trap</span>Causal and stable are independent checks.</div></div>
-<div class="row"><div class="f">Causal and BIBO stable (rational) ⇔ all poles in the open left half-plane</div><div class="c"></div><div class="t"><span class="lab">Trap</span>A pole on the jω axis (integrator) is not stable.</div></div>
-<div class="row"><div class="f">Single pole at −1/RC with R,C&gt;0 is stable</div><div class="c"></div><div class="t"></div></div>
-<p class="try"><b>Stuck? Try:</b> Locate poles. Decide the RoC from causality. Then ask whether jω is inside it.</p>
-</section>
-<section class="card" id="w11-inv" data-w="w11">
-<header><span class="tag">W11</span><h3>Inverse Laplace by partial fractions</h3></header>
-<div class="when"><b>Use when:</b> Find y(t) for a given input, or h(t) from Ĥ.</div>
-<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
-<div class="row"><div class="f">Y = HX, then expand Ŷ in partial fractions</div><div class="c"><span class="lab">Needs</span>Rational Ŷ.</div><div class="t"><span class="lab">Trap</span>RoC decides the time signal. Right of the pole ⇒ e<sup>pt</sup>u(t). Left ⇒ −e<sup>pt</sup>u(−t).</div></div>
-<div class="row"><div class="f">Strictly proper, simple poles: Ŷ = Σ A<sub>i</sub>/(s−p<sub>i</sub>),  A<sub>i</sub> = (s−p<sub>i</sub>)Ŷ(s) at s=p<sub>i</sub></div><div class="c"><span class="lab">Needs</span>deg num &lt; deg den.</div><div class="t"></div></div>
-<div class="row"><div class="f">Not strictly proper: divide polynomials first</div><div class="c"><span class="lab">Needs</span>deg num ≥ deg den.</div><div class="t"><span class="lab">Trap</span>The quotient gives δ(t) and derivative terms.</div></div>
-<div class="row"><div class="f">Repeated pole: terms 1/(s−p), 1/(s−p)², ...</div><div class="c"></div><div class="t"><span class="lab">Trap</span>1/(s+α)ⁿ ⇔ tⁿ⁻¹/(n−1)! e<sup>−αt</sup>u(t).</div></div>
-<div class="row"><div class="f">Final value (step input, stable): y(∞) = Ĥ(0)</div><div class="c"></div><div class="t"></div></div>
-<p class="try"><b>Stuck? Try:</b> Write Ŷ, factor the denominator, expand, then look up each term with the RoC you decided.</p>
-</section>
-<section class="card" id="w12-zt" data-w="w12">
-<header><span class="tag">W12</span><h3>Z-transform and RoC</h3></header>
-<div class="when"><b>Use when:</b> DT version of Laplace. Transform of a sequence.</div>
-<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
-<div class="row"><div class="f">X̂(z) = Σ x[n] z<sup>−n</sup></div><div class="c"></div><div class="t"><span class="lab">Trap</span>Always state the RoC.</div></div>
-<div class="row"><div class="f">RoC is a ring |z| in (r₁, r₂)</div><div class="c"><span class="lab">Needs</span>Depends only on |z|.</div><div class="t"><span class="lab">Trap</span>Annulus must have inner &lt; outer, else empty.</div></div>
-<div class="row"><div class="f">Right-sided ⇒ outside the outermost pole (|z| &gt; r)</div><div class="c"></div><div class="t"><span class="lab">Trap</span>z/(z−α) is αⁿu[n] (|z|&gt;|α|) and −αⁿu[−n−1] (|z|&lt;|α|). Only the RoC differs.</div></div>
-<div class="row"><div class="f">Left-sided ⇒ inside the innermost pole.  Two-sided ⇒ annulus</div><div class="c"></div><div class="t"></div></div>
-<div class="row"><div class="f">Finite duration ⇒ whole plane except z=0 (and ∞)</div><div class="c"><span class="lab">Needs</span>Negative powers of z blow up only at 0.</div><div class="t"></div></div>
-<div class="row"><div class="f">DTFT = X̂(e<sup>jω</sup>) iff the RoC contains the unit circle</div><div class="c"><span class="lab">Needs</span>x absolutely summable.</div><div class="t"><span class="lab">Trap</span>A signal can have a Z-transform and no DTFT.</div></div>
-<div class="row"><div class="f">Left half-plane of s ↔ inside the unit circle. jω axis ↔ unit circle</div><div class="c"></div><div class="t"><span class="lab">Trap</span>Stability: poles inside the unit circle (causal).</div></div>
-<div class="row"><div class="f">RoC never contains a pole</div><div class="c"><span class="lab">Needs</span>Rational X̂.</div><div class="t"></div></div>
-</section>
-<section class="card" id="w12-tab" data-w="w12">
-<header><span class="tag">W12</span><h3>Z pairs and properties (given tables)</h3></header>
-<div class="when"><b>Use when:</b> Combine rows. Write the RoC.</div>
-<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
-<div class="row"><div class="f">δ[n] ⇔ 1,  RoC ℂ.    δ[n−m] ⇔ z<sup>−m</sup></div><div class="c"></div><div class="t"></div></div>
-<div class="row"><div class="f">u[n] ⇔ 1/(1−z⁻¹),  |z|&gt;1</div><div class="c"></div><div class="t"></div></div>
-<div class="row"><div class="f">αⁿu[n] ⇔ 1/(1−αz⁻¹),  |z|&gt;|α|</div><div class="c"></div><div class="t"></div></div>
-<div class="row"><div class="f">αⁿu[−n] ⇔ 1/(1−α⁻¹z),  |z|&lt;|α|</div><div class="c"></div><div class="t"><span class="lab">Trap</span>Note u[−n], not u[−n−1].</div></div>
-<div class="row"><div class="f">nαⁿu[n] ⇔ αz⁻¹/(1−αz⁻¹)²,  |z|&gt;|α|</div><div class="c"></div><div class="t"></div></div>
-<div class="row"><div class="f">αⁿcos(ω₀n)u[n] ⇔ (1−αz⁻¹cos ω₀)/(1−2αz⁻¹cos ω₀+α²z⁻²)</div><div class="c"><span class="lab">Needs</span>|z|&gt;|α|</div><div class="t"></div></div>
-<div class="row"><div class="f">αⁿsin(ω₀n)u[n] ⇔ αz⁻¹sin ω₀/(1−2αz⁻¹cos ω₀+α²z⁻²)</div><div class="c"><span class="lab">Needs</span>|z|&gt;|α|</div><div class="t"></div></div>
-<div class="row"><div class="f">Delay: x[n−m] ⇒ z<sup>−m</sup>X̂(z),  RoC minus {0}</div><div class="c"></div><div class="t"></div></div>
-<div class="row"><div class="f">Modulation: αⁿx[n] ⇒ X̂(z/α),  RoC = α·RoC</div><div class="c"></div><div class="t"></div></div>
-<div class="row"><div class="f">Convolution: x₁∗x₂ ⇒ X̂₁X̂₂,  RoC ⊇ intersection</div><div class="c"></div><div class="t"></div></div>
-<div class="row"><div class="f">Time reversal: x[−n] ⇒ X̂(z⁻¹)</div><div class="c"></div><div class="t"></div></div>
-<div class="row"><div class="f">Conjugation: x* ⇒ [X̂(z*)]*</div><div class="c"></div><div class="t"></div></div>
-</section>
-<section class="card" id="w12-sys" data-w="w12">
-<header><span class="tag">W12</span><h3>DT transfer function and stability</h3></header>
-<div class="when"><b>Use when:</b> Difference equation to H(z), poles, step response.</div>
-<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
-<div class="row"><div class="f">Ĥ(z): replace x[n−m] by z<sup>−m</sup>X̂, divide Ŷ by X̂</div><div class="c"><span class="lab">Needs</span>Initial rest = causal = RoC outside the outermost pole.</div><div class="t"><span class="lab">Trap</span>Read Ĥ straight off the equation.</div></div>
-<div class="row"><div class="f">H(ω) = Ĥ(e<sup>jω</sup>)</div><div class="c"><span class="lab">Needs</span>RoC contains the unit circle.</div><div class="t"></div></div>
-<div class="row"><div class="f">Causal ⇔ RoC outside a circle.  BIBO stable ⇔ RoC contains the unit circle</div><div class="c"><span class="lab">Needs</span>Independent checks.</div><div class="t"><span class="lab">Trap</span>Accumulator y[n]=y[n−1]+x[n] has Ĥ = z/(z−1): causal, pole on the unit circle, not stable.</div></div>
-<div class="row"><div class="f">FIR (all zeros, poles only at 0) is always stable</div><div class="c"></div><div class="t"></div></div>
-<div class="row"><div class="f">Series: Ĥ₁Ĥ₂.   Parallel: Ĥ₁+Ĥ₂.   Feedback: Ĥ₁/(1−Ĥ₁Ĥ₂)</div><div class="c"></div><div class="t"></div></div>
-<div class="row"><div class="f">Inverse: expand Ŷ/z in partial fractions, multiply back by z</div><div class="c"><span class="lab">Needs</span>Use RoC to choose right or left sided terms.</div><div class="t"><span class="lab">Trap</span>Repeated pole ⇒ nαⁿ-type term.</div></div>
-<div class="row"><div class="f">Step response final value = Ĥ(1)</div><div class="c"><span class="lab">Needs</span>Stable.</div><div class="t"></div></div>
-<p class="try"><b>Stuck? Try:</b> Write Ĥ in z, factor, check pole magnitudes against 1, then partial fractions on Ŷ/z.</p>
-</section>
-</div><div class="empty" id="empty">No topic matches. Try a shorter word.</div>
-<p class="foot">Built from your ECE2111 weekly notes (W1 to W12; no W7 supplied) and the 2022 and 2024 exams, sample paper, mock exam and mid-sem test. Conventions follow the course: ω in rad/s, CTFT inverse has 1/2π, u(0) left undefined. A few textbook standard results (square-pulse series coefficients, ideal low-pass impulse response) are included; check them against your lecture tables.</p>
-</div>
-<script>
-(function(){
-  var q=document.getElementById('q'), cnt=document.getElementById('cnt'), empty=document.getElementById('empty');
-  var cards=[].slice.call(document.querySelectorAll('.card'));
-  var chips=[].slice.call(document.querySelectorAll('.chip'));
-  var active='all';
-  function norm(s){return s.toLowerCase();}
-  var texts=cards.map(function(c){return norm(c.textContent);});
-  function apply(){
-    var term=norm(q.value.trim()), parts=term?term.split(/\s+/):[], shown=0;
-    cards.forEach(function(c,i){
-      var okTag=active==='all'||c.getAttribute('data-w')===active;
-      var okTxt=parts.every(function(p){return texts[i].indexOf(p)>-1;});
-      var show=okTag&&okTxt;
-      c.classList.toggle('hide',!show);
-      if(show)shown++;
-    });
-    cnt.textContent=shown+' of '+cards.length+' topics';
-    empty.style.display=shown?'none':'block';
-    var g=document.getElementById('guidewrap'); if(g) g.classList.toggle('hide',!!term||active!=='all');
-  }
-  q.addEventListener('input',apply);
-  chips.forEach(function(ch){ch.addEventListener('click',function(){
-    active=ch.getAttribute('data-w');
-    chips.forEach(function(x){x.setAttribute('aria-pressed',x===ch?'true':'false');});
-    apply();
-  });});
-  apply();
-})();
+</div></div><script>
+(function(){var q=document.getElementById('q'),c=document.getElementById('cnt');
+var secs=[].slice.call(document.querySelectorAll('.sec'));
+var rows=[].slice.call(document.querySelectorAll('.r'));
+function run(){var p=q.value.toLowerCase().trim().split(/\s+/).filter(Boolean),shown=0;
+secs.forEach(function(s){var head=s.querySelector('h2').textContent.toLowerCase();var any=false;
+ [].slice.call(s.querySelectorAll('.r')).forEach(function(r){var tx=(head+' '+r.textContent).toLowerCase();var ok=p.every(function(w){return tx.indexOf(w)>-1});r.classList.toggle('hide',!ok);if(ok){any=true;shown++}});
+ s.classList.toggle('hide',!any);});
+c.textContent=p.length?shown+' matching lines':rows.length+' lines';}
+q.addEventListener('input',run);run();})();
 </script>
