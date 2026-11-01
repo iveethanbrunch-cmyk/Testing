@@ -1,0 +1,391 @@
+<title>ECE2191 Exam Sheet</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&family=IBM+Plex+Sans:wght@400;500;600&family=STIX+Two+Text:ital,wght@0,400;0,600;1,400&display=swap">
+<style>
+/* Layout: sticky search bar, a "which tool?" guide, then topic cards. Each formula row = formula | conditions | trap. */
+:root{
+  --bg:#f2f4f6; --surface:#ffffff; --ink:#15212b; --muted:#56646f; --line:#d5dce2;
+  --accent:#0a6b87; --accent-soft:#dff0f5; --cond:#7a5200; --cond-bg:#fff3d6;
+  --trap:#9b1c2c; --trap-bg:#fde6e8; --try:#1d6b3a; --try-bg:#e1f3e7; --code:#eef1f4;
+  --font-ui:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --font-math:"STIX Two Text","Cambria Math","Times New Roman",serif;
+  --font-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f161c; --surface:#17212a; --ink:#e6edf2; --muted:#9aa9b5; --line:#2b3945;
+    --accent:#5cc3de; --accent-soft:#12303b; --cond:#f0c76b; --cond-bg:#33280f;
+    --trap:#ff9aa6; --trap-bg:#3a1a20; --try:#7fd89b; --try-bg:#14301f; --code:#1d2933;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0f161c; --surface:#17212a; --ink:#e6edf2; --muted:#9aa9b5; --line:#2b3945;
+  --accent:#5cc3de; --accent-soft:#12303b; --cond:#f0c76b; --cond-bg:#33280f;
+  --trap:#ff9aa6; --trap-bg:#3a1a20; --try:#7fd89b; --try-bg:#14301f; --code:#1d2933;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-ui);font-size:15px;line-height:1.5}
+.wrap{max-width:1040px;margin:0 auto;padding-block:0 64px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--surface)}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--surface);border-bottom:1px solid var(--line);
+  margin-inline:calc(-1*max(16px,env(safe-area-inset-left,0px)));padding:10px max(16px,env(safe-area-inset-right,0px)) 10px max(16px,env(safe-area-inset-left,0px))}
+.bar-in{max-width:1040px;margin:0 auto;display:flex;flex-direction:column;gap:8px}
+.top{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.top h1{font-size:18px;margin:0;font-weight:600;letter-spacing:.01em}
+.top .sub{color:var(--muted);font-size:13px}
+.top a.other{margin-left:auto;font-size:13px;color:var(--accent);text-decoration:none;border:1px solid var(--line);padding:3px 10px;border-radius:4px}
+.search{display:flex;gap:8px;align-items:center}
+.search input{flex:1;min-width:0;font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:4px;background:var(--bg);color:var(--ink)}
+.search input:focus-visible,.chip:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.count{font-size:12px;color:var(--muted);white-space:nowrap}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{font:inherit;font-size:12px;padding:3px 9px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+:root[data-theme="dark"] .chip[aria-pressed="true"]{color:#06222b}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .chip[aria-pressed="true"]{color:#06222b}}
+h2.sec{font-size:13px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin:26px 0 10px;font-weight:600}
+.guide{background:var(--surface);border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.guide .g{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0 16px;padding:8px 14px;border-top:1px solid var(--line)}
+.guide .g:first-child{border-top:0}
+.guide .g b{font-weight:500}
+.guide .g span{color:var(--accent);font-weight:500}
+@media (max-width:620px){.guide .g{grid-template-columns:1fr;gap:0}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:6px;margin:14px 0;scroll-margin-top:130px}
+.card>header{display:flex;gap:10px;align-items:baseline;padding:12px 14px 6px;flex-wrap:wrap}
+.card h3{margin:0;font-size:16px;font-weight:600}
+.tag{font-size:11px;font-family:var(--font-mono);background:var(--accent-soft);color:var(--accent);padding:2px 7px;border-radius:3px;white-space:nowrap}
+.when{padding:0 14px 8px;color:var(--muted);font-size:13px}
+.when b{color:var(--ink);font-weight:500}
+.row{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr) minmax(0,1fr);gap:6px 14px;padding:9px 14px;border-top:1px solid var(--line);align-items:start}
+.row.head{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);padding-block:5px;background:var(--code)}
+.f{font-family:var(--font-math);font-size:17px;line-height:1.55;overflow-x:auto;min-width:0;padding-bottom:2px}
+.f small{font-family:var(--font-ui);font-size:12px;color:var(--muted);display:block;line-height:1.35}
+.c,.t{font-size:13px;min-width:0}
+.c{color:var(--cond)}
+.c:empty,.t:empty{display:none}
+.lab{display:none;font-size:10px;text-transform:uppercase;letter-spacing:.08em;font-weight:600;margin-right:6px}
+.c .lab{color:var(--cond)}
+.t{color:var(--trap)}
+.t .lab{color:var(--trap)}
+@media (max-width:760px){
+  .row{grid-template-columns:1fr}
+  .row.head{display:none}
+  .lab{display:inline}
+  .c{background:var(--cond-bg);padding:4px 8px;border-radius:3px;color:var(--ink)}
+  .t{background:var(--trap-bg);padding:4px 8px;border-radius:3px;color:var(--ink)}
+}
+.try{margin:0;padding:9px 14px 11px;border-top:1px solid var(--line);font-size:13px;background:var(--try-bg);color:var(--ink);border-radius:0 0 6px 6px}
+.try b{color:var(--try);font-weight:600}
+.empty{display:none;padding:24px;text-align:center;color:var(--muted)}
+.foot{margin-top:30px;color:var(--muted);font-size:12px}
+.hide{display:none!important}
+</style>
+<div class="wrap">
+<div class="bar"><div class="bar-in">
+<div class="top"><h1>ECE2191 Exam Sheet</h1><span class="sub">Probability, statistics and machine learning. Formula, conditions, trap.</span></div>
+<div class="search"><input id="q" type="search" placeholder="Search, e.g. RoC or Parseval" autocomplete="off" aria-label="Search topics"><span class="count" id="cnt"></span></div>
+<div class="chips"><button class="chip" type="button" data-w="all" aria-pressed="true">All</button><button class="chip" type="button" data-w="w1" aria-pressed="false">W1 Discrete RVs</button><button class="chip" type="button" data-w="w2" aria-pressed="false">W2 Continuous RVs</button><button class="chip" type="button" data-w="w3" aria-pressed="false">W3 Sums, LLN, CLT</button><button class="chip" type="button" data-w="w4" aria-pressed="false">W4 Estimation, CI</button><button class="chip" type="button" data-w="w5" aria-pressed="false">W5 Vector RVs</button><button class="chip" type="button" data-w="w7" aria-pressed="false">W7 Linear regression</button><button class="chip" type="button" data-w="w8" aria-pressed="false">W8 Multivariate</button><button class="chip" type="button" data-w="w9" aria-pressed="false">W9 Polynomial</button><button class="chip" type="button" data-w="w10" aria-pressed="false">W10 Gradient descent</button><button class="chip" type="button" data-w="w11" aria-pressed="false">W11 Classification</button><button class="chip" type="button" data-w="w12" aria-pressed="false">W12 Ridge, NN</button></div>
+</div></div>
+<div id="guidewrap"><h2 class="sec">Which tool? Match what the question says</h2><div class="guide">
+<div class="g"><div>Count successes in n independent trials</div><span>Binomial(n,p)</span></div>
+<div class="g"><div>Trials until the first success</div><span>Geometric(p), memoryless</span></div>
+<div class="g"><div>Waiting time, time to failure, arrivals</div><span>Exponential(λ), memoryless</span></div>
+<div class="g"><div>Noise, measurement error, many small effects</div><span>Gaussian N(μ,σ²), then standardise</span></div>
+<div class="g"><div>Every value in a range equally likely</div><span>Uniform(a,b)</span></div>
+<div class="g"><div>Probability at one exact value (continuous)</div><span>Always 0. Use an interval or the CDF</span></div>
+<div class="g"><div>Add or average n measurements</div><span>Sum/mean rules; CLT for the shape</span></div>
+<div class="g"><div>"As n grows, does the estimate converge?"</div><span>Law of Large Numbers</span></div>
+<div class="g"><div>"Approximately normal for large n"</div><span>Central Limit Theorem</span></div>
+<div class="g"><div>"Best guess" for a parameter</div><span>Point estimate (x̄, s²). Sample variance divides by n−1</span></div>
+<div class="g"><div>"Plus or minus", "how confident"</div><span>Confidence interval x̄ ± z·σ/√n</span></div>
+<div class="g"><div>"How many samples for ±E"</div><span>n = (zσ/E)², round up</span></div>
+<div class="g"><div>Fit a line / plane through data</div><span>Linear regression, w = X⁺y, add a column of 1s for bias</span></div>
+<div class="g"><div>Curved data, choose degree</div><span>Polynomial features + BIC (take the minimum)</span></div>
+<div class="g"><div>No closed form, iterative training</div><span>Gradient descent, w ← w − η∇L</span></div>
+<div class="g"><div>Predict a class label (2 classes / K classes)</div><span>Sigmoid + BCE / softmax + cross-entropy</span></div>
+<div class="g"><div>Overfitting, weights too large</div><span>Ridge: w = (XᵀX + αI)⁻¹Xᵀy</span></div>
+</div></div>
+<h2 class="sec">Topics</h2>
+<section class="card" id="w1-basic" data-w="w1">
+<header><span class="tag">W1</span><h3>Probability, random variables, expectation</h3></header>
+<div class="when"><b>Use when:</b> Any "find the probability" or "find the mean" question.</div>
+<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
+<div class="row"><div class="f">Ω → event → X → PMF → E[X] → Var(X)</div><div class="c"><span class="lab">Needs</span>Write Ω first, then the event as a subset.</div><div class="t"><span class="lab">Trap</span>X=1 for "error" is not the transmitted bit.</div></div>
+<div class="row"><div class="f">E[X] = Σ x P(X=x)</div><div class="c"><span class="lab">Needs</span>PMF sums to 1.</div><div class="t"><span class="lab">Trap</span>Pair each probability with its own x.</div></div>
+<div class="row"><div class="f">Var(X) = E[X²] − (E[X])²,   SD = √Var</div><div class="c"></div><div class="t"></div></div>
+<div class="row"><div class="f">E[aX+b] = aE[X]+b,   Var(aX+b) = a²Var(X)</div><div class="c"></div><div class="t"><span class="lab">Trap</span>The shift b drops out of the variance.</div></div>
+</section>
+<section class="card" id="w1-dist" data-w="w1">
+<header><span class="tag">W1</span><h3>Bernoulli, Binomial, Geometric</h3></header>
+<div class="when"><b>Use when:</b> Counting successes or waiting for the first one.</div>
+<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
+<div class="row"><div class="f">Bernoulli(p): P(1)=p.   E=p,  Var=p(1−p)</div><div class="c"><span class="lab">Needs</span>One yes/no trial.</div><div class="t"><span class="lab">Trap</span>Var is largest at p=½.</div></div>
+<div class="row"><div class="f">Binomial(n,p): P(X=k) = C(n,k) pᵏ (1−p)ⁿ⁻ᵏ.   E=np,  Var=np(1−p)</div><div class="c"><span class="lab">Needs</span>n fixed, independent trials, same p.</div><div class="t"><span class="lab">Trap</span>P(at least one) = 1 − (1−p)ⁿ. E[X]=1 does not mean P(X≥1)=1.</div></div>
+<div class="row"><div class="f">Geometric(p): P(X=k) = (1−p)ᵏ⁻¹ p, k=1,2,...   E=1/p,  Var=(1−p)/p²</div><div class="c"><span class="lab">Needs</span>Counts trials including the first success.</div><div class="t"><span class="lab">Trap</span>Binomial: fixed n. Geometric: stop at first success.</div></div>
+<div class="row"><div class="f">Memoryless: P(X&gt;m+n | X&gt;m) = P(X&gt;n)</div><div class="c"><span class="lab">Needs</span>Geometric only (discrete).</div><div class="t"><span class="lab">Trap</span>P(X&gt;n) = (1−p)ⁿ.</div></div>
+</section>
+<section class="card" id="w1-joint" data-w="w1">
+<header><span class="tag">W1</span><h3>Conditional, joint, independence</h3></header>
+<div class="when"><b>Use when:</b> Event trees, tables of P(X,Y).</div>
+<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
+<div class="row"><div class="f">P(A|B) = P(A,B)/P(B)</div><div class="c"><span class="lab">Needs</span>P(B)&gt;0.</div><div class="t"><span class="lab">Trap</span>P(A|B) ≠ P(B|A).</div></div>
+<div class="row"><div class="f">P(A,B) = P(A|B)P(B) = P(B|A)P(A)</div><div class="c"><span class="lab">Needs</span>Multiply along branches of an event tree.</div><div class="t"></div></div>
+<div class="row"><div class="f">Total probability: P(A) = P(A|B)P(B) + P(A|Bᶜ)P(Bᶜ)</div><div class="c"></div><div class="t"><span class="lab">Trap</span>Denominator of Bayes sums over every branch.</div></div>
+<div class="row"><div class="f">Bayes: P(B|A) = P(A|B)P(B)/P(A)</div><div class="c"></div><div class="t"></div></div>
+<div class="row"><div class="f">Marginal: P(X=x) = Σ_y P(X=x,Y=y)</div><div class="c"></div><div class="t"></div></div>
+<div class="row"><div class="f">Independent ⇔ P(x,y) = P(x)P(y) for ALL cells</div><div class="c"><span class="lab">Needs</span>Check every cell.</div><div class="t"><span class="lab">Trap</span>One mismatch settles it. One match proves nothing.</div></div>
+</section>
+<section class="card" id="w1-cov" data-w="w1">
+<header><span class="tag">W1</span><h3>Covariance, correlation, E[XY]</h3></header>
+<div class="when"><b>Use when:</b> Two random variables together.</div>
+<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
+<div class="row"><div class="f">E[XY] = Σ_x Σ_y xy P(x,y)</div><div class="c"></div><div class="t"></div></div>
+<div class="row"><div class="f">E[X+Y] = E[X]+E[Y]</div><div class="c"><span class="lab">Needs</span>Always. No independence needed.</div><div class="t"></div></div>
+<div class="row"><div class="f">Var(X+Y) = Var X + Var Y + 2Cov(X,Y)</div><div class="c"><span class="lab">Needs</span>If independent, Cov=0.</div><div class="t"><span class="lab">Trap</span>Variance adds only for uncorrelated variables.</div></div>
+<div class="row"><div class="f">Cov(X,Y) = E[XY] − E[X]E[Y]</div><div class="c"></div><div class="t"></div></div>
+<div class="row"><div class="f">ρ = Cov(X,Y)/√(Var X Var Y),   −1 ≤ ρ ≤ 1</div><div class="c"></div><div class="t"></div></div>
+<div class="row"><div class="f">Independent ⇒ Cov=0.   Cov=0 does NOT imply independent</div><div class="c"></div><div class="t"><span class="lab">Trap</span>Orthogonal means E[XY]=0. Uncorrelated means Cov=0.</div></div>
+<div class="row"><div class="f">Model assumptions: independence, constant p, identically distributed, no memory</div><div class="c"><span class="lab">Needs</span>Bursts, fading, drift, wear break them.</div><div class="t"><span class="lab">Trap</span>Simple models underestimate rare extreme events.</div></div>
+</section>
+<section class="card" id="w2-pdf" data-w="w2">
+<header><span class="tag">W2</span><h3>PDF and CDF</h3></header>
+<div class="when"><b>Use when:</b> Continuous random variable questions.</div>
+<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
+<div class="row"><div class="f">P(a ≤ X ≤ b) = ∫ f(x)dx from a to b</div><div class="c"><span class="lab">Needs</span>f ≥ 0 and total area 1.</div><div class="t"><span class="lab">Trap</span>P(X = x) = 0 for any single x.</div></div>
+<div class="row"><div class="f">F(x) = P(X ≤ x) = ∫ f from −∞ to x.   f(x) = dF/dx</div><div class="c"></div><div class="t"></div></div>
+<div class="row"><div class="f">P(a&lt;X≤b) = F(b) − F(a)</div><div class="c"></div><div class="t"></div></div>
+<div class="row"><div class="f">F is non-decreasing, F(−∞)=0, F(∞)=1</div><div class="c"></div><div class="t"><span class="lab">Trap</span>A PDF can exceed 1. A probability cannot.</div></div>
+<div class="row"><div class="f">E[X] = ∫ x f(x)dx.   E[g(X)] = ∫ g(x) f(x)dx</div><div class="c"></div><div class="t"></div></div>
+<div class="row"><div class="f">Var(X) = E[X²] − (E[X])²</div><div class="c"></div><div class="t"></div></div>
+<p class="try"><b>Stuck? Try:</b> Convert the question to an interval, then use the CDF.</p>
+</section>
+<section class="card" id="w2-dist" data-w="w2">
+<header><span class="tag">W2</span><h3>Uniform, Exponential, Gaussian</h3></header>
+<div class="when"><b>Use when:</b> Pick the model from the story.</div>
+<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
+<div class="row"><div class="f">Uniform(a,b): f = 1/(b−a).  F = (x−a)/(b−a) on [a,b].  E = (a+b)/2,  Var = (b−a)²/12</div><div class="c"><span class="lab">Needs</span>a ≤ x ≤ b.</div><div class="t"><span class="lab">Trap</span>Height is forced by area 1.</div></div>
+<div class="row"><div class="f">Exponential(λ): f = λe<sup>−λx</sup>, x≥0.  F = 1 − e<sup>−λx</sup>.  E = 1/λ,  Var = 1/λ²</div><div class="c"><span class="lab">Needs</span>λ is a rate (events per unit time).</div><div class="t"><span class="lab">Trap</span>P(X&gt;x) = e<sup>−λx</sup>. Models only the constant-failure-rate phase.</div></div>
+<div class="row"><div class="f">Exponential is memoryless: P(X&gt;s+t | X&gt;s) = P(X&gt;t)</div><div class="c"><span class="lab">Needs</span>Continuous analogue of geometric.</div><div class="t"></div></div>
+<div class="row"><div class="f">Gaussian N(μ,σ²): f = (1/(σ√2π)) e<sup>−(x−μ)²/2σ²</sup></div><div class="c"><span class="lab">Needs</span>Many small independent effects.</div><div class="t"><span class="lab">Trap</span>No closed-form CDF. Standardise.</div></div>
+<div class="row"><div class="f">Empirical rule: μ±σ ≈ 68.27%,  μ±2σ ≈ 95.45%,  μ±3σ ≈ 99.73%</div><div class="c"><span class="lab">Needs</span>Gaussian only.</div><div class="t"></div></div>
+</section>
+<section class="card" id="w2-joint" data-w="w2">
+<header><span class="tag">W2</span><h3>Joint, marginal and conditional PDFs</h3></header>
+<div class="when"><b>Use when:</b> Two continuous variables.</div>
+<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
+<div class="row"><div class="f">P((X,Y) in region R) = ∬ f(x,y) dx dy over R</div><div class="c"><span class="lab">Needs</span>f ≥ 0 and total volume 1.</div><div class="t"><span class="lab">Trap</span>Draw the region first, then set the limits.</div></div>
+<div class="row"><div class="f">Marginal: f<sub>X</sub>(x) = ∫ f(x,y)dy</div><div class="c"></div><div class="t"><span class="lab">Trap</span>Limits can depend on x.</div></div>
+<div class="row"><div class="f">Conditional: f(x|y) = f(x,y)/f<sub>Y</sub>(y)</div><div class="c"><span class="lab">Needs</span>f<sub>Y</sub>(y)&gt;0.</div><div class="t"></div></div>
+<div class="row"><div class="f">Independent ⇔ f(x,y) = f<sub>X</sub>(x)f<sub>Y</sub>(y) for all x,y</div><div class="c"><span class="lab">Needs</span>Factorises, including the support.</div><div class="t"><span class="lab">Trap</span>Zero covariance alone is not enough.</div></div>
+<div class="row"><div class="f">E[g(X,Y)] = ∬ g f dx dy.   Cov = E[XY] − E[X]E[Y]</div><div class="c"></div><div class="t"></div></div>
+</section>
+<section class="card" id="w3-sum" data-w="w3">
+<header><span class="tag">W3</span><h3>Sums and sample mean</h3></header>
+<div class="when"><b>Use when:</b> Total or average of n readings.</div>
+<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
+<div class="row"><div class="f">S<sub>n</sub> = ΣXᵢ.   E[S<sub>n</sub>] = ΣE[Xᵢ]</div><div class="c"><span class="lab">Needs</span>Always.</div><div class="t"></div></div>
+<div class="row"><div class="f">Var(S<sub>n</sub>) = ΣVar(Xᵢ) + ΣΣ<sub>i≠j</sub> Cov(Xᵢ,Xⱼ)</div><div class="c"><span class="lab">Needs</span>Independent: just ΣVar(Xᵢ).</div><div class="t"><span class="lab">Trap</span>Variance does not add automatically.</div></div>
+<div class="row"><div class="f">X̄_n = S<sub>n</sub>/n.   E[X̄_n] = μ</div><div class="c"><span class="lab">Needs</span>Equal means.</div><div class="t"></div></div>
+<div class="row"><div class="f">Var(X̄_n) = σ²/n,   SD = σ/√n</div><div class="c"><span class="lab">Needs</span>IID (independent and identically distributed).</div><div class="t"><span class="lab">Trap</span>Averaging shrinks the estimator spread, not a single measurement.</div></div>
+<div class="row"><div class="f">Var(cX) = c²Var(X)</div><div class="c"></div><div class="t"></div></div>
+</section>
+<section class="card" id="w3-lln" data-w="w3">
+<header><span class="tag">W3</span><h3>Law of Large Numbers and Central Limit Theorem</h3></header>
+<div class="when"><b>Use when:</b> Convergence versus shape of the distribution.</div>
+<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
+<div class="row"><div class="f">LLN: X̄_n → μ as n grows</div><div class="c"><span class="lab">Needs</span>IID, finite mean and variance.</div><div class="t"><span class="lab">Trap</span>Says where, not how it is spread.</div></div>
+<div class="row"><div class="f">CLT: Z<sub>n</sub> = (X̄_n − μ)/(σ/√n) → N(0,1)</div><div class="c"><span class="lab">Needs</span>IID, finite mean and variance.</div><div class="t"><span class="lab">Trap</span>Fails with burst errors or drift (independence or identical distribution broken).</div></div>
+<div class="row"><div class="f">X̄_n ≈ N(μ, σ²/n).   S<sub>n</sub> ≈ N(nμ, nσ²)</div><div class="c"><span class="lab">Needs</span>n large. Rule of thumb n ≥ 30.</div><div class="t"><span class="lab">Trap</span>Skewed or multimodal parents need larger n.</div></div>
+<div class="row"><div class="f">LLN: point.  CLT: shape.</div><div class="c"></div><div class="t"></div></div>
+</section>
+<section class="card" id="w3-gauss" data-w="w3">
+<header><span class="tag">W3</span><h3>Standardising Gaussians, Φ and Q</h3></header>
+<div class="when"><b>Use when:</b> Any P(X ≤ x) for a Gaussian.</div>
+<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
+<div class="row"><div class="f">Z = (X−μ)/σ ~ N(0,1)</div><div class="c"></div><div class="t"><span class="lab">Trap</span>Subtract mean, divide by SD (not variance).</div></div>
+<div class="row"><div class="f">P(X ≤ x) = Φ((x−μ)/σ)</div><div class="c"></div><div class="t"><span class="lab">Trap</span>Check whether the Z-table is lower-tail or upper-tail.</div></div>
+<div class="row"><div class="f">P(a&lt;X&lt;b) = Φ((b−μ)/σ) − Φ((a−μ)/σ)</div><div class="c"></div><div class="t"></div></div>
+<div class="row"><div class="f">Q(z) = P(Z&gt;z) = 1 − Φ(z).   Φ(−z) = 1 − Φ(z)</div><div class="c"><span class="lab">Needs</span>Q is the comms convention for tail probability.</div><div class="t"></div></div>
+<div class="row"><div class="f">Φ(1.5) = 0.9332.   Φ(1)=0.8413.   Φ(1.96)=0.975</div><div class="c"></div><div class="t"></div></div>
+<p class="try"><b>Stuck? Try:</b> Standardise first. Sketch the bell and shade the area to decide Φ or 1−Φ.</p>
+</section>
+<section class="card" id="w4-est" data-w="w4">
+<header><span class="tag">W4</span><h3>Point estimates and standard error</h3></header>
+<div class="when"><b>Use when:</b> Estimate parameters from data.</div>
+<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
+<div class="row"><div class="f">μ̂ = x̄ = (1/n)Σxᵢ</div><div class="c"></div><div class="t"></div></div>
+<div class="row"><div class="f">σ̂² = s² = (1/(n−1)) Σ(xᵢ−x̄)²</div><div class="c"><span class="lab">Needs</span>Population mean unknown, replaced by x̄.</div><div class="t"><span class="lab">Trap</span>Divide by n−1, not n.</div></div>
+<div class="row"><div class="f">Fit a PMF: p̂ = successes / trials.   Fit a PDF: use μ̂, σ̂²</div><div class="c"></div><div class="t"><span class="lab">Trap</span>Then compute probabilities from the fitted model.</div></div>
+<div class="row"><div class="f">SE(X̄) = σ/√n   (or s/√n if σ unknown)</div><div class="c"></div><div class="t"><span class="lab">Trap</span>More data shrinks SE, not the spread of one reading.</div></div>
+<div class="row"><div class="f">Unbiased: E[θ̂]=θ.   Consistent: θ̂ → θ as n grows</div><div class="c"></div><div class="t"><span class="lab">Trap</span>They are different properties.</div></div>
+</section>
+<section class="card" id="w4-ci" data-w="w4">
+<header><span class="tag">W4</span><h3>Confidence intervals</h3></header>
+<div class="when"><b>Use when:</b> "Give a 95% interval", "plus or minus".</div>
+<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
+<div class="row"><div class="f">x̄ ± z<sub>α/2</sub> σ/√n</div><div class="c"><span class="lab">Needs</span>IID, σ known, population Gaussian or n large (CLT).</div><div class="t"><span class="lab">Trap</span>If σ is unknown the course flags Student t (beyond scope).</div></div>
+<div class="row"><div class="f">90%: z = 1.645.   95%: z = 1.96.   99%: z = 2.576</div><div class="c"></div><div class="t"></div></div>
+<div class="row"><div class="f">Higher confidence ⇒ wider.   Larger n ⇒ narrower.</div><div class="c"></div><div class="t"><span class="lab">Trap</span>Precision and coverage trade off.</div></div>
+<div class="row"><div class="f">Meaning: 95% of intervals built this way contain μ</div><div class="c"><span class="lab">Needs</span>Repeated sampling.</div><div class="t"><span class="lab">Trap</span>It is not "95% probability μ is in this interval".</div></div>
+<div class="row"><div class="f">Total (sum) question: S<sub>n</sub> ≈ N(nμ, nσ²)</div><div class="c"></div><div class="t"><span class="lab">Trap</span>Do not use the sample-mean form for a total.</div></div>
+<div class="row"><div class="f">Significance level = 100% − confidence level</div><div class="c"></div><div class="t"></div></div>
+</section>
+<section class="card" id="w4-n" data-w="w4">
+<header><span class="tag">W4</span><h3>Margin of error and sample size</h3></header>
+<div class="when"><b>Use when:</b> "How many measurements?"</div>
+<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
+<div class="row"><div class="f">MOE = z<sub>α/2</sub> σ/√n</div><div class="c"></div><div class="t"></div></div>
+<div class="row"><div class="f">n = (z<sub>α/2</sub> σ / MOE_max)²</div><div class="c"><span class="lab">Needs</span>σ known.</div><div class="t"><span class="lab">Trap</span>ALWAYS round up. Example: 61.47 → 62.</div></div>
+<div class="row"><div class="f">n ∝ 1/MOE²</div><div class="c"></div><div class="t"><span class="lab">Trap</span>Halving MOE needs 4× the data.</div></div>
+<div class="row"><div class="f">Typical confidence: 90% exploratory, 95% default, 99% safety-critical</div><div class="c"></div><div class="t"></div></div>
+</section>
+<section class="card" id="w5-vec" data-w="w5">
+<header><span class="tag">W5</span><h3>Vector random variables</h3></header>
+<div class="when"><b>Use when:</b> X = [X₁,...,X<sub>n</sub>]ᵀ, covariance matrices.</div>
+<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
+<div class="row"><div class="f">Mean vector μ = E[X]</div><div class="c"></div><div class="t"></div></div>
+<div class="row"><div class="f">Correlation matrix R_XX = E[XXᵀ]</div><div class="c"><span class="lab">Needs</span>Second moments.</div><div class="t"><span class="lab">Trap</span>Off-diagonals need not vanish under independence.</div></div>
+<div class="row"><div class="f">Covariance matrix C_XX = E[(X−μ)(X−μ)ᵀ]</div><div class="c"><span class="lab">Needs</span>Diagonal = variances, off-diagonal = covariances.</div><div class="t"></div></div>
+<div class="row"><div class="f">C_XX = R_XX − μμᵀ</div><div class="c"></div><div class="t"><span class="lab">Trap</span>Convert instead of recomputing every entry.</div></div>
+<div class="row"><div class="f">C_XX is symmetric and positive semidefinite</div><div class="c"></div><div class="t"></div></div>
+<div class="row"><div class="f">Gaussian vector: f(x) = (1/((2π)<sup>n/2</sup>|C|<sup>1/2</sup>)) exp(−½ (x−μ)ᵀC⁻¹(x−μ))</div><div class="c"><span class="lab">Needs</span>C nonsingular.</div><div class="t"><span class="lab">Trap</span>Check |C| ≠ 0 first.</div></div>
+<div class="row"><div class="f">Jointly Gaussian and Cov=0 ⇒ independent</div><div class="c"><span class="lab">Needs</span>Both conditions.</div><div class="t"><span class="lab">Trap</span>Zero covariance alone does not give independence.</div></div>
+<div class="row"><div class="f">Contours: variances set spread along axes; covariance sets tilt</div><div class="c"></div><div class="t"><span class="lab">Trap</span>One state variable's uncertainty is the matching diagonal entry of C.</div></div>
+</section>
+<section class="card" id="w7-lr" data-w="w7">
+<header><span class="tag">W7</span><h3>Univariate linear regression</h3></header>
+<div class="when"><b>Use when:</b> Fit ŷ = wx + b to data.</div>
+<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
+<div class="row"><div class="f">Zero-order model: ŷ = b = ȳ</div><div class="c"></div><div class="t"><span class="lab">Trap</span>Baseline. Good only if x and y are unrelated.</div></div>
+<div class="row"><div class="f">Loss (MSE): L = (1/m)Σ(yᵢ − wxᵢ − b)²</div><div class="c"><span class="lab">Needs</span>Convex: unique global minimum.</div><div class="t"></div></div>
+<div class="row"><div class="f">Set ∂L/∂w = 0 and ∂L/∂b = 0 (Fermat)</div><div class="c"></div><div class="t"><span class="lab">Trap</span>Stationary point alone is not enough in general; convexity here guarantees a minimum.</div></div>
+<div class="row"><div class="f">w* = σ̂ₓᵧ / σ̂ₓₓ,   b* = ȳ − x̄w*</div><div class="c"><span class="lab">Needs</span>σ̂ₓᵧ = (1/m)Σ(xᵢ−x̄)(yᵢ−ȳ), σ̂ₓₓ = (1/m)Σ(xᵢ−x̄)²</div><div class="t"><span class="lab">Trap</span>Divide by m, not m−1.</div></div>
+<div class="row"><div class="f">w = (Σxᵢyᵢ − m x̄ȳ)/(Σxᵢ² − m x̄²),   b = (ȳΣxᵢ² − x̄Σxᵢyᵢ)/(Σxᵢ² − m x̄²)</div><div class="c"><span class="lab">Needs</span>Use when you are given raw sums.</div><div class="t"></div></div>
+<div class="row"><div class="f">Supervised learning: data (xᵢ,yᵢ). Regression predicts a number, classification a label</div><div class="c"></div><div class="t"></div></div>
+<div class="row"><div class="f">sklearn: LinearRegression().fit(X.reshape(-1,1), y); coef_, intercept_</div><div class="c"></div><div class="t"><span class="lab">Trap</span>X must be a column matrix (m,1).</div></div>
+</section>
+<section class="card" id="w8-mlr" data-w="w8">
+<header><span class="tag">W8</span><h3>Multivariate linear regression</h3></header>
+<div class="when"><b>Use when:</b> Several inputs, matrix form.</div>
+<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
+<div class="row"><div class="f">ŷ = wᵀx.   X is m×n (one sample per row), y is m×1</div><div class="c"></div><div class="t"></div></div>
+<div class="row"><div class="f">w* = X⁺y</div><div class="c"><span class="lab">Needs</span>X full rank.</div><div class="t"></div></div>
+<div class="row"><div class="f">m ≥ n (tall): X⁺ = (XᵀX)⁻¹Xᵀ.   m &lt; n (fat): X⁺ = Xᵀ(XXᵀ)⁻¹</div><div class="c"></div><div class="t"><span class="lab">Trap</span>Fat case: infinitely many exact fits; X⁺ gives the minimum-norm one.</div></div>
+<div class="row"><div class="f">Bias: append a column of 1s to X; w₀ is the bias</div><div class="c"></div><div class="t"><span class="lab">Trap</span>Without it the plane passes through the origin (MSE can be much worse).</div></div>
+<div class="row"><div class="f">Multiple outputs: ŷ = Wᵀx,  W* = X⁺Y  (Y is m×p)</div><div class="c"></div><div class="t"><span class="lab">Trap</span>Compute X⁺ once for all outputs.</div></div>
+<div class="row"><div class="f">R² = 1 − Σ(yᵢ−ŷᵢ)² / Σ(yᵢ−ȳ)²</div><div class="c"></div><div class="t"><span class="lab">Trap</span>R²=1 perfect, R²=0 same as the zero-order baseline.</div></div>
+<div class="row"><div class="f">numpy: w = np.linalg.pinv(np.c_[np.ones(m), X]) @ y</div><div class="c"></div><div class="t"></div></div>
+</section>
+<section class="card" id="w9-poly" data-w="w9">
+<header><span class="tag">W9</span><h3>Polynomial regression and overfitting</h3></header>
+<div class="when"><b>Use when:</b> Nonlinear data, choosing the degree.</div>
+<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
+<div class="row"><div class="f">ŷ = w₀ + w₁x + ... + w_Kx^K  (Maclaurin truncation)</div><div class="c"><span class="lab">Needs</span>Linear in w. Same pseudo-inverse solution.</div><div class="t"><span class="lab">Trap</span>K is a hyperparameter.</div></div>
+<div class="row"><div class="f">Features of degree ≤ k from n inputs: C(n+k, k)</div><div class="c"></div><div class="t"><span class="lab">Trap</span>Includes cross terms, e.g. x₁x₂, x₁x₂². The count explodes (n=100, k=5: 96.5 million).</div></div>
+<div class="row"><div class="f">Rule of thumb: at least 10 samples per parameter</div><div class="c"></div><div class="t"></div></div>
+<div class="row"><div class="f">Training error falls as degree rises. Test error falls then rises</div><div class="c"></div><div class="t"><span class="lab">Trap</span>Underfit: both high. Overfit: train low, test high.</div></div>
+<div class="row"><div class="f">BIC = d·ln(m) + m·ln(MSE)</div><div class="c"><span class="lab">Needs</span>d = number of parameters, m = samples, MSE on training data. ln is natural log.</div><div class="t"><span class="lab">Trap</span>BIC can be negative. Pick the degree with the minimum BIC.</div></div>
+<div class="row"><div class="f">sklearn: PolynomialFeatures(degree) in a pipeline with LinearRegression</div><div class="c"></div><div class="t"></div></div>
+</section>
+<section class="card" id="w10-gd" data-w="w10">
+<header><span class="tag">W10</span><h3>Gradient descent</h3></header>
+<div class="when"><b>Use when:</b> No closed form, or "do two iterations".</div>
+<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
+<div class="row"><div class="f">w⁽ᵏ⁾ = w⁽ᵏ⁻¹⁾ − η ∇f(w⁽ᵏ⁻¹⁾)</div><div class="c"><span class="lab">Needs</span>η&gt;0 learning rate, f differentiable.</div><div class="t"><span class="lab">Trap</span>Update every coordinate with the OLD point, simultaneously.</div></div>
+<div class="row"><div class="f">∇f = [∂f/∂x₁, ..., ∂f/∂x<sub>n</sub>]ᵀ points to steepest ascent</div><div class="c"></div><div class="t"><span class="lab">Trap</span>Descent uses the negative gradient. Gradient is perpendicular to level sets.</div></div>
+<div class="row"><div class="f">η too small: slow.  Moderately large: bounces and plateaus.  Too large: diverges</div><div class="c"></div><div class="t"></div></div>
+<div class="row"><div class="f">Stop when ‖∇f‖ ≤ ε, or f decrease ≤ ε, or ‖w⁽ᵏ⁾−w⁽ᵏ⁻¹⁾‖ ≤ ε, or k = max</div><div class="c"></div><div class="t"></div></div>
+<div class="row"><div class="f">Convex loss: reaches the global minimum. Non-convex (neural nets): a good minimum</div><div class="c"></div><div class="t"></div></div>
+<div class="row"><div class="f">Direction-by-direction search needs 2ⁿ checks</div><div class="c"></div><div class="t"><span class="lab">Trap</span>Does not scale. That is why the gradient is used.</div></div>
+<div class="row"><div class="f">Chain rule: y = θ₃ + b, θ₃ = w₂θ₂, θ₂ = φ(θ₁), θ₁ = w₁x</div><div class="c"><span class="lab">Needs</span>dy/dw₁ = w₂ φ′(θ₁) x</div><div class="t"><span class="lab">Trap</span>Backpropagation is repeated chain rule.</div></div>
+<p class="try"><b>Stuck? Try:</b> Quadratic 1-D: ∇f = f′, update ω ← ω − ηf′(ω). Example f=ω²+5ω+6, ω₀=2, η=0.1 → 1.1.</p>
+</section>
+<section class="card" id="w11-log" data-w="w11">
+<header><span class="tag">W11</span><h3>Logistic regression</h3></header>
+<div class="when"><b>Use when:</b> Two-class prediction.</div>
+<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
+<div class="row"><div class="f">σ(z) = 1/(1+e<sup>−z</sup>),   σ(0)=0.5,   σ′ = σ(1−σ)</div><div class="c"><span class="lab">Needs</span>0 &lt; σ &lt; 1.</div><div class="t"><span class="lab">Trap</span>Saturates for |z| &gt; 6 (tiny gradient).</div></div>
+<div class="row"><div class="f">ŷ = σ(wᵀx). Predict class 1 if ŷ ≥ 0.5</div><div class="c"><span class="lab">Needs</span>Bias via x[0]=1.</div><div class="t"><span class="lab">Trap</span>The decision boundary is a line or hyperplane.</div></div>
+<div class="row"><div class="f">BCE per sample: ℓ = −[y ln ŷ + (1−y) ln(1−ŷ)]</div><div class="c"><span class="lab">Needs</span>Natural log.</div><div class="t"><span class="lab">Trap</span>Do not use MSE with a sigmoid (vanishing gradient, wrong likelihood).</div></div>
+<div class="row"><div class="f">∇_w L = (1/m) Σ (ŷᵢ − yᵢ) xᵢ</div><div class="c"></div><div class="t"><span class="lab">Trap</span>No closed form. Train by gradient descent. BCE is convex.</div></div>
+<div class="row"><div class="f">Why linear regression fails: unbounded output, wrong objective, outliers skew the line</div><div class="c"></div><div class="t"></div></div>
+</section>
+<section class="card" id="w11-soft" data-w="w11">
+<header><span class="tag">W11</span><h3>Softmax classifier</h3></header>
+<div class="when"><b>Use when:</b> More than two classes.</div>
+<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
+<div class="row"><div class="f">p<sub>r</sub> = e<sup>z<sub>r</sub></sup> / Σ e<sup>z<sub>i</sub></sup></div><div class="c"></div><div class="t"><span class="lab">Trap</span>Probabilities sum to 1. Order of logits preserved.</div></div>
+<div class="row"><div class="f">z = Wᵀx,  W is n×K (one column per class)</div><div class="c"><span class="lab">Needs</span>Labels one-hot, not 1,2,3.</div><div class="t"><span class="lab">Trap</span>Integer labels imply a false ordering.</div></div>
+<div class="row"><div class="f">Loss: L = −Σ y<sub>r</sub> ln ŷ_r = −ln ŷ_c</div><div class="c"><span class="lab">Needs</span>c = true class.</div><div class="t"></div></div>
+<div class="row"><div class="f">∇_W L = (1/m) Σ xᵢ(ŷᵢ − yᵢ)ᵀ</div><div class="c"></div><div class="t"></div></div>
+<div class="row"><div class="f">Example: z=(5.2, 3.6, −2.7) → p ≈ (0.832, 0.168, 0.0003)</div><div class="c"></div><div class="t"></div></div>
+</section>
+<section class="card" id="w11-metrics" data-w="w11">
+<header><span class="tag">W11</span><h3>Confusion matrix and metrics</h3></header>
+<div class="when"><b>Use when:</b> Evaluate a classifier.</div>
+<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
+<div class="row"><div class="f">Rows = true class, columns = predicted. Diagonal = correct</div><div class="c"></div><div class="t"></div></div>
+<div class="row"><div class="f">Accuracy = (TP+TN)/N</div><div class="c"></div><div class="t"><span class="lab">Trap</span>Misleading with imbalanced classes: always guessing the majority scores high.</div></div>
+<div class="row"><div class="f">Precision = TP/(TP+FP).   Recall = TP/(TP+FN)</div><div class="c"></div><div class="t"><span class="lab">Trap</span>Miss = FN. False alarm = FP.</div></div>
+<div class="row"><div class="f">F₁ = 2·P·R/(P+R)</div><div class="c"><span class="lab">Needs</span>Harmonic mean.</div><div class="t"></div></div>
+<div class="row"><div class="f">TP=6, FP=2, FN=3 → P=0.75, R≈0.67, F₁≈0.71</div><div class="c"></div><div class="t"></div></div>
+<div class="row"><div class="f">Imbalance fixes: class weights, resampling. predict_proba lets you change the 0.5 threshold</div><div class="c"></div><div class="t"></div></div>
+</section>
+<section class="card" id="w12-ridge" data-w="w12">
+<header><span class="tag">W12</span><h3>Ridge (L2) regression</h3></header>
+<div class="when"><b>Use when:</b> Overfitting, many parameters, regularisation.</div>
+<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
+<div class="row"><div class="f">L_ridge = (1/m)Σ(ŷᵢ−yᵢ)² + α‖w‖²</div><div class="c"><span class="lab">Needs</span>α ≥ 0 hyperparameter.</div><div class="t"><span class="lab">Trap</span>α=0 gives ordinary least squares. Larger α shrinks w toward 0.</div></div>
+<div class="row"><div class="f">w* = (XᵀX + αI)⁻¹ Xᵀy</div><div class="c"><span class="lab">Needs</span>Still has a closed form.</div><div class="t"><span class="lab">Trap</span>Adds α to the diagonal of XᵀX.</div></div>
+<div class="row"><div class="f">Occam: prefer the simpler model that fits equally well</div><div class="c"></div><div class="t"></div></div>
+<div class="row"><div class="f">sklearn: Ridge(alpha=1.0)</div><div class="c"><span class="lab">Needs</span>Tune α.</div><div class="t"></div></div>
+</section>
+<section class="card" id="w12-nn" data-w="w12">
+<header><span class="tag">W12</span><h3>Neurons and shallow neural networks</h3></header>
+<div class="when"><b>Use when:</b> Forward pass by hand, counting parameters.</div>
+<div class="row head"><div>Formula / fact</div><div>Conditions needed</div><div>Trap</div></div>
+<div class="row"><div class="f">Neuron: output = φ(wᵀx).   φ = σ gives logistic regression</div><div class="c"></div><div class="t"></div></div>
+<div class="row"><div class="f">Hidden layer: h = φ(W₁ᵀx).   Output: y = W₂ᵀh</div><div class="c"><span class="lab">Needs</span>W₁ is n×H, W₂ is H×p. Bias via a 1 appended.</div><div class="t"><span class="lab">Trap</span>Apply φ elementwise.</div></div>
+<div class="row"><div class="f">ReLU: max(0,a).   Sigmoid: 1/(1+e<sup>−x</sup>).   tanh: (eˣ−e⁻ˣ)/(eˣ+e⁻ˣ)</div><div class="c"><span class="lab">Needs</span>ReLU range [0,∞). Sigmoid (0,1). tanh (−1,1).</div><div class="t"><span class="lab">Trap</span>ReLU can die (stuck at 0).</div></div>
+<div class="row"><div class="f">Classification head: softmax(W₂ᵀh), cross-entropy.   Regression: MSE</div><div class="c"></div><div class="t"><span class="lab">Trap</span>Pre-softmax values are logits.</div></div>
+<div class="row"><div class="f">Parameters ≈ n·H + H·p (plus biases)</div><div class="c"></div><div class="t"><span class="lab">Trap</span>Example: 100·500 + 500·1 = 50,500.</div></div>
+<div class="row"><div class="f">Universal approximation: one hidden layer, enough neurons, continuous f</div><div class="c"></div><div class="t"><span class="lab">Trap</span>More hidden units = more piecewise-linear joints.</div></div>
+<div class="row"><div class="f">Training: backpropagation = chain rule + gradient descent</div><div class="c"></div><div class="t"></div></div>
+<p class="try"><b>Stuck? Try:</b> Forward pass: multiply, apply ReLU (negative → 0), multiply again. Example gave y = 3.</p>
+</section>
+<div class="empty" id="empty">No topic matches. Try a shorter word.</div>
+<p class="foot">Built from your ECE2191 weekly reference notes (W1 to W5, W7 to W12; no W6 supplied). Closed-form variances for the uniform and exponential, and the Gaussian affine rules, are standard results added to complete the sheet; check them against your lecture notes.</p>
+</div>
+<script>
+(function(){
+  var q=document.getElementById('q'), cnt=document.getElementById('cnt'), empty=document.getElementById('empty');
+  var cards=[].slice.call(document.querySelectorAll('.card'));
+  var chips=[].slice.call(document.querySelectorAll('.chip'));
+  var active='all';
+  function norm(s){return s.toLowerCase();}
+  var texts=cards.map(function(c){return norm(c.textContent);});
+  function apply(){
+    var term=norm(q.value.trim()), parts=term?term.split(/\s+/):[], shown=0;
+    cards.forEach(function(c,i){
+      var okTag=active==='all'||c.getAttribute('data-w')===active;
+      var okTxt=parts.every(function(p){return texts[i].indexOf(p)>-1;});
+      var show=okTag&&okTxt;
+      c.classList.toggle('hide',!show);
+      if(show)shown++;
+    });
+    cnt.textContent=shown+' of '+cards.length+' topics';
+    empty.style.display=shown?'none':'block';
+    var g=document.getElementById('guidewrap'); if(g) g.classList.toggle('hide',!!term||active!=='all');
+  }
+  q.addEventListener('input',apply);
+  chips.forEach(function(ch){ch.addEventListener('click',function(){
+    active=ch.getAttribute('data-w');
+    chips.forEach(function(x){x.setAttribute('aria-pressed',x===ch?'true':'false');});
+    apply();
+  });});
+  apply();
+})();
+</script>
